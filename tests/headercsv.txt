@@ -1,0 +1,1 @@
+Set;Imagen;Profundidad;Completa;Tiempo;Arriba_izq_X;Arriba_izq_Y;Arriba_der_X;Arriba_der_Y;Abajo_izq_X;Abajo_izq_Y;Abajo_der_X;Abajo_der_Y; 
