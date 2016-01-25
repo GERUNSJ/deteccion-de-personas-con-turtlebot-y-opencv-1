@@ -6,6 +6,7 @@
 #include <fstream>
 #include <opencv2/core/core.hpp>
 #include "opencv2/highgui/highgui.hpp"
+#include "resultados.hpp"
 
 // Para readDirectory
 #if defined(WIN32) || defined(_WIN32)
@@ -82,7 +83,7 @@ int main(int argc, char* argv[])
 	// Se crea un detector
 
 	// Estructura de resultados
-	resultados res; // resultados y forma de imprimirlos deberia estar en un objeto
+	struct_resultados res; // resultados y forma de imprimirlos deberia estar en un objeto
 
 	// Se procesan las imagenes
 	Mat img;
@@ -92,19 +93,12 @@ int main(int argc, char* argv[])
 		img = imread( i , IMREAD_UNCHANGED ); // 8bit, color or not
 
 		// Procesamiento
-		detector.detectar(img, res);
+		//detector.detectar(img, res);
+		//
 
 		// Escribir resultados
 		stream_archivo_resultados << i << "\n";
-
-
-
-		//stream_archivo_resultados <<
-		//res.set << ";" << res.img << ";" << res.prof << ";" << res.comp <<
-		//res.tiempo << ";" << res.arr_izq_x << ";" << res.arr_izq_Y <<
-		//res.arr_der_x << ";" << res.arr_der_y << ";" << res.aba_izq_x <<
-		//res.aba_izq_y << ";" << res.aba_der_x << ";" << res.aba_der_y << endl;
-		//Set;Imagen;Profundidad;Completa;Tiempo;Arriba_izq_X;Arriba_izq_Y;Arriba_der_X;Arriba_der_Y;Abajo_izq_X;Abajo_izq_Y;Abajo_der_X;Abajo_der_Y;
+		stream_archivo_resultados << res; // Escrible la línea de resultados y salto de línea.
 	}
 
 	// Se cierra el archivo
