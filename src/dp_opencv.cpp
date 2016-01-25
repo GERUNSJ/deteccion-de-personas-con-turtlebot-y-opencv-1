@@ -5,6 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <opencv2/core/core.hpp>
+#include "opencv2/highgui/highgui.hpp"
 
 // Para readDirectory
 #if defined(WIN32) || defined(_WIN32)
@@ -14,6 +15,7 @@
 #endif
 
 using namespace std;
+using namespace cv;
 
 //----------------------------------------------------------------------------------------------
 // Declaración de funciones
@@ -73,52 +75,42 @@ int main(int argc, char* argv[])
 	if( !stream_archivo_resultados.is_open() )
 	{
 		cout << "El archivo no se pudo abrir.\n";
-		return -1; //ver de usar exit. Por qué devuelvo -1?
+		return -1; //ver de usar exit o error. Por qué devuelvo -1?
 	}
 
 
 	// Se crea un detector
 
+	// Estructura de resultados
+	resultados res; // resultados y forma de imprimirlos deberia estar en un objeto
+
 	// Se procesan las imagenes
+	Mat img;
 	for( auto i: nombre_imagenes )
 	{
-		// Procesar
+		// Se abre la imagen
+		img = imread( i , IMREAD_UNCHANGED ); // 8bit, color or not
+
+		// Procesamiento
+		detector.detectar(img, res);
+
 		// Escribir resultados
 		stream_archivo_resultados << i << "\n";
+
+
+
+		//stream_archivo_resultados <<
+		//res.set << ";" << res.img << ";" << res.prof << ";" << res.comp <<
+		//res.tiempo << ";" << res.arr_izq_x << ";" << res.arr_izq_Y <<
+		//res.arr_der_x << ";" << res.arr_der_y << ";" << res.aba_izq_x <<
+		//res.aba_izq_y << ";" << res.aba_der_x << ";" << res.aba_der_y << endl;
+		//Set;Imagen;Profundidad;Completa;Tiempo;Arriba_izq_X;Arriba_izq_Y;Arriba_der_X;Arriba_der_Y;Abajo_izq_X;Abajo_izq_Y;Abajo_der_X;Abajo_der_Y;
 	}
 
 	// Se cierra el archivo
 	stream_archivo_resultados.close();
 
 
-//	help();
-//
-//	float overlapThreshold = 0.2f;
-//	int numThreads = -1;
-//	if (argc > 2)
-//	{
-//		images_folder = argv[1];
-//		models_folder = argv[2];
-//		if (argc > 3)
-//			overlapThreshold = (float) atof(argv[3]);
-//		if (overlapThreshold < 0 || overlapThreshold > 1)
-//		{
-//			cout << "overlapThreshold must be in interval (0,1)." << endl;
-//			exit(-1);
-//		}
-//
-//		if (argc > 4)
-//			numThreads = atoi(argv[4]);
-//	}
-//
-//	vector<string> images_filenames, models_filenames;
-//	readDirectory(images_folder, images_filenames);
-//	readDirectory(models_folder, models_filenames);
-//
-//	models_filenames.erase(models_filenames.begin()); // Borra el .
-//	models_filenames.erase(models_filenames.begin()); // Borra el ..
-//	images_filenames.erase(images_filenames.begin()); // Borra el .
-//	images_filenames.erase(images_filenames.begin()); // Borra el ..
 
 	return 0;
 }
