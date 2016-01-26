@@ -1,5 +1,5 @@
 #ifndef DP_RESULTADOS_H
-#define DP_RESULTADOS H
+#define DP_RESULTADOS_H
 
 #include <iostream>
 

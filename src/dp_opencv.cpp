@@ -33,9 +33,9 @@ int main(int argc, char* argv[])
 
 	// Ayuda de uso
 	ayuda();
-	string carpeta_imagenes, archivo_resultados;
+	string i_carpeta_imagenes, i_nombre_archivos_resultados;
 	string archivo_imagen = "";
-	vector<string> nombre_imagenes;
+	vector<string> nombres_imagenes;
 
 	switch (argc)
 	{
@@ -47,65 +47,81 @@ int main(int argc, char* argv[])
 	case 3: // Una carpeta, guarda resultados en el archivo del segundo argumento. Añade.
 	{
 		//
-		carpeta_imagenes = argv[1];
-		archivo_resultados = argv[2];
+		i_carpeta_imagenes = argv[1];
+		i_nombre_archivos_resultados = argv[2];
 		break;
 	}
 	}
-//	cout << carpeta_imagenes << endl;
-//	cout << archivo_resultados << endl;
+//	cout << i_carpeta_imagenes << endl;
+//	cout << i_nombre_archivos_resultados << endl;
 //	cout << argv[1] << endl;
 //	cout << argv[2] << endl;
 	//cout << argv[3] << endl;
 
 
 	// Se lee la carpeta con las imagenes, o la imagen según corresponda
-	readDirectory(carpeta_imagenes,nombre_imagenes);
+	readDirectory(i_carpeta_imagenes,nombres_imagenes);
 
-	//	nombre_imagenes.erase(nombre_imagenes.begin()); // Borra el .
-	//	nombre_imagenes.erase(nombre_imagenes.begin()); // Borra el ..
-//	    for( auto i: nombre_imagenes) //c++11
+	//	nombres_imagenes.erase(nombres_imagenes.begin()); // Borra el .
+	//	nombres_imagenes.erase(nombres_imagenes.begin()); // Borra el ..
+//	    for( auto i: nombres_imagenes) //c++11
 //	    	cout << i << '\n';
 
-	if( nombre_imagenes.size() == 0 )
+	if( nombres_imagenes.size() == 0 )
 		return -1;
 
 	// Archivo csv
-	fstream stream_archivo_resultados;
-	stream_archivo_resultados.open(archivo_resultados.c_str(), ios::out | ios::app); // Salida, append(añadir)
-	if( !stream_archivo_resultados.is_open() )
+	fstream stream_archivo_csv;
+	fstream stream_archivo_txt;
+	string aux = i_nombre_archivos_resultados + ".csv"; // Append con +
+	stream_archivo_csv.open(aux.c_str(), ios::out | ios::app); // Salida, append(añadir)
+	if( !stream_archivo_csv.is_open() )
 	{
-		cout << "El archivo no se pudo abrir.\n";
+		cout << "El archivo csv no se pudo abrir.\n";
+		return -1; //ver de usar exit o error. Por qué devuelvo -1?
+	}
+	aux = i_nombre_archivos_resultados + ".txt";
+	stream_archivo_txt.open(aux.c_str(), ios::out | ios::app); // Salida, append(añadir)
+	if( !stream_archivo_txt.is_open() )
+	{
+		cout << "El archivo csv no se pudo abrir.\n";
 		return -1; //ver de usar exit o error. Por qué devuelvo -1?
 	}
 
 
 	// Se crea un detector
+	// Se escriben los parámetros del detector
+	stream_archivo_txt << "Parámetros del detector";
 
 	// Estructura de resultados
-	struct_resultados res; // resultados y forma de imprimirlos deberia estar en un objeto
+	vector<struct_resultados> res; // resultados y forma de imprimirlos deberia estar en un objeto
 
 	// Se procesan las imagenes
 	Mat img;
-	for( auto i: nombre_imagenes )
+	for( auto i: nombres_imagenes )
 	{
+		res.clear();
 		// Se abre la imagen
 		img = imread( i , IMREAD_UNCHANGED ); // 8bit, color or not
 
 		// Procesamiento
 		//detector.detectar(img, res);
 		//
+		struct_resultados res_aux;
+		res.push_back(res_aux);
 
 		// Escribir resultados
-		stream_archivo_resultados << i << "\n";
-		stream_archivo_resultados << res; // Escrible la línea de resultados y salto de línea.
+		stream_archivo_csv << i << "\n";
+		for( auto auto_res: res )
+			stream_archivo_csv << auto_res; // Escribe la línea de resultados y salto de línea.
 	}
 
-	// Se cierra el archivo
-	stream_archivo_resultados.close();
+	// Se cierran los archivos
+	stream_archivo_csv.close();
+	stream_archivo_txt.close();
 
 
-
+	cout << "El programa ha terminado.\n\n";
 	return 0;
 }
 
@@ -115,11 +131,14 @@ int main(int argc, char* argv[])
 // AYUDA
 static void ayuda()
 {
+	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 	cout
 			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
-					"Uso: dp_opencv <carpeta_con_imagenes | imagen >  </dir/al/archivo_de_resultados.csv>"
+					"Uso: dp_opencv <carpeta_con_imagenes | imagen >  </dir/al/archivo_de_resultados> (sin extensión)"
 					" [otras opciones...]\n"
+				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
 					"\nUsando OpenCV " << CV_VERSION << endl;
+	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 
 	return;
 }

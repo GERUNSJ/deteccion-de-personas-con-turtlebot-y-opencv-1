@@ -48,6 +48,5 @@ dist/
 nbdist/
 nbactions.xml
 .nb-gradle/
-/Debug
-/Debug
-/Debug
+Debug/
+Release/
