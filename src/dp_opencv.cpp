@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
 	string i_carpeta_imagenes, i_nombre_archivos_resultados;
 	string archivo_imagen = "";
 	string i_detector;
+	string nombre_set;
 	vector<string> nombres_imagenes;
 	vector<string> i_parametros_nombres , i_parametros_valores;
 
@@ -73,6 +74,17 @@ int main(int argc, char* argv[])
 	}
 
 
+	 // if( *(i_nombre_archivos_resultados.end()) == "\\" || *(i_nombre_archivos_resultados.end()) == "/" )
+	char ultimochar = i_carpeta_imagenes[i_carpeta_imagenes.size()-1];
+	if( ultimochar == '\\' || ultimochar == '/' )
+		i_carpeta_imagenes.pop_back();
+
+//	if( i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == "\\"
+//			|| i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == "/")
+//		  i_carpeta_imagenes.pop_back();
+
+	  size_t pos_barra = i_carpeta_imagenes.find_last_of("/\\"); // Encuentra la última barra
+	  nombre_set = i_carpeta_imagenes.substr(pos_barra + 1);
 
 
 
@@ -121,7 +133,6 @@ int main(int argc, char* argv[])
 
 	// Se procesan las imagenes
 	Mat img;
-	int set = 1;
 	string string_numero;
 	int numero;
 	for( size_t i = 0 ; i < nombres_imagenes.size() ; i++ ) //convertir a for normal
@@ -146,7 +157,7 @@ int main(int argc, char* argv[])
 		{
 			//auto_res.img = numero;
 			auto_res.img = i+1; // Suponiendo que se cargaron en orden..
-			auto_res.set = set;
+			auto_res.set = nombre_set;
 			stream_archivo_csv << auto_res; // Escribe la línea de resultados y salto de línea.
 		}
 	}

@@ -2,6 +2,7 @@
 #define DP_RESULTADOS_H
 
 #include <iostream>
+#include <string>
 
 // Estructura de resultados. Versión 1.0
 // Contiene información referida a una detección de persona en una imagen
@@ -9,7 +10,7 @@
 // entrega un rectángulo que contiene a la persona detectada.
 struct struct_resultados
 {
-	unsigned int set = 1;		// Set al que corresponde la imagen
+	std::string set = "set_sin_nombre";		// Set al que corresponde la imagen
 	unsigned int img = 1;		// Número de imagen
 	unsigned int prof = 1;		// Profundidad [ 16 / 8 ]
 	unsigned int comp = 0;		// Si está la persona completa o no [ 1 / 0 ]

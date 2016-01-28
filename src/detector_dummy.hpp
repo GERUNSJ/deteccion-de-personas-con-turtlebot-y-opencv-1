@@ -22,6 +22,4 @@ private:
 };
 
 
-
-
 #endif //DP_DETECTOR_DUMMY_H
