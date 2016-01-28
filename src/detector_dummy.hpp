@@ -15,10 +15,13 @@ public:
 	std::string parametro4;
 	DetectorDummy(std::vector<std::string>argumentos_nombre, std::vector<std::string>argumentos_valor);
 	~DetectorDummy();
-	void detectar() override;
+	void detectar(const cv::Mat& img, std::vector<struct_resultados>& res) override;
 
 private:
 
 };
+
+
+
 
 #endif //DP_DETECTOR_DUMMY_H

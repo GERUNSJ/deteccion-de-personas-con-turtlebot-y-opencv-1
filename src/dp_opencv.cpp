@@ -74,11 +74,6 @@ int main(int argc, char* argv[])
 
 
 
-//	cout << i_carpeta_imagenes << endl;
-//	cout << i_nombre_archivos_resultados << endl;
-//	cout << argv[1] << endl;
-//	cout << argv[2] << endl;
-	//cout << argv[3] << endl;
 
 
 	// Se lee la carpeta con las imagenes, o la imagen según corresponda
@@ -121,27 +116,39 @@ int main(int argc, char* argv[])
 	// Se escriben los parámetros del detector
 	stream_archivo_txt << *detector;
 
-	// Estructura de resultados
-	vector<struct_resultados> res; // resultados y forma de imprimirlos deberia estar en un objeto
+	// Estructura de resultados. Todas las detecciones correspondientes a una imagen.
+	vector<struct_resultados> res (nombres_imagenes.size()); // resultados y forma de imprimirlos deberia estar en un objeto
 
 	// Se procesan las imagenes
 	Mat img;
-	for( auto i: nombres_imagenes )
+	int set = 1;
+	string string_numero;
+	int numero;
+	for( size_t i = 0 ; i < nombres_imagenes.size() ; i++ ) //convertir a for normal
 	{
 		res.clear();
 		// Se abre la imagen
-		img = imread( i , IMREAD_UNCHANGED ); // 8bit, color or not
+		img = imread( nombres_imagenes.at(i) , IMREAD_UNCHANGED ); // 8bit, color or not
+		//set = ?
+//		string_numero = nombres_imagenes.at(i);
+//		cout << "\nstring_numero = " << string_numero << " .\n";
+//		string_numero = string_numero.substr(0,2);
+//		cout << "\nstring_numero = " << string_numero << " .\n";
+//		numero = stoi(string_numero);
 
 		// Procesamiento
-		//detector.detectar(img, res);
-		//
-		struct_resultados res_aux;
-		res.push_back(res_aux);
+		detector->detectar(img, res);
+
 
 		// Escribir resultados
-		stream_archivo_csv << i << "\n";
+		//stream_archivo_csv << nombres_imagenes.at(i) << "\n";
 		for( auto auto_res: res )
+		{
+			//auto_res.img = numero;
+			auto_res.img = i+1; // Suponiendo que se cargaron en orden..
+			auto_res.set = set;
 			stream_archivo_csv << auto_res; // Escribe la línea de resultados y salto de línea.
+		}
 	}
 
 	// Se cierran los archivos
@@ -156,6 +163,9 @@ int main(int argc, char* argv[])
 //----------------------------------------------------------------------------------------------
 // Funciones auxiliares
 
+
+
+
 // AYUDA
 static void ayuda()
 {
@@ -163,13 +173,19 @@ static void ayuda()
 	cout
 			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
 					"Uso: dp_opencv <carpeta_con_imagenes | imagen >  </dir/al/archivo_de_resultados> (sin extensión)"
-					" [otras opciones...]\n"
+					"<clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
 				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
-					"\nUsando OpenCV " << CV_VERSION << endl;
+				"\nDetectores válidos: "
+				"\nDetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
+					"\n\nUsando OpenCV " << CV_VERSION << endl;
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 
 	return;
 }
+
+
+
+
 
 // Lectura de archivos (tomada del svm)
 static void readDirectory(const string& directoryName,
