@@ -3,6 +3,7 @@ using namespace std;
 
 DetectorDummy::DetectorDummy(vector<string>argumentos_nombre, vector<string>argumentos_valor)
 {
+	this->nombre = "DetectorDummy";
 	unsigned int n = argumentos_nombre.size();
 	if( n != cantidad_de_argumentos )
 	{
@@ -46,7 +47,9 @@ DetectorDummy::DetectorDummy(vector<string>argumentos_nombre, vector<string>argu
 	parametros_nombre.push_back("parametro2");
 	parametros_valor.push_back(to_string(parametro2));
 	parametros_nombre.push_back("parametro3");
-	parametros_valor.push_back(to_string(parametro3));
+	string aux;
+	aux.push_back(parametro3);
+	parametros_valor.push_back(aux);
 	parametros_nombre.push_back("parametro4");
 	parametros_valor.push_back(parametro4);
 }

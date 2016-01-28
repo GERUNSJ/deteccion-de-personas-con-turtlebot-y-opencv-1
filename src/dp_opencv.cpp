@@ -7,6 +7,8 @@
 #include <opencv2/core/core.hpp>
 #include "opencv2/highgui/highgui.hpp"
 #include "resultados.hpp"
+#include "detector.hpp"
+#include "detector_dummy.hpp"
 
 // Para readDirectory
 #if defined(WIN32) || defined(_WIN32)
@@ -35,23 +37,43 @@ int main(int argc, char* argv[])
 	ayuda();
 	string i_carpeta_imagenes, i_nombre_archivos_resultados;
 	string archivo_imagen = "";
+	string i_detector;
 	vector<string> nombres_imagenes;
+	vector<string> i_parametros_nombres , i_parametros_valores;
 
-	switch (argc)
+//	switch (argc)
+//	{
+//	case 2: // Una sola imagen, no guarda nada.
+//	{
+//		//
+//		break;
+//	}
+//	case 3: // Una carpeta, guarda resultados en el archivo del segundo argumento. Añade.
+//	{
+//		//
+//		i_carpeta_imagenes = argv[1];
+//		i_nombre_archivos_resultados = argv[2];
+//		break;
+//	}
+//	}
+
+	if( argc < 4 || (argc % 2) != 0 ) // programa,carpeta,resultados,detector,[numero par de parametros]
+		return -1; //Error
+
+
+	i_carpeta_imagenes = argv[1];
+	i_nombre_archivos_resultados = argv[2];
+	i_detector = argv[3];
+
+	for( int i = 4  ; i < argc ; i++)
 	{
-	case 2: // Una sola imagen, no guarda nada.
-	{
-		//
-		break;
+		i_parametros_nombres.push_back(argv[i]);
+		i++;
+		i_parametros_valores.push_back(argv[i]);
 	}
-	case 3: // Una carpeta, guarda resultados en el archivo del segundo argumento. Añade.
-	{
-		//
-		i_carpeta_imagenes = argv[1];
-		i_nombre_archivos_resultados = argv[2];
-		break;
-	}
-	}
+
+
+
 //	cout << i_carpeta_imagenes << endl;
 //	cout << i_nombre_archivos_resultados << endl;
 //	cout << argv[1] << endl;
@@ -90,8 +112,14 @@ int main(int argc, char* argv[])
 
 
 	// Se crea un detector
+	Detector* detector;
+	if( i_detector == "DetectorDummy")
+		detector = new DetectorDummy(i_parametros_nombres, i_parametros_valores);
+	else
+		return -1;
+
 	// Se escriben los parámetros del detector
-	stream_archivo_txt << "Parámetros del detector";
+	stream_archivo_txt << *detector;
 
 	// Estructura de resultados
 	vector<struct_resultados> res; // resultados y forma de imprimirlos deberia estar en un objeto
