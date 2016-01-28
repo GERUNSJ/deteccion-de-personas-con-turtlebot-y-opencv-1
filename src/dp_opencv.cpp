@@ -1,4 +1,11 @@
 //----------------------------------------------------------------------------------------------
+/* Programa de evaluación de algoritmos de detección de personas para Turtlebot.
+
+ Fabricio Emder - Pablo Aguado
+ 2015 - 2016
+ */
+
+//----------------------------------------------------------------------------------------------
 // Includes
 #include <iostream>
 #include <string>
@@ -171,11 +178,13 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
+
+
+
+
+
 //----------------------------------------------------------------------------------------------
 // Funciones auxiliares
-
-
-
 
 // AYUDA
 static void ayuda()
