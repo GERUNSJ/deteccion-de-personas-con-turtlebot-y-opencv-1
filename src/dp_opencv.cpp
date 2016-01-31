@@ -16,6 +16,7 @@
 #include "resultados.hpp"
 #include "detector.hpp"
 #include "detector_dummy.hpp"
+#include "extractor.hpp"
 
 // Para readDirectory
 #if defined(WIN32) || defined(_WIN32)
@@ -129,6 +130,8 @@ int main(int argc, char* argv[])
 	Detector* detector;
 	if( i_detector == "DetectorDummy")
 		detector = new DetectorDummy(i_parametros_nombres, i_parametros_valores);
+	else if( i_detector == "Extractor")
+		detector = new Extractor();
 	else
 		return -1;
 
@@ -174,7 +177,7 @@ int main(int argc, char* argv[])
 	stream_archivo_txt.close();
 
 
-	cout << "El programa ha terminado.\n\n";
+	cout << "\nEl programa ha terminado.\n\n";
 	return 0;
 }
 
