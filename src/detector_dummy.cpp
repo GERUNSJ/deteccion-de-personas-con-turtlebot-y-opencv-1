@@ -59,7 +59,7 @@ DetectorDummy::~DetectorDummy()
 {
 }
 
-void DetectorDummy::detectar(const Mat& img,  vector<struct_resultados>& res)
+void DetectorDummy::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 {
 	for( int i = 0 ; i < 3 ; i++) // Simulamos 3 detecciones.
 	{
@@ -78,7 +78,7 @@ void DetectorDummy::detectar(const Mat& img,  vector<struct_resultados>& res)
 		aux.prof = 8;
 		//aux.set = 1;
 		aux.tiempo = 222;
-		res.push_back(aux);
+		i_res.push_back(aux);
 	}
 
 	return;

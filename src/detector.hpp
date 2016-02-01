@@ -15,7 +15,7 @@ public:
 	std::vector<std::string> parametros_nombre;
 	std::vector<std::string> parametros_valor;
 
-	virtual void detectar(const cv::Mat& img, std::vector<struct_resultados>& res) = 0;
+	virtual void detectar(const cv::Mat& i_img, std::vector<struct_resultados>& i_res) = 0;
 	friend std::ostream& operator<<(std::ostream& os, Detector& detector );
 	virtual ~Detector() = 0;
 private:
