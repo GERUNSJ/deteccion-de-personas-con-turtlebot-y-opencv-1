@@ -2,7 +2,7 @@
 /* Programa de evaluación de algoritmos de detección de personas para Turtlebot.
 
  Fabricio Emder - Pablo Aguado
- 2015 - 2016
+ 2014 - 2015 - 2016
  */
 
 //----------------------------------------------------------------------------------------------
@@ -16,6 +16,7 @@
 #include "resultados.hpp"
 #include "detector.hpp"
 #include "detector_dummy.hpp"
+#include "detector_hog.hpp"
 #include "extractor.hpp"
 
 // Para readDirectory
@@ -27,6 +28,12 @@
 
 using namespace std;
 using namespace cv;
+
+
+//----------------------------------------------------------------------------------------------
+// Defines y globales
+bool mostrar_detecciones = true;
+
 
 //----------------------------------------------------------------------------------------------
 // Declaración de funciones
@@ -66,15 +73,21 @@ int main(int argc, char* argv[])
 //	}
 //	}
 
-	if( argc < 4 || (argc % 2) != 0 ) // programa,carpeta,resultados,detector,[numero par de parametros]
+	if( argc < 4 || (argc % 2) == 0 ) // programa,carpeta,resultados,mostrar_detecciones,detector,[numero par de parametros]
 		return -1; //Error
 
 
 	i_carpeta_imagenes = argv[1];
 	i_nombre_archivos_resultados = argv[2];
-	i_detector = argv[3];
 
-	for( int i = 4  ; i < argc ; i++)
+	if(!strcmp(argv[3], "0") || !strcmp(argv[3], "false"))
+		mostrar_detecciones = false;
+	else
+		mostrar_detecciones = true;
+	//mostrar_detecciones = (bool)(int)argv[3];
+	i_detector = argv[4];
+
+	for( int i = 5  ; i < argc ; i++)
 	{
 		i_parametros_nombres.push_back(argv[i]);
 		i++;
@@ -132,6 +145,8 @@ int main(int argc, char* argv[])
 		detector = new DetectorDummy(i_parametros_nombres, i_parametros_valores);
 	else if( i_detector == "Extractor")
 		detector = new Extractor();
+	else if( i_detector == "DetectorHOG")
+		detector = new DetectorHOG(i_parametros_nombres, i_parametros_valores);
 	else
 		return -1;
 
@@ -144,7 +159,7 @@ int main(int argc, char* argv[])
 	// Se procesan las imagenes
 	Mat img;
 	string string_numero;
-	int numero;
+	//int numero;
 	for( size_t i = 0 ; i < nombres_imagenes.size() ; i++ ) //convertir a for normal
 	{
 		res.clear();
@@ -158,6 +173,7 @@ int main(int argc, char* argv[])
 //		numero = stoi(string_numero);
 
 		// Procesamiento
+		cout << "\nProcesando imagen " << i+1 << " de " << nombres_imagenes.size();
 		detector->detectar(img, res);
 
 
@@ -196,10 +212,12 @@ static void ayuda()
 	cout
 			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
 					"Uso: dp_opencv <carpeta_con_imagenes | imagen >  </dir/al/archivo_de_resultados> (sin extensión)"
-					"<clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
+					"<(1 | 0>(mostrar_detecciones) <clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
 				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
 				"\nDetectores válidos: "
-				"\nDetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
+				"\n* DetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
+				"\n* Extractor"
+				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector"
 					"\n\nUsando OpenCV " << CV_VERSION << endl;
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 
