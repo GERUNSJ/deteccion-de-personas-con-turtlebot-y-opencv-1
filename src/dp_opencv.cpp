@@ -2,7 +2,7 @@
 /* Programa de evaluación de algoritmos de detección de personas para Turtlebot.
 
  Fabricio Emder - Pablo Aguado
- 2015 - 2016
+ 2014 - 2015 - 2016
  */
 
 //----------------------------------------------------------------------------------------------
@@ -16,6 +16,7 @@
 #include "resultados.hpp"
 #include "detector.hpp"
 #include "detector_dummy.hpp"
+#include "detector_hog.hpp"
 #include "extractor.hpp"
 
 // Para readDirectory
@@ -27,6 +28,12 @@
 
 using namespace std;
 using namespace cv;
+
+
+//----------------------------------------------------------------------------------------------
+// Defines y globales
+bool mostrar_detecciones = true;
+
 
 //----------------------------------------------------------------------------------------------
 // Declaración de funciones
@@ -132,6 +139,8 @@ int main(int argc, char* argv[])
 		detector = new DetectorDummy(i_parametros_nombres, i_parametros_valores);
 	else if( i_detector == "Extractor")
 		detector = new Extractor();
+	else if( i_detector == "DetectorHOG")
+		detector = new DetectorHOG(i_parametros_nombres, i_parametros_valores);
 	else
 		return -1;
 
@@ -144,7 +153,7 @@ int main(int argc, char* argv[])
 	// Se procesan las imagenes
 	Mat img;
 	string string_numero;
-	int numero;
+	//int numero;
 	for( size_t i = 0 ; i < nombres_imagenes.size() ; i++ ) //convertir a for normal
 	{
 		res.clear();
@@ -199,7 +208,9 @@ static void ayuda()
 					"<clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
 				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
 				"\nDetectores válidos: "
-				"\nDetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
+				"\n* DetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
+				"\n* Extractor"
+				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector"
 					"\n\nUsando OpenCV " << CV_VERSION << endl;
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 

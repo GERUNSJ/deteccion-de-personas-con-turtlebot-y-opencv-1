@@ -77,7 +77,7 @@ void Extractor::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
  
 
-static void onMouse( int event, int x, int y, int flags, void* i_aux_res)
+void onMouse( int event, int x, int y, int flags, void* i_aux_res)
 {
 
 	struct_resultados* aux_res = (struct_resultados*)i_aux_res;

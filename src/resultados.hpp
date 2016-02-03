@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <opencv2/core/core.hpp>
 
 // Estructura de resultados. Versión 1.0
 // Contiene información referida a una detección de persona en una imagen
@@ -27,5 +28,9 @@ struct struct_resultados
 
 // Función de escritura
 std::ostream& operator<<( std::ostream& os, const struct_resultados& res );
+
+
+// Función para convertir cv::Rect a struct_resultados
+void rect_a_struct_resultados(const cv::Rect, struct_resultados& res);
 
 #endif // DP_RESULTADOS_H
