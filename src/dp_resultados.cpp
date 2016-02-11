@@ -7,15 +7,17 @@
 #include <cstdio>
 #include "resultados.hpp"
 
+static void ayuda();
+
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-	string i_reales;	// Ruta y nombre del archivo de los datos reales, con extensión
-	string i_estimados;	// Ruta y nombre del archivo de los datos estimados, con extensión
+	string i_reales;	// Ruta y nombre del archivo de los datos reales, sin extensión
+	string i_estimados;	// Ruta y nombre del archivo de los datos estimados, sin extensión
 	string i_resultados;// Ruta y nombre del archivo de los resultados generados, con extensión
 
-	// TODO ayuda
+	ayuda();
 
 	if( argc != 4 )
 		// TODO error
@@ -31,11 +33,23 @@ int main(int argc, char* argv[])
 	FILE* arch_reales;
 	FILE* arch_estimados;
 	fstream stream_resultados;
+	fstream stream_info;
 
-	arch_reales = fopen(i_reales.c_str(), "r");
-	arch_estimados = fopen(i_estimados.c_str(), "r");
+	string auxstring;
+	auxstring = i_reales + ".csv";
+	arch_reales = fopen(auxstring.c_str(), "r");
+	auxstring = i_estimados + ".csv";
+	arch_estimados = fopen(auxstring.c_str(), "r");
+	auxstring = i_estimados + ".txt";
+	stream_info.open(auxstring.c_str(), ios::in);
 	stream_resultados.open(i_resultados.c_str(), ios::out);
+
 	// TODO: Chequear si se abrieron bien
+	if( !arch_reales || !arch_estimados || !stream_info || !stream_resultados )
+	{
+		cout << "\nNo se pudo abrir algún archivo.\n";
+		return -1;
+	}
 
 	//-----
 	vector<struct_resultados> reales;
@@ -88,11 +102,11 @@ int main(int argc, char* argv[])
 
 
 	cout << "\nSe han leído " << reales.size() << " líneas de datos reales\n"
-			"y se han le[ido " << estimados.size() << " líneas de datos estimados.\n";
+			"y se han leído " << estimados.size() << " líneas de datos estimados.\n";
 
 
 	// Asignación de reales y estimados a cada frame
-	cout << "\nmax = " << max ;
+	//cout << "\nmax = " << max ;
 	frames.resize(max);	// Reservamos espacio
 	for( unsigned int i = 0 ; i < frames.size() ; i++ )
 	{
@@ -115,6 +129,13 @@ int main(int argc, char* argv[])
 //		cout << "\nframe: " << i << "\treales: " << frames.at(i).reales.size() <<
 //				"\testimados: " << frames.at(i).estimados.size();
 //	}
+
+	// Calculamos el tiempo promedio
+	double tiempo_promedio = 0;
+	for( auto e : estimados )
+		tiempo_promedio += e.tiempo;
+	tiempo_promedio /= estimados.size();
+
 
 	bool coincidencia = false;
 	// Suponemos que todas las imagenes son del mismo set..
@@ -154,7 +175,7 @@ int main(int argc, char* argv[])
 //		cout << "\nFalsos negativos = " << f.falsos_negativos;
 	}
 
-	cout << "\n\n\n\n-----------\n";
+	cout << "\n-----------\n";
 
 	unsigned int vpos = 0;
 	unsigned int fpos = 0;
@@ -167,11 +188,31 @@ int main(int argc, char* argv[])
 		fneg += f.falsos_negativos;
 	}
 
+	// SALIDA
+	size_t pos_barra = i_reales.find_last_of("/\\"); // Encuentra la última barra
+	string nombre_reales = i_reales.substr(pos_barra +1);
+	pos_barra = i_estimados.find_last_of("/\\"); // Encuentra la última barra
+	string nombre_estimados = i_estimados.substr(pos_barra + 1);
+
+	stream_resultados << "Estimados" << "\t" << nombre_estimados << endl;
+	stream_resultados << "Reales" << "\t" << nombre_reales << endl;
+	stream_resultados << endl;
 	stream_resultados << "Imagenes analizadas" << "\t" << max << endl;
 	stream_resultados << "Total de detecciones" << "\t" << vpos + fpos << endl;
 	stream_resultados << "Verdaderos positivos" << "\t" << vpos << endl;
 	stream_resultados << "Falsos positivos" << "\t" << fpos << endl;
 	stream_resultados << "Falsos negativos" << "\t" << fneg << endl;
+	stream_resultados << endl;
+	stream_resultados << "Tiempo promedio de detección" << "\t" << tiempo_promedio << " ms" << endl;
+
+	stream_resultados << "\n\n--------------------\n\n";
+
+	// Copiamos la información del detector usado
+	while( !stream_info.eof() )
+	{
+		getline(stream_info, auxstring);
+		stream_resultados << auxstring << "\n";
+	}
 
 	stream_resultados.close();
 
@@ -181,10 +222,29 @@ int main(int argc, char* argv[])
 	cout << "\nVerdaderos positivos = " << vpos;
 	cout << "\nFalsos positivos = " << fpos;
 	cout << "\nFalsos negativos = " << fneg;
+	cout << "\nTiempo promedio de detección" << "\t" << tiempo_promedio << " ms" << endl;
 
 	// TODO: Qué hacemos con las personas incompletas? Podrían descartarse las imágenes
 
 	stream_resultados.close();
 	cout << "\n\nEl programa ha terminado.\n\n";
 	return 0;
+}
+
+
+// ----------
+
+
+// AYUDA
+static void ayuda()
+{
+	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
+	cout
+			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado - 2016\n"
+					"Uso: dp_resultados /ruta/a/datos_reales (sin extensión)\n"
+					"                   /ruta/a/datos_estimados (sin extensión)\n"
+					"                   /ruta/a/archivo_de_resultados.txt (con extensión)\n";
+	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
+
+	return;
 }
