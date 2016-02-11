@@ -38,8 +38,8 @@ bool operator==(const struct_resultados& real, const struct_resultados& est)
 {
 	float distancia = sqrt( powf((real.centro_x-est.centro_x),2) + powf((real.centro_y-est.centro_y),2) );
 	if( distancia < P_RADIO*real.ancho )
-		if( est.ancho < P_ANCHO*real.ancho )
-			if( est.alto < P_ALTO*real.alto )
+		if( abs(est.ancho - real.ancho)/real.ancho  <  P_ANCHO )	// est.ancho < P_ANCHO*real.ancho
+			if( abs(est.alto - real.alto)/real.alto  <  P_ALTO )
 				return true;
 	return false;
 }

@@ -12,8 +12,10 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	string i_reales;	// Ruta y nombre del archivo de los datos reales, con extensión
-	string i_estimados;	// Ruta y nombre del archivo de los daots estimados, con extensión
+	string i_estimados;	// Ruta y nombre del archivo de los datos estimados, con extensión
 	string i_resultados;// Ruta y nombre del archivo de los resultados generados, con extensión
+
+	// TODO ayuda
 
 	if( argc != 4 )
 		// TODO error
