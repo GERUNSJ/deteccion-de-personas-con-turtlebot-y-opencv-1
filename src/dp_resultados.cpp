@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
 //				"\testimados: " << frames.at(i).estimados.size();
 //	}
 
-
+	bool coincidencia = false;
 	// Suponemos que todas las imagenes son del mismo set..
 	// Evaluación: en cada frame comparamos:
 	for( auto& f : frames )	// Range-based for. Atento al & para pasar por referencia.
@@ -126,28 +126,32 @@ int main(int argc, char* argv[])
 			// A cada persona real
 			for( auto& r: f.reales)
 			{
+				coincidencia = false;
 				// la comparamos con todas las detecciones
 				for( auto& e: f.estimados )
 				{
 					// y si es correcto
 					if( r == e )
 					{
+						coincidencia = true;
 						//cout << "\n iguales";
-						f.verdaderos_positivos += 1;
+						f.verdaderos_positivos ++;
 						// eliminamos el elemento del vector
 						f.estimados.pop_back();
 					}
 				}
+				// Si no coincidió con niguna detección, es un falso negativo
+				if( coincidencia == false )
+					f.falsos_negativos ++;
 				// una vez comparado con todos, eliminamos el elemento del vector
-				f.reales.pop_back();
+				f.reales.pop_back(); // Esto es innecesario..
 			}
 		}
 		// y al final:
 		f.falsos_positivos = f.estimados.size();
-		f.falsos_negativos = f.reales.size();
-		cout << "\nVerdaderos positivos = " << f.verdaderos_positivos;
-		cout << "\nFalsos positivos = " << f.falsos_positivos;
-		cout << "\nFalsos negativos = " << f.falsos_negativos;
+//		cout << "\nVerdaderos positivos = " << f.verdaderos_positivos;
+//		cout << "\nFalsos positivos = " << f.falsos_positivos;
+//		cout << "\nFalsos negativos = " << f.falsos_negativos;
 	}
 
 	cout << "\n\n\n\n-----------\n";
@@ -163,13 +167,24 @@ int main(int argc, char* argv[])
 		fneg += f.falsos_negativos;
 	}
 
+	stream_resultados << "Imagenes analizadas" << "\t" << max << endl;
+	stream_resultados << "Total de detecciones" << "\t" << vpos + fpos << endl;
+	stream_resultados << "Verdaderos positivos" << "\t" << vpos << endl;
+	stream_resultados << "Falsos positivos" << "\t" << fpos << endl;
+	stream_resultados << "Falsos negativos" << "\t" << fneg << endl;
+
+	stream_resultados.close();
+
+	//stream_resultados
+	cout << "\nImagenes analizadas: " << max;
+	cout << "\nTotal de detecciones: " << vpos + fpos;
 	cout << "\nVerdaderos positivos = " << vpos;
 	cout << "\nFalsos positivos = " << fpos;
 	cout << "\nFalsos negativos = " << fneg;
 
-	// TODO: Qué hacemos con las personas incompletas?
+	// TODO: Qué hacemos con las personas incompletas? Podrían descartarse las imágenes
 
 	stream_resultados.close();
-	cout << "\nEl programa ha terminado.\n\n";
+	cout << "\n\nEl programa ha terminado.\n\n";
 	return 0;
 }
