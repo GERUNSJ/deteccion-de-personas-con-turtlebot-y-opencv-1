@@ -6,37 +6,34 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 {
 	this->nombre = "DetectorHOG";
 	unsigned int n = argumentos_nombre.size();
-	if( n != cantidad_de_argumentos )
-	{
-		//error
-	}
+//	if( n != cantidad_de_argumentos )
+//	{
+//		//error
+//	}
 
-	unsigned int j = 0;
 	for( unsigned int i = 0 ; i < n ; i++ )
 	{
 		if( argumentos_nombre.at(i) == "pasoEscala")
 		{
 			this->pasoEscala = stod(argumentos_valor.at(i));
-			j++;
 		}
 
-		if( argumentos_nombre.at(i) == "umbralAgrupamiento")
+		else if( argumentos_nombre.at(i) == "umbralAgrupamiento")
 		{
 			this->umbralAgrupamiento = stoi(argumentos_valor.at(i),nullptr,10);
-			j++;
 		}
 
-		if( argumentos_nombre.at(i) == "setSVMDetector")
+		else if( argumentos_nombre.at(i) == "setSVMDetector")
 		{
 			this->setSVMDetector = argumentos_valor.at(i);
-			j++;
+		}
+		else
+		{
+			cout << "\nNo se reconoció el parámetro " << argumentos_nombre.at(i) << " pasado como argumento." << endl;
 		}
 
 	}
-	if( j != n ) // No se cargaron todos los parámetros
-	{
-		// Error? Podrían tener valores por defecto. O comprobar solo algunos.
-	}
+
 
 //    CV_WRAP HOGDescriptor() : winSize(64,128), blockSize(16,16), blockStride(8,8),
 //        cellSize(8,8), nbins(9), derivAperture(1), winSigma(-1),
@@ -44,6 +41,8 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 //        nlevels(HOGDescriptor::DEFAULT_NLEVELS)
 //    {}
 
+
+	// Declaración de parámetros antes de crear el detector
 	Size winSize;	// Depende del modelo entrenado
 	if(setSVMDetector == "getDefaultPeopleDetector")
 		winSize = Size(64,128);
@@ -56,6 +55,7 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 		winSize = Size(64,128);
 	}
 
+	// Parámetros que no se pueden modificar
 	//Size winSize=Size(64, 128);	// Depende del modelo entrenado
 	Size blockSize = Size(16,16);	// Solo 16*16 soportado
 	Size blockStride = Size(8,8);	// Múltiplo de cellSize
@@ -68,9 +68,11 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 	bool gammaCorrection = true;
 	int nlevels = HOGDescriptor::DEFAULT_NLEVELS;
 
+	// Se crea el detector de opencv
 	hog = HOGDescriptor(winSize, blockSize, blockStride, cellSize, nbins, derivAperture, winSigma,
 			histogramNormType, L2HysThreshold, gammaCorrection, nlevels);
 
+	// Configuramos el modelo del clasificador
 	// El detector getDefaultPeopleDetector viene hardcodeado en hog.cpp de opencv. También está
 	// getDaimlerPeopleDetector, pero para ventanas de 48*96
 	if(setSVMDetector == "getDefaultPeopleDetector")
@@ -91,21 +93,34 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 //                                  double finalThreshold=2.0, bool useMeanshiftGrouping = false) const;
 
 
+	// Se cargan los nombres y valores (strings) de los parámetros del detector.
+	// Estos son los que luegos se escriben en el archivo de información txt
 	parametros_nombre.push_back("pasoEscala");
 	parametros_valor.push_back(to_string(pasoEscala));
 	parametros_nombre.push_back("umbralAgrupamiento");
 	parametros_valor.push_back(to_string(umbralAgrupamiento));
 	parametros_nombre.push_back("setSVMDetector");
 	parametros_valor.push_back(setSVMDetector);
+	// Podríamos guardar todos...
 
 }
+
+
+
+
 
 DetectorHOG::~DetectorHOG()
 {
 }
 
+
+
+
+
 void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 {
+	// Más o menos lo mismo del ejemplo samples/cpp/peopledetect.cpp
+
 //	 C++: void gpu::HOGDescriptor::detectMultiScale(const GpuMat& img, vector<Rect>& found_locations, double hit_threshold=0, Size win_stride=Size(), Size padding=Size(), double scale0=1.05, int group_threshold=2)
 //	    Parameters:
 //
@@ -122,6 +137,7 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 	//                                  Size padding=Size(), double scale=1.05,
 	//                                  double finalThreshold=2.0, bool useMeanshiftGrouping = false) const;
 
+	// Verificamos entrada de 8 bits
 	if( i_img.depth() != CV_8U && i_img.depth() != CV_8S )
 	{
 		cout << "\nHOGDescriptor solo soporta 8 bits\n";
@@ -131,11 +147,13 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
 
 
-	Mat con_detecciones = i_img.clone();
-	struct_resultados aux_res;
+	Mat con_detecciones = i_img.clone(); // Para mostrar en caso de mostrar_detecciones = true
+	struct_resultados aux_res;	// Acá llenamos los datos de cada detección para guardarlo en i_res
 
     vector<Rect> found, found_filtered;
-    double t = (double)getTickCount();
+    double t = (double)getTickCount();	// Medimos el tiempo
+
+
     // run the detector with default parameters. to get a higher hit-rate
     // (and more false alarms, respectively), decrease the hitThreshold and
     // groupThreshold (set groupThreshold to 0 to turn off the grouping completely).
@@ -148,7 +166,7 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 //    for( auto i: found)
 //    	cout << "\nFound = " << i << endl;
 
-    // Esta parte..qué hace?
+    // Esta parte..qué hace? [DUDA]
     size_t i, j;
     for( i = 0; i < found.size(); i++ )
     {
@@ -163,8 +181,12 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 //    for( auto i: found_filtered)
 //    	cout << "\nFound_filtered = " << i << endl;
 
+
+
+    // Para cada detección
     for( i = 0; i < found_filtered.size(); i++ )
     {
+    	// Achicamos los rectangulos detectados
         Rect r = found_filtered[i];
         // the HOG detector returns slightly larger rectangles than the real objects.
         // so we slightly shrink the rectangles to get a nicer output.
@@ -175,51 +197,35 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
 
 
-        // A struct_resultados
+        // Completamos y guardamos los datos de cada detección
         rect_a_struct_resultados(r,aux_res);
-        aux_res.tiempo = t*1000./cv::getTickFrequency();
+        aux_res.tiempo = t*1000./cv::getTickFrequency(); // Tiempo en ms
 
 		if( i_img.depth() == CV_8U || i_img.depth() == CV_8S ) // Actualmente hog solo soporta 8...
 			aux_res.prof = 8;
 		else
 			aux_res.prof = 16;
 
-        i_res.push_back(aux_res);
 
+        i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
 
 
         // Show
         if( mostrar_detecciones )
         {
+        	// Creamos un rectángulo en una copia de la imagen original. tl es top-left, br es bottom-right
             rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 3);
         }
     }
+
+
+    // Show
     if( mostrar_detecciones )
     {
     	namedWindow("Detecciones", CV_WINDOW_KEEPRATIO | CV_WINDOW_NORMAL);
     	imshow("Detecciones", con_detecciones);
     	waitKey(0);
     }
-//
-//	for( int i = 0 ; i < 3 ; i++) // Simulamos 3 detecciones.
-//	{
-//		struct_resultados aux;
-//
-//		aux.aba_der_x = 1;
-//		aux.aba_der_y = 2;
-//		aux.aba_izq_x = 3;
-//		aux.aba_izq_y = 4;
-//		aux.arr_der_x = 5;
-//		aux.arr_der_y = 6;
-//		aux.arr_izq_x = 7;
-//		aux.arr_izq_y = 8;
-//		aux.comp = 1;
-//		//aux.img = 4;
-//		aux.prof = 8;
-//		//aux.set = 1;
-//		aux.tiempo = 222;
-//		i_res.push_back(aux);
-//	}
 
 	return;
 }

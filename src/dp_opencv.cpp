@@ -159,7 +159,7 @@ int main(int argc, char* argv[])
 //		cout << "\n" << n;
 //	}
 
-	// Archivo csv
+	// Abrimos archivos de resultados
 	fstream stream_archivo_csv;
 	fstream stream_archivo_txt;
 	string aux = i_nombre_archivos_resultados + ".csv"; // Append con +

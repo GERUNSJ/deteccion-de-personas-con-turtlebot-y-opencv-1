@@ -114,7 +114,13 @@ void onMouse( int event, int x, int y, int flags, void* i_aux_res)
 			punto2.y = y;
 			primerclick = false;
 			//cout << "\nSegundo click. x = " << x << " y = " << y;
-			// OpenCV typically assumes that the top and left boundary of the rectangle are inclusive, while the right and bottom boundaries are not
+
+			// OpenCV typically assumes that the top and left boundary of the rectangle are inclusive,
+			// while the right and bottom boundaries are not. (de la documentación de Rect_ en core)
+			// Sea un punto pt, pertenece al rect si
+			// x <= pt.x < x+width
+			// y <= pt.y < y+height
+			// Por lo tanto tenemos que sumar 1
 			roi.width = abs(punto1.x - punto2.x) +1 ;
 			roi.height = abs(punto1.y - punto2.y) +1 ;
 			roi.x = min(punto1.x , punto2.x);	// Arriba izquierda
