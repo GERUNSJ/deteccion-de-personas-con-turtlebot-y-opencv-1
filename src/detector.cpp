@@ -7,7 +7,6 @@ Detector::~Detector()
 }
 
 
-
 ostream& operator<<( ostream& os, Detector& detector )
 {
 	string aux;

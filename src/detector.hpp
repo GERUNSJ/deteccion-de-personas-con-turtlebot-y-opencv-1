@@ -7,16 +7,32 @@
 #include <vector>
 #include <string>
 
+// Clase padre detector. Las subclases deberán implementar los métodos declarados como virtuales.
+// No hay un constructor genérico por las dudas...Aunque tal vez debería haber uno.
 class Detector
 {
 public:
-	unsigned int cantidad_de_argumentos;
+	// Pensado para verificar si la cantidad de argumentos pasados está bien. Mejor usar valores
+	// por defecto en caso de que no se pase alguno.
+	unsigned int cantidad_de_argumentos; // No está en uso.
+
+	// Nombre del detector. Se imprime en los resultados. Asignar en constructor.
 	std::string nombre;
+
+	// Vectores de string para luego imprimir los parámetros. Los valores deben ser asignados al
+	// crear el constructor. Los pares nombre-valor están asociados por índice.
 	std::vector<std::string> parametros_nombre;
 	std::vector<std::string> parametros_valor;
 
+	//
 	virtual void detectar(const cv::Mat& i_img, std::vector<struct_resultados>& i_res) = 0;
+
+	// Sobrecarga de << para imprimir los resultados.
+	// Se declara como friend para que pueda acceder a los miembros privados. [DUDA] Por qué
+	// no hacerla función pública? De cualquier manera no hay miembros privados.
 	friend std::ostream& operator<<(std::ostream& os, Detector& detector );
+
+	// Destructor
 	virtual ~Detector() = 0;
 private:
 };

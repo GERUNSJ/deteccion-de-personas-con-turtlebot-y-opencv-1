@@ -183,8 +183,9 @@ int main(int argc, char* argv[])
 
 	//----------------------------------------------------------------------------------------------
 	// PROCESAMIENTO
-	// Se crea un detector. Acá hay que listar todos los detectores que se vayan desarrollando.
+	// Se crea un detector genérico.
 	Detector* detector;
+	// Específico. Acá hay que listar todos los detectores que se vayan desarrollando.
 	if( i_detector == "DetectorDummy")
 		detector = new DetectorDummy(i_parametros_nombres, i_parametros_valores);
 	else if( i_detector == "Extractor")

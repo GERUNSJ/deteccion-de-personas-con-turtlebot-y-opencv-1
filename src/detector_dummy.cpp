@@ -1,10 +1,14 @@
 #include "detector_dummy.hpp"
+
+
 using namespace std;
 using namespace cv;
 
+
+// Este detector no hace nada. Para mejor ejemplo, mirar el detector HOG.
 DetectorDummy::DetectorDummy(vector<string>argumentos_nombre, vector<string>argumentos_valor)
 {
-	this->nombre = "DetectorDummy";
+	this->nombre = "DetectorDummy";	// Se imprime en la información del detector.
 	unsigned int n = argumentos_nombre.size();
 	if( n != cantidad_de_argumentos )
 	{
@@ -20,22 +24,27 @@ DetectorDummy::DetectorDummy(vector<string>argumentos_nombre, vector<string>argu
 			j++;
 		}
 
-		if( argumentos_nombre.at(i) == "parametro2")
+		else if( argumentos_nombre.at(i) == "parametro2")
 		{
 			this->parametro2 = stoi(argumentos_valor.at(i),nullptr,10);
 			j++;
 		}
 
-		if( argumentos_nombre.at(i) == "parametro3")
+		else if( argumentos_nombre.at(i) == "parametro3")
 		{
 			this->parametro3 = (argumentos_valor.at(i)).at(0);
 			j++;
 		}
 
-		if( argumentos_nombre.at(i) == "parametro4")
+		else if( argumentos_nombre.at(i) == "parametro4")
 		{
 			this->parametro4 = argumentos_valor.at(i);
 			j++;
+		}
+
+		else
+		{
+			cout << "\nNo se reconoció el parámetro " << argumentos_nombre.at(i) << " pasado como argumento." << endl;
 		}
 
 	}
@@ -43,6 +52,9 @@ DetectorDummy::DetectorDummy(vector<string>argumentos_nombre, vector<string>argu
 	{
 		// Error? Podrían tener valores por defecto. O comprobar solo algunos.
 	}
+
+	// Se cargan los nombres (string) de los parámetros del detector.
+	// Estos son los que luegos se escriben en el archivo de información txt
 	parametros_nombre.push_back("parametro1");
 	parametros_valor.push_back(to_string(parametro1));
 	parametros_nombre.push_back("parametro2");
@@ -55,9 +67,14 @@ DetectorDummy::DetectorDummy(vector<string>argumentos_nombre, vector<string>argu
 	parametros_valor.push_back(parametro4);
 }
 
+
+
+// Destructor bobo
 DetectorDummy::~DetectorDummy()
 {
 }
+
+
 
 void DetectorDummy::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 {
