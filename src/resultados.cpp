@@ -12,12 +12,20 @@ std::ostream& operator<<( std::ostream& os, const struct_resultados& res )
 
 void rect_a_struct_resultados(const cv::Rect rect, struct_resultados& res)
 {
-    res.aba_der_x = rect.x + rect.width;
-    res.aba_der_y = rect.y + rect.height;
+	// OpenCV typically assumes that the top and left boundary of the rectangle are inclusive,
+	// while the right and bottom boundaries are not. (de la documentación de Rect_ en core)
+	// Sea un punto pt, pertenece al rect si
+	// x <= pt.x < x+width
+	// y <= pt.y < y+height
+	// Por lo tanto nosotros tenemos que restar 1
+    res.aba_der_x = rect.x + rect.width - 1;
+    res.aba_der_y = rect.y + rect.height - 1;
     res.aba_izq_x = rect.x;
-    res.aba_izq_y = rect.y + rect.height;
-    res.arr_der_x = rect.x + rect.width;
+    res.aba_izq_y = rect.y + rect.height - 1;
+    res.arr_der_x = rect.x + rect.width - 1;
     res.arr_der_y = rect.y;
     res.arr_izq_x = rect.x;
     res.arr_izq_y = rect.y;
 }
+// TODO: Hacer una struct_resultados_a_rect
+
