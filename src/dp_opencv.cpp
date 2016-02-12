@@ -7,6 +7,7 @@
 
 //----------------------------------------------------------------------------------------------
 // Includes
+// Hay que agregar cada detector.
 #include <iostream>
 #include <string>
 #include <vector>
@@ -19,6 +20,7 @@
 #include "detector_hog.hpp"
 #include "extractor.hpp"
 
+
 // Para readDirectory
 #if defined(WIN32) || defined(_WIN32)
 #include <io.h>
@@ -26,13 +28,14 @@
 #include <dirent.h>
 #endif
 
+
 using namespace std;
 using namespace cv;
 
 
 //----------------------------------------------------------------------------------------------
 // Defines y globales
-bool mostrar_detecciones = true;
+bool mostrar_detecciones = true;	// A usar para mostrar cada imagen con lo que se detectó
 
 
 //----------------------------------------------------------------------------------------------
@@ -43,6 +46,7 @@ static void readDirectory(const string& directoryName,
 		vector<string>& filenames, bool addDirectoryName = true);
 
 //----------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
 // MAIN
 
 int main(int argc, char* argv[])
@@ -50,6 +54,7 @@ int main(int argc, char* argv[])
 
 	// Ayuda de uso
 	ayuda();
+
 	string i_carpeta_imagenes, i_nombre_archivos_resultados;
 	string archivo_imagen = "";
 	string i_detector;
@@ -73,9 +78,16 @@ int main(int argc, char* argv[])
 //	}
 //	}
 
-	if( argc < 4 || (argc % 2) == 0 ) // programa,carpeta,resultados,mostrar_detecciones,detector,[numero par de parametros]
+	//----------------------------------------------------------------------------------------------
+	// INTERPRETACIÓN / PARSEO DE ARGUMENTOS
+	// 0 - programa (dp_opencv)
+	// 1 - carpeta con las imagenes
+	// 2 - resultados
+	// 3 - bool mostrar_detecciones
+	// 4 - clase de detector
+	// 5 en adelante - pares parámetro-valor
+	if( argc < 5 || (argc % 2) == 0 ) // programa,carpeta,resultados,mostrar_detecciones,detector,[numero par de parametros]
 		return -1; //Error
-
 
 	i_carpeta_imagenes = argv[1];
 	i_nombre_archivos_resultados = argv[2];
@@ -87,38 +99,65 @@ int main(int argc, char* argv[])
 	//mostrar_detecciones = (bool)(int)argv[3];
 	i_detector = argv[4];
 
-	for( int i = 5  ; i < argc ; i++)
+	if(argc > 5 )
 	{
-		i_parametros_nombres.push_back(argv[i]);
-		i++;
-		i_parametros_valores.push_back(argv[i]);
+		for( int i = 5  ; i < argc ; i++)
+		{
+			i_parametros_nombres.push_back(argv[i]);
+			i++;
+			i_parametros_valores.push_back(argv[i]);
+		}
+	}
+
+	// Eliminamos la última barra de la carpeta de imágenes, si se ingresó así
+	 // if( *(i_nombre_archivos_resultados.end()) == "\\" || *(i_nombre_archivos_resultados.end()) == "/" )
+	char ultimochar = i_carpeta_imagenes[i_carpeta_imagenes.size()-1];
+	if( ultimochar == '\\' || ultimochar == '/' )	//
+		i_carpeta_imagenes.pop_back();	// Elimina la última barra
+
+//	if( i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == '\\'
+//			|| i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == '/')
+//		  i_carpeta_imagenes.pop_back();
+
+	// El nombre de carpeta se interpreta como nombre del set
+	size_t pos_barra = i_carpeta_imagenes.find_last_of("/\\"); // Encuentra la última barra
+	nombre_set = i_carpeta_imagenes.substr(pos_barra + 1);	// Copia desde la última barra en adelante
+
+
+
+
+
+	//----------------------------------------------------------------------------------------------
+	// LECTURA DE NOMBRES
+	// Se lee la carpeta con las imagenes
+	readDirectory(i_carpeta_imagenes,nombres_imagenes);
+
+	// Sólo ruta a imágenes. Borramos el resto.
+	for( auto n : nombres_imagenes )
+	{
+		string ext = n.substr( n.find_last_of(".") + 1 );	// Extensión del archivo
+		if( ext == "png" || ext == "bmp" || ext == "jpg" || ext == "jpeg"  || ext == "tiff" )
+			continue;
+
+		// Eliminamos si no es imagen
+		//cout << "\n" << n;
+		nombres_imagenes.pop_back();
 	}
 
 
-	 // if( *(i_nombre_archivos_resultados.end()) == "\\" || *(i_nombre_archivos_resultados.end()) == "/" )
-	char ultimochar = i_carpeta_imagenes[i_carpeta_imagenes.size()-1];
-	if( ultimochar == '\\' || ultimochar == '/' )
-		i_carpeta_imagenes.pop_back();
-
-//	if( i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == "\\"
-//			|| i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == "/")
-//		  i_carpeta_imagenes.pop_back();
-
-	  size_t pos_barra = i_carpeta_imagenes.find_last_of("/\\"); // Encuentra la última barra
-	  nombre_set = i_carpeta_imagenes.substr(pos_barra + 1);
-
-
-
-	// Se lee la carpeta con las imagenes, o la imagen según corresponda
-	readDirectory(i_carpeta_imagenes,nombres_imagenes);
-
-	//	nombres_imagenes.erase(nombres_imagenes.begin()); // Borra el .
-	//	nombres_imagenes.erase(nombres_imagenes.begin()); // Borra el ..
-//	    for( auto i: nombres_imagenes) //c++11
-//	    	cout << i << '\n';
-
 	if( nombres_imagenes.size() == 0 )
+	{
+		cout << "\nNo se pudo cargar ninguna imagen. El programa ha terminado.\n";
 		return -1;
+	}
+
+	// Ordenamos. Se asigna a cada imagen el número en que se cargó y no necesariamente el número
+	// de archivo. Sin embargo deberían ser iguales.
+	sort( nombres_imagenes.begin() , nombres_imagenes.end() );
+//	for( auto n : nombres_imagenes )
+//	{
+//		cout << "\n" << n;
+//	}
 
 	// Archivo csv
 	fstream stream_archivo_csv;
@@ -139,7 +178,12 @@ int main(int argc, char* argv[])
 	}
 
 
-	// Se crea un detector
+
+
+
+	//----------------------------------------------------------------------------------------------
+	// PROCESAMIENTO
+	// Se crea un detector. Acá hay que listar todos los detectores que se vayan desarrollando.
 	Detector* detector;
 	if( i_detector == "DetectorDummy")
 		detector = new DetectorDummy(i_parametros_nombres, i_parametros_valores);
@@ -148,19 +192,22 @@ int main(int argc, char* argv[])
 	else if( i_detector == "DetectorHOG")
 		detector = new DetectorHOG(i_parametros_nombres, i_parametros_valores);
 	else
+	{
+		cout << "\nDetector no reconocido.\n";
 		return -1;
+	}
 
 	// Se escriben los parámetros del detector
 	stream_archivo_txt << *detector;
 
-	// Estructura de resultados. Todas las detecciones correspondientes a una imagen.
-	vector<struct_resultados> res (nombres_imagenes.size()); // resultados y forma de imprimirlos deberia estar en un objeto
+	// Vector de estructura de resultados. Contiene los datos de todas las detecciones correspondientes a UNA imagen.
+	vector<struct_resultados> res (nombres_imagenes.size());
 
 	// Se procesan las imagenes
 	Mat img;
-	string string_numero;
+	string string_numero; // Suponemos que se cargaron en orden numérico correcto... poco robusto.
 	//int numero;
-	for( size_t i = 0 ; i < nombres_imagenes.size() ; i++ ) //convertir a for normal
+	for( size_t i = 0 ; i < nombres_imagenes.size() ; i++ )
 	{
 		res.clear();
 		// Se abre la imagen
@@ -177,17 +224,19 @@ int main(int argc, char* argv[])
 		detector->detectar(img, res);
 
 
-		// Escribir resultados
-		//stream_archivo_csv << nombres_imagenes.at(i) << "\n";
+		// Asignación de número y set. Guardamos resultados
 		for( auto auto_res: res )
 		{
 			//auto_res.img = numero;
 			auto_res.img = i+1; // Suponiendo que se cargaron en orden..
 			auto_res.set = nombre_set;
+
 			stream_archivo_csv << auto_res; // Escribe la línea de resultados y salto de línea.
 		}
 	}
 
+
+	//----------------------------------------------------------------------------------------------
 	// Se cierran los archivos
 	stream_archivo_csv.close();
 	stream_archivo_txt.close();
@@ -211,8 +260,10 @@ static void ayuda()
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 	cout
 			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
-					"Uso: dp_opencv <carpeta_con_imagenes | imagen >  </dir/al/archivo_de_resultados> (sin extensión)"
-					"<(1 | 0>(mostrar_detecciones) <clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
+					"Uso: dp_opencv <carpeta_con_imagenes>\n"
+					"               </dir/al/archivo_de_resultados> (sin extensión)\n"
+					"               <(1 | 0>(mostrar_detecciones)\n"
+					"               <clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
 				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
 				"\nDetectores válidos: "
 				"\n* DetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
@@ -228,7 +279,7 @@ static void ayuda()
 
 
 
-// Lectura de archivos (tomada del svm)
+// Lectura de archivos (tomada del ejemplo de svm y añadido el filtro de . y ..)
 static void readDirectory(const string& directoryName,
 		vector<string>& filenames, bool addDirectoryName)
 {
@@ -259,7 +310,7 @@ static void readDirectory(const string& directoryName,
 		while ((dent = readdir(dir)) != NULL)
 		{
 			string sss = string(dent->d_name);
-			if ( sss[0] != '.' )
+			if ( sss[0] != '.' )	// Eliminamos el . y el ..
 			{
 				if (addDirectoryName)
 						filenames.push_back(directoryName + "/" + sss);
