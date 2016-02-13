@@ -201,8 +201,8 @@ int main(int argc, char* argv[])
 	pos_barra = i_estimados.find_last_of("/\\"); // Encuentra la última barra
 	string nombre_estimados = i_estimados.substr(pos_barra + 1);
 
-	stream_resultados << "Estimados" << "\t" << nombre_estimados << endl;
-	stream_resultados << "Reales" << "\t" << nombre_reales << endl;
+	stream_resultados << "Archivo estimados" << "\t" << nombre_estimados << endl;
+	stream_resultados << "Archivo reales" << "\t" << nombre_reales << endl;
 	stream_resultados << endl;
 	stream_resultados << "Imagenes analizadas" << "\t" << max << endl;
 	stream_resultados << "Total de detecciones" << "\t" << vpos + fpos << endl;
