@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	string i_estimados;	// Ruta y nombre del archivo de los datos estimados, sin extensión
 	string i_resultados;// Ruta y nombre del archivo de los resultados generados, con extensión
 
-	ayuda();
+	ayuda( );
 
 	if( argc != 4 )
 		// TODO error
