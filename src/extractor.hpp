@@ -21,7 +21,7 @@ private:
 };
 
 
-static void onMouse( int event, int x, int y, int flags, void* i_aux_res);
+//static void onMouse( int event, int x, int y, int flags, void* i_aux_res);
 
 #endif //DP_DETECTOR_EXTRACTOR_H
  
