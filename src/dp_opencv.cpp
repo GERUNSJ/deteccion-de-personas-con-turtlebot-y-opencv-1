@@ -19,6 +19,7 @@
 #include "detector_dummy.hpp"
 #include "detector_hog.hpp"
 #include "extractor.hpp"
+#include "detector_1.hpp"
 
 
 // Para readDirectory
@@ -192,6 +193,8 @@ int main(int argc, char* argv[])
 		detector = new Extractor();
 	else if( i_detector == "DetectorHOG")
 		detector = new DetectorHOG(i_parametros_nombres, i_parametros_valores);
+	else if( i_detector == "Detector1")
+		detector = new Detector1(i_parametros_nombres, i_parametros_valores);
 	else
 	{
 		cout << "\nDetector no reconocido.\n";
