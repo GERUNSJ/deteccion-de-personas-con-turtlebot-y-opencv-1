@@ -20,6 +20,42 @@
 extern bool mostrar_detecciones;
 
 
+
+class Predeteccion
+{
+public:
+	// auxiliar
+	cv::Mat img;
+
+	// Rect que contiene las coordenadas de interes, referidas a la imagen completa.
+	cv::Rect rect;
+
+	// Máscara para aplicar a la imagen completa.
+	cv::Mat mascara;
+
+	// Mat que contiene la predetección, como porción de la imagen original.
+	cv::Mat img_original;
+
+	// Mat que contiene la predetección, como porción de la imagen normalizada.
+	cv::Mat img_normalizada;
+
+	// Mat que contiene la predetección, como porción de la imagen procesada.
+	cv::Mat img_procesada;
+
+	void limpiar(void)
+	{
+		img.release();
+		mascara.release();
+		img_original.release();
+		img_normalizada.release();
+		img_procesada.release();
+	}
+
+private:
+};
+
+
+
 class Detector1 : public Detector
 {
 public:
@@ -42,6 +78,14 @@ public:
 private:
 
 };
+
+
+
+
+
+
+
+
 
 
 #endif //DP_DETECTOR_1_H

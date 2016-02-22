@@ -2,6 +2,11 @@
 using namespace std;
 using namespace cv;
 
+// ---
+#define A_BORRAR_PRINCIPIO	1	// Cuantos segmentos se borran, desde el principio del vector
+#define A_BORRAR_FINAL		2	// Cuantos segmentos se borran, desde el final
+
+
 Detector1::Detector1(vector<string>argumentos_nombre, vector<string>argumentos_valor)
 {
 	this->nombre = "Detector1";
@@ -21,14 +26,6 @@ Detector1::~Detector1()
 
 
 
-
-class Predeteccion
-{
-public:
-	Mat img;
-
-private:
-};
 
 
 
@@ -98,6 +95,13 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
     vector<vector<int>> pares;
     encontrar_valles(histograma_suavizado , pares);
 
+    // Borramos algunos que no aportan
+    for( unsigned int i = 0 ; i < A_BORRAR_PRINCIPIO ; i++ )
+    	pares.erase(pares.begin());
+
+    for( unsigned int i = 0; i < A_BORRAR_FINAL ; i++ )
+    	pares.erase(pares.end());
+
     //
     Predeteccion auxp;
     Mat lut = Mat::zeros(1,256,CV_8U);
@@ -120,14 +124,152 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 //    	cout << lut;
 
     	LUT(normalizada, lut, auxmat);
-    	imshow("ventana",auxmat);
-    	waitKey(0);
+    	//imshow("ventana",auxmat);
+    	//waitKey(0);
     	// TODO roi
-    	auxp.img = auxmat;
+    	auxp.img = auxmat.clone();
 
     	predetecciones.push_back(auxp);
     }
 
+    for( unsigned int i = 0; i < predetecciones.size() ; i++)
+    {
+    	//imshow("ventana",predetecciones.at(i).img);
+    	//waitKey(0);
+    	// Preprocesamos predetecciones: Apertura y cierre
+    	// Apertura: Erosión y dilatación
+    	erode(predetecciones.at(i).img , predetecciones.at(i).img, Mat::ones(5,5,CV_8UC1), Point(-1,-1), 1);
+    	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(5,5,CV_8UC1), Point(-1,-1), 1);
+    	erode(predetecciones.at(i).img , predetecciones.at(i).img, Mat::ones(10,8,CV_8UC1), Point(-1,-1), 1);
+    	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(10,8,CV_8UC1), Point(-1,-1), 1);
+
+    	// Cierre: Dilatación y erosión
+//    	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(5,5,CV_8UC1), Point(-1,-1), 1);
+//    	erode(predetecciones.at(i).img , predetecciones.at(i).img, Mat::ones(5,5,CV_8UC1), Point(-1,-1), 1);
+//    	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(5,5,CV_8UC1), Point(-1,-1), 1);
+
+
+    	//    	erode(predetecciones.at(i).img , predetecciones.at(i).img, Mat::ones(20,10,CV_8UC1), Point(-1,-1), 1);
+    	//    	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(20,10,CV_8UC1), Point(-1,-1), 1);
+    	//imshow("ventana",predetecciones.at(i).img);
+    	//waitKey(0);
+
+    	// Encontramos contornos
+
+    }
+
+    // Encontramos contornos - esto se podría fusionar con el for anterior
+    vector<vector<Point> > contours, contours_filtrados;
+    vector<Vec4i> hierarchy, hierarchy_filtrados;
+    Rect auxrect;
+    Mat copia;
+    float r_aspecto = 0;
+    unsigned int cant_predetecciones1 = predetecciones.size();
+    unsigned int ii = 0;
+    namedWindow("contornos" , 0);
+
+    // Para todas las predetecciones
+    for( unsigned int i = 0; i < cant_predetecciones1; i++ )
+    {
+    	// Encontramos contornos. Siempre en la primera predetección, ya que las vamos eliminando.
+    	// ...The function modifies the image while extracting the contours...así que procesamos en una copia
+    	auxmat = predetecciones.at(0).img.clone();
+    	findContours( auxmat, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE );
+
+    	// Si no hay contornos, borramos y seguimos con la siguiente predetección.
+    	if( contours.size() == 0 )
+    	{
+    		predetecciones.erase(predetecciones.begin());
+    		continue;
+    	}
+
+    	// Si hay contornos, los procesamos.
+    	// Para cada contorno:
+		for(unsigned int j = 0 ; j < hierarchy.size() ; j++)
+		{
+			// // Eliminamos los que tienen agujeros. Si tiene padres, es un agujero
+			if( hierarchy[j][3] >= 0 ) // [3] son los padres
+			{
+//				hierarchy.pop_back();
+//				contours.erase(contours.begin()+j);
+				// No es necesario borrar, simplemente seguimos.
+				//cout << "\nTiene padres";
+				//cvtColor(normalizada, copia, CV_GRAY2BGR);
+				//normalizada.convertTo(copia, CV_8UC3);
+				//drawContours(copia, contours, j, Scalar(0,0,255), 2,8);
+				//imshow("contornos", copia);
+				//waitKey(0);
+				continue;
+			}
+			// Encontramos el rectangulo que envuelve
+			else
+			// TODO: approxPolyDP , tal vez agiliza boundingRect
+			{
+				auxrect = boundingRect(contours.at(j));
+				r_aspecto = (float)auxrect.width / auxrect.height;
+				//cout << "\nr_aspecto = " << r_aspecto;
+				if( r_aspecto > 0.6)
+				{
+//					hierarchy.pop_back();
+//					contours.erase(contours.begin()+j);
+					// No es necesario borrar, simplemente seguimos.
+					continue;
+				}
+				else
+				{
+					// Lo guardamos como predetección nueva, al final del vector de predetecciones.
+					// No se analizará en este for debido al límite fijo usado.
+
+					auxp.rect = auxrect;
+
+					// Creamos la máscara
+					auxmat = Mat::zeros(i_img.size(),CV_8UC1); // Por las dudas.
+					drawContours(auxmat, contours, j, Scalar(255), CV_FILLED);
+					imshow("contornos", auxmat); waitKey(0);
+					auxp.mascara = auxmat.clone();
+
+					// Aplicamos la máscara y guardamos las imágenes.
+					i_img.copyTo(auxp.img_original,auxmat); // auxmat es la máscara
+					predetecciones.at(0).img.copyTo(auxp.img_procesada, auxmat);
+					normalizada.copyTo(auxp.img_normalizada,auxmat);
+
+//					// Extraemos el rectángulo de interés
+//					auxp.img_normalizada = predetecciones.at(0).img(auxrect);
+
+//
+//					//auxp.img = normalizada(auxrect);
+//
+//					copia = predetecciones.at(0).img.clone();
+//					drawContours(copia,contours,j,Scalar(255),CV_FILLED);
+//					predetecciones.at(0).img.copyTo(copia,copia);
+//					auxp.img = copia;
+
+
+					predetecciones.push_back(auxp);
+					auxp.limpiar();
+
+					j++;
+				}
+			}
+		}
+		// Borramos la predetección procesada
+		predetecciones.erase(predetecciones.begin()); //
+    }
+
+    cout << "\nQuedaron " << predetecciones.size() << " predetecciones" << endl;
+
+    namedWindow("original",CV_WINDOW_KEEPRATIO);
+    namedWindow("normalizada",CV_WINDOW_KEEPRATIO);
+    namedWindow("procesada",CV_WINDOW_KEEPRATIO);
+    for( unsigned int i = 0; i < predetecciones.size() ; i++)
+    {
+    	imshow("ventana",predetecciones.at(i).img);
+    	imshow("normalizada",predetecciones.at(i).img_normalizada);
+    	imshow("procesada",predetecciones.at(i).img_procesada);
+    	imshow("original",predetecciones.at(i).img_original);
+    	waitKey(0);
+    }
+    waitKey(0);
 
 	return;
 }
