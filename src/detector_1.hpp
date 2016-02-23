@@ -42,13 +42,34 @@ public:
 	// Mat que contiene la predetección, como porción de la imagen procesada.
 	cv::Mat img_procesada;
 
+	// Mat que contiene la predetección, como rectángulo dentro de la imagen original.
+	cv::Mat rect_original;
+
+	// Mat que contiene la predetección, como rectángulo dentro de la imagen normalizada.
+	cv::Mat rect_normalizada;
+
+	// Mat que contiene la predetección, como rectángulo dentro de la imagen procesada.
+	cv::Mat rect_procesada;
+
 	void limpiar(void)
 	{
-		img.release();
-		mascara.release();
-		img_original.release();
-		img_normalizada.release();
-		img_procesada.release();
+//		img.release();
+//		mascara.release();
+//		img_original.release();
+//		img_normalizada.release();
+//		img_procesada.release();
+
+//		img = cv::Mat();
+//		mascara = cv::Mat();
+//		img_normalizada = cv::Mat();
+//		img_original = cv::Mat();
+//		img_procesada = cv::Mat();
+
+		//img = cv::Mat::zeros( 1, 1, CV_8UC1);
+		mascara = cv::Mat::zeros( 1, 1, CV_8UC1);
+		img_original = cv::Mat::zeros( 1, 1, CV_8UC1);
+		img_procesada = cv::Mat::zeros( 1, 1, CV_8UC1);
+		img_normalizada = cv::Mat::zeros( 1, 1, CV_8UC1);
 	}
 
 private:

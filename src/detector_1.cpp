@@ -233,6 +233,11 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 					predetecciones.at(0).img.copyTo(auxp.img_procesada, auxmat);
 					normalizada.copyTo(auxp.img_normalizada,auxmat);
 
+					// Extraemos los rectángulos sin máscara
+					auxp.rect_original = i_img(auxp.rect);
+					auxp.rect_procesada = predetecciones.at(0).img(auxp.rect);
+					auxp.rect_normalizada = normalizada(auxp.rect);
+
 //					// Extraemos el rectángulo de interés
 //					auxp.img_normalizada = predetecciones.at(0).img(auxrect);
 
@@ -247,6 +252,7 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
 					predetecciones.push_back(auxp);
 					auxp.limpiar();
+					//auxp = Predeteccion(); // Constructores vacíos?  // TODO
 
 					j++;
 				}
@@ -268,8 +274,13 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
     	imshow("procesada",predetecciones.at(i).img_procesada);
     	imshow("original",predetecciones.at(i).img_original);
     	waitKey(0);
+
+    	imshow("normalizada", predetecciones.at(i).rect_normalizada);
+    	imshow("procesada",predetecciones.at(i).rect_procesada);
+    	imshow("original",predetecciones.at(i).rect_original);
+    	waitKey(0);
     }
-    waitKey(0);
+    //waitKey(0);
 
 	return;
 }
