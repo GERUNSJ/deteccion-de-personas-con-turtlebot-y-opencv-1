@@ -5,6 +5,9 @@ using namespace cv;
 // ---
 #define A_BORRAR_PRINCIPIO	1	// Cuantos segmentos se borran, desde el principio del vector
 #define A_BORRAR_FINAL		2	// Cuantos segmentos se borran, desde el final
+#define DISTANCIA_FOCAL		570
+#define ALTURA_MAXIMA_M		2.2
+#define ALTURA_MINIMA_M		0.8
 
 
 Detector1::Detector1(vector<string>argumentos_nombre, vector<string>argumentos_valor)
@@ -53,6 +56,10 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 	 * 			2. Eliminar si tiene agujeros
 	 * 		4. Devolver resultados
 	 */
+
+
+	cout << "---- La imagen en detector1 es del tipo " << type2str(i_img.type()) << endl;
+
 
 	vector<Predeteccion> predetecciones;
 
@@ -215,6 +222,10 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 					// No es necesario borrar, simplemente seguimos.
 					continue;
 				}
+				else if( !es_altura_creible(auxrect, i_img) )
+				{
+					continue;
+				}
 				else
 				{
 					// Lo guardamos como predetección nueva, al final del vector de predetecciones.
@@ -287,3 +298,60 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
 
  
+
+
+
+float a_tamanio_real(const cv::Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto)
+{
+	return (float) i_longitud_px * i_distancia_al_objeto / DISTANCIA_FOCAL;
+}
+
+
+
+
+
+
+
+bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16)
+{
+//	namedWindow("asdasd",0);
+//	imshow("asdasd", i_img_profundidad16);
+//	waitKey(0);
+	Mat auxmat = i_img_profundidad16.clone();
+	//auxmat.convertTo(auxmat,CV_16UC3);
+
+
+	int altura_px = i_rect.height;
+	int centro_x = i_rect.x + ((i_rect.width-1)/2);
+	int centro_y = i_rect.y + ((i_rect.height-1)*1/3); // 1/3 para centro de torso
+	ushort valor;
+
+
+//	auxmat.at<ushort>(centro_y,centro_x) = 65535;
+//	imshow("asdasd", auxmat);
+//		waitKey(0);
+//
+//		rectangle(auxmat, i_rect, Scalar(65535));
+//		imshow("asdasd", auxmat);
+//		waitKey(0);
+
+
+	valor = i_img_profundidad16.at<ushort>(centro_y,centro_x);
+	cout << "\nvalor " << valor;
+
+	float distancia_al_objeto = (float) valor / 1000; // Viene en mm, la pasamos a metros.
+
+	float altura_m = a_tamanio_real(i_img_profundidad16, altura_px, distancia_al_objeto);
+	cout << "\naltura_m " << altura_m << "  altura_px " << altura_px << "  dist " << distancia_al_objeto <<
+			"   val " << (float) i_img_profundidad16.at<uchar>(centro_y,centro_x) << " -centro_x" << centro_x <<
+			"  -centro_y" << centro_y;
+
+	if( altura_m < ALTURA_MINIMA_M || altura_m > ALTURA_MAXIMA_M )
+	{
+		cout << "\nALTURA MALA: " << altura_m;
+
+		return false;
+	}
+	else
+		return true;
+}
