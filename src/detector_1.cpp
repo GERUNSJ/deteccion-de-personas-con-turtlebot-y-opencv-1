@@ -8,6 +8,7 @@ using namespace cv;
 #define DISTANCIA_FOCAL		570
 #define ALTURA_MAXIMA_M		2.2
 #define ALTURA_MINIMA_M		0.8
+#define UMBRAL_STD 			20
 
 
 Detector1::Detector1(vector<string>argumentos_nombre, vector<string>argumentos_valor)
@@ -226,6 +227,10 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 				{
 					continue;
 				}
+				else if( !es_gradiente_disperso(contours.at(j) , normalizada) )
+				{
+					continue;
+				}
 				else
 				{
 					// Lo guardamos como predetección nueva, al final del vector de predetecciones.
@@ -354,4 +359,72 @@ bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundida
 	}
 	else
 		return true;
+}
+
+
+
+
+
+
+bool es_gradiente_disperso(std::vector<cv::Point>& contorno, const cv::Mat & i_img_profundidad8)
+{
+	vector<vector<Point>> v_contorno;
+	v_contorno.push_back(contorno);
+	Mat mascara = Mat::zeros(i_img_profundidad8.size(), CV_8UC1);
+	drawContours(mascara, v_contorno, 0, Scalar(255), CV_FILLED);
+	namedWindow("gd",0);
+	imshow("gd",mascara);
+	//waitKey(0);
+
+	Rect auxrect = boundingRect(contorno);
+	//mascara = mascara(auxrect);
+//	imshow("gd",mascara);
+//	waitKey(0);
+	Mat roi;
+	i_img_profundidad8.copyTo(roi,mascara);
+//	imshow("gd",roi);
+//	waitKey(0);
+	roi = roi(auxrect);
+
+//	namedWindow("gd",0);
+//	imshow("gd",roi);
+//	waitKey(0);
+
+	// Calculamos la matriz de gradiente
+	Mat gradiente;
+	Mat kernel = (Mat_<int>(1,3) << -1, 0 , 1 );
+	filter2D(roi, gradiente, CV_32F , kernel);
+
+	Mat gradiente_positivo;
+	gradiente.copyTo(gradiente_positivo, gradiente >= 0); // compare to
+
+	Mat gradiente_negativo;
+	gradiente.copyTo(gradiente_negativo, gradiente < 0);
+
+	//cout << "\nGRADIENTE: " << gradiente << endl;
+
+//	imshow("gd",gradiente_positivo);
+//	waitKey(0);
+//	imshow("gd",gradiente_negativo);
+//	waitKey(0);
+
+
+	// Calculamos la desviación del gradiente
+	Scalar media_pos, media_neg;
+	Scalar std_pos, std_neg;
+	meanStdDev(gradiente_positivo, media_pos, std_pos);
+	meanStdDev(gradiente_negativo, media_neg, std_neg);
+
+	cout << "\nmedia_pos " << media_pos[0] << "  std_pos " << std_pos[0];
+	cout << "\nmedia_neg " << media_neg[0] << "  std_neg " << std_neg[0];
+
+	float std_promedio = ( std_pos[0] + std_neg[0] ) / 2;
+
+	cout << "\nstd_promedio = " << std_promedio;
+
+	// TODO; esto debería ir como argumento
+	if( std_promedio >= UMBRAL_STD )
+		return true;
+	else
+		return false;
 }
