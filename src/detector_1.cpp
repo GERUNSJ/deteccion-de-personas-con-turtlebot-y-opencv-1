@@ -342,18 +342,19 @@ bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundida
 
 
 	valor = i_img_profundidad16.at<ushort>(centro_y,centro_x);
-	cout << "\nvalor " << valor;
+	//cout << "\nvalor " << valor;
 
 	float distancia_al_objeto = (float) valor / 1000; // Viene en mm, la pasamos a metros.
 
 	float altura_m = a_tamanio_real(i_img_profundidad16, altura_px, distancia_al_objeto);
-	cout << "\naltura_m " << altura_m << "  altura_px " << altura_px << "  dist " << distancia_al_objeto <<
+	/*cout << "\naltura_m " << altura_m << "  altura_px " << altura_px << "  dist " << distancia_al_objeto <<
 			"   val " << (float) i_img_profundidad16.at<uchar>(centro_y,centro_x) << " -centro_x" << centro_x <<
-			"  -centro_y" << centro_y;
+			"  -centro_y" << centro_y;*/
+	cout << "\naltura_m " << altura_m;
 
 	if( altura_m < ALTURA_MINIMA_M || altura_m > ALTURA_MAXIMA_M )
 	{
-		cout << "\nALTURA MALA: " << altura_m;
+		//cout << "\nALTURA MALA: " << altura_m;
 
 		return false;
 	}
@@ -408,12 +409,14 @@ bool es_gradiente_disperso(std::vector<cv::Point>& contorno, const cv::Mat & i_i
 //	imshow("gd",gradiente_negativo);
 //	waitKey(0);
 
+	Mat roimask = mascara(auxrect);
+
 
 	// Calculamos la desviación del gradiente
 	Scalar media_pos, media_neg;
 	Scalar std_pos, std_neg;
-	meanStdDev(gradiente_positivo, media_pos, std_pos);
-	meanStdDev(gradiente_negativo, media_neg, std_neg);
+	meanStdDev(gradiente_positivo, media_pos, std_pos, roimask);
+	meanStdDev(gradiente_negativo, media_neg, std_neg, roimask);
 
 	cout << "\nmedia_pos " << media_pos[0] << "  std_pos " << std_pos[0];
 	cout << "\nmedia_neg " << media_neg[0] << "  std_neg " << std_neg[0];
@@ -421,6 +424,7 @@ bool es_gradiente_disperso(std::vector<cv::Point>& contorno, const cv::Mat & i_i
 	float std_promedio = ( std_pos[0] + std_neg[0] ) / 2;
 
 	cout << "\nstd_promedio = " << std_promedio;
+	waitKey(0);
 
 	// TODO; esto debería ir como argumento
 	if( std_promedio >= UMBRAL_STD )
