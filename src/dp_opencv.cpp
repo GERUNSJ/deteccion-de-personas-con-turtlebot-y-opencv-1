@@ -56,11 +56,11 @@ int main(int argc, char* argv[])
 	// Ayuda de uso
 	ayuda();
 
-	string i_carpeta_imagenes, i_nombre_archivos_resultados;
+	string i_carpeta_imagenes_color, i_carpeta_imagenes_profundidad, i_nombre_archivos_resultados;
 	string archivo_imagen = "";
 	string i_detector;
 	string nombre_set;
-	vector<string> nombres_imagenes;
+	vector<string> nombres_imagenes_color, nombres_imagenes_profundidad;
 	vector<string> i_parametros_nombres , i_parametros_valores;
 
 //	switch (argc)
@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 //	case 3: // Una carpeta, guarda resultados en el archivo del segundo argumento. Añade.
 //	{
 //		//
-//		i_carpeta_imagenes = argv[1];
+//		i_carpeta_imagenes_color = argv[1];
 //		i_nombre_archivos_resultados = argv[2];
 //		break;
 //	}
@@ -82,27 +82,29 @@ int main(int argc, char* argv[])
 	//----------------------------------------------------------------------------------------------
 	// INTERPRETACIÓN / PARSEO DE ARGUMENTOS
 	// 0 - programa (dp_opencv)
-	// 1 - carpeta con las imagenes
-	// 2 - resultados
-	// 3 - bool mostrar_detecciones
-	// 4 - clase de detector
-	// 5 en adelante - pares parámetro-valor
-	if( argc < 5 || (argc % 2) == 0 ) // programa,carpeta,resultados,mostrar_detecciones,detector,[numero par de parametros]
+	// 1 - carpeta con las imagenes rgb
+	// 2 - carpeta con las imagnes depth o un 0 en caso de que no hayan
+	// 3 - resultados
+	// 4 - bool mostrar_detecciones
+	// 5 - clase de detector
+	// 6 en adelante - pares parámetro-valor
+	if( argc < 6 || !(argc % 2) == 0 ) // programa,carpetargb,carpetaprofundidad,resultados,mostrar_detecciones,detector,[numero par de parametros]
 		return -1; //Error
 
-	i_carpeta_imagenes = argv[1];
-	i_nombre_archivos_resultados = argv[2];
+	i_carpeta_imagenes_color = argv[1];
+	i_carpeta_imagenes_profundidad = argv[2];
+	i_nombre_archivos_resultados = argv[3];
 
-	if(!strcmp(argv[3], "0") || !strcmp(argv[3], "false"))
+	if(!strcmp(argv[4], "0") || !strcmp(argv[4], "false"))
 		mostrar_detecciones = false;
 	else
 		mostrar_detecciones = true;
 	//mostrar_detecciones = (bool)(int)argv[3];
-	i_detector = argv[4];
+	i_detector = argv[5];
 
-	if(argc > 5 )
+	if(argc > 6 )
 	{
-		for( int i = 5  ; i < argc ; i++)
+		for( int i = 6  ; i < argc ; i++)
 		{
 			i_parametros_nombres.push_back(argv[i]);
 			i++;
@@ -112,17 +114,23 @@ int main(int argc, char* argv[])
 
 	// Eliminamos la última barra de la carpeta de imágenes, si se ingresó así
 	 // if( *(i_nombre_archivos_resultados.end()) == "\\" || *(i_nombre_archivos_resultados.end()) == "/" )
-	char ultimochar = i_carpeta_imagenes[i_carpeta_imagenes.size()-1];
+	char ultimochar = i_carpeta_imagenes_color[i_carpeta_imagenes_color.size()-1];
 	if( ultimochar == '\\' || ultimochar == '/' )	//
-		i_carpeta_imagenes.pop_back();	// Elimina la última barra
+		i_carpeta_imagenes_color.pop_back();	// Elimina la última barra
 
-//	if( i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == '\\'
-//			|| i_carpeta_imagenes[i_carpeta_imagenes.size()-1] == '/')
-//		  i_carpeta_imagenes.pop_back();
+	// Eliminamos la última barra de la carpeta de imágenes, si se ingresó así
+	 // if( *(i_nombre_archivos_resultados.end()) == "\\" || *(i_nombre_archivos_resultados.end()) == "/" )
+	ultimochar = i_carpeta_imagenes_profundidad[i_carpeta_imagenes_profundidad.size()-1];
+	if( ultimochar == '\\' || ultimochar == '/' )	//
+		i_carpeta_imagenes_profundidad.pop_back();	// Elimina la última barra
+
+//	if( i_carpeta_imagenes_color[i_carpeta_imagenes_color.size()-1] == '\\'
+//			|| i_carpeta_imagenes_color[i_carpeta_imagenes_color.size()-1] == '/')
+//		  i_carpeta_imagenes_color.pop_back();
 
 	// El nombre de carpeta se interpreta como nombre del set
-	size_t pos_barra = i_carpeta_imagenes.find_last_of("/\\"); // Encuentra la última barra
-	nombre_set = i_carpeta_imagenes.substr(pos_barra + 1);	// Copia desde la última barra en adelante
+	size_t pos_barra = i_carpeta_imagenes_color.find_last_of("/\\"); // Encuentra la última barra
+	nombre_set = i_carpeta_imagenes_color.substr(pos_barra + 1);	// Copia desde la última barra en adelante
 
 
 
@@ -131,10 +139,10 @@ int main(int argc, char* argv[])
 	//----------------------------------------------------------------------------------------------
 	// LECTURA DE NOMBRES
 	// Se lee la carpeta con las imagenes
-	readDirectory(i_carpeta_imagenes,nombres_imagenes);
+	readDirectory(i_carpeta_imagenes_color,nombres_imagenes_color);
 
 	// Sólo ruta a imágenes. Borramos el resto.
-	for( auto n : nombres_imagenes )
+	for( auto n : nombres_imagenes_color )
 	{
 		string ext = n.substr( n.find_last_of(".") + 1 );	// Extensión del archivo
 		if( ext == "png" || ext == "bmp" || ext == "jpg" || ext == "jpeg"  || ext == "tiff" )
@@ -142,20 +150,47 @@ int main(int argc, char* argv[])
 
 		// Eliminamos si no es imagen
 		//cout << "\n" << n;
-		nombres_imagenes.pop_back();
+		nombres_imagenes_color.pop_back();
 	}
 
 
-	if( nombres_imagenes.size() == 0 )
+	readDirectory(i_carpeta_imagenes_profundidad,nombres_imagenes_profundidad);
+
+	// Sólo ruta a imágenes. Borramos el resto.
+	for( auto n : nombres_imagenes_profundidad )
+	{
+		string ext = n.substr( n.find_last_of(".") + 1 );	// Extensión del archivo
+		if( ext == "png" || ext == "bmp" || ext == "jpg" || ext == "jpeg"  || ext == "tiff" )
+			continue;
+
+		// Eliminamos si no es imagen
+		//cout << "\n" << n;
+		nombres_imagenes_profundidad.pop_back();
+	}
+
+
+	if( nombres_imagenes_color.size() == 0 && nombres_imagenes_profundidad.size() == 0 )
 	{
 		cout << "\nNo se pudo cargar ninguna imagen. El programa ha terminado.\n";
 		return -1;
 	}
 
+	if( nombres_imagenes_profundidad.size() == 0 )
+	{
+		cout << "\nNo se cargó ninguna imagen de profundidad. \n";
+	}
+
+	if( nombres_imagenes_profundidad.size() != 0 && nombres_imagenes_profundidad.size() != nombres_imagenes_color.size() )
+	{
+		cout << "\nEl número de imagenes rgb es distinto al número de imagenes de profundidad. El programa ha terminado. \n";
+		return -1;
+	}
+
 	// Ordenamos. Se asigna a cada imagen el número en que se cargó y no necesariamente el número
 	// de archivo. Sin embargo deberían ser iguales.
-	sort( nombres_imagenes.begin() , nombres_imagenes.end() );
-//	for( auto n : nombres_imagenes )
+	sort( nombres_imagenes_color.begin() , nombres_imagenes_color.end() );
+	sort( nombres_imagenes_profundidad.begin() , nombres_imagenes_profundidad.end() );
+//	for( auto n : nombres_imagenes_color )
 //	{
 //		cout << "\n" << n;
 //	}
@@ -205,27 +240,31 @@ int main(int argc, char* argv[])
 	stream_archivo_txt << *detector;
 
 	// Vector de estructura de resultados. Contiene los datos de todas las detecciones correspondientes a UNA imagen.
-	vector<struct_resultados> res (nombres_imagenes.size());
+	vector<struct_resultados> res (nombres_imagenes_color.size());
 
 	// Se procesan las imagenes
-	Mat img;
+	Mat img_color, img_profundidad;
 	string string_numero; // Suponemos que se cargaron en orden numérico correcto... poco robusto.
 	//int numero;
-	for( size_t i = 0 ; i < nombres_imagenes.size() ; i++ )
+	for( size_t i = 0 ; i < nombres_imagenes_color.size() ; i++ )
 	{
 		res.clear();
 		// Se abre la imagen
-		img = imread( nombres_imagenes.at(i) , IMREAD_UNCHANGED ); // 8bit, color or not
+		img_color = imread( nombres_imagenes_color.at(i) , IMREAD_UNCHANGED ); // 8bit, color or not
+		if( nombres_imagenes_profundidad.size() != 0 )
+			img_profundidad = imread( nombres_imagenes_profundidad.at(i) , IMREAD_GRAYSCALE );
 		//set = ?
-//		string_numero = nombres_imagenes.at(i);
+//		string_numero = nombres_imagenes_color.at(i);
 //		cout << "\nstring_numero = " << string_numero << " .\n";
 //		string_numero = string_numero.substr(0,2);
 //		cout << "\nstring_numero = " << string_numero << " .\n";
 //		numero = stoi(string_numero);
 
 		// Procesamiento
-		cout << "\nProcesando imagen " << i+1 << " de " << nombres_imagenes.size();
-		detector->detectar(img, res);
+		cout << "\nProcesando imagen " << i+1 << " de " << nombres_imagenes_color.size();
+
+		// Será responsabilidad del detector usar o no la imagen de profundidad.
+		detector->detectar(img_color, img_profundidad, res);
 
 
 		// Asignación de número y set. Guardamos resultados
@@ -264,15 +303,17 @@ static void ayuda()
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 	cout
 			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
-					"Uso: dp_opencv <carpeta_con_imagenes>\n"
-					"               </dir/al/archivo_de_resultados> (sin extensión)\n"
-					"               <(1 | 0>(mostrar_detecciones)\n"
-					"               <clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
+					"Uso: dp_opencv  <carpeta/con/imagenes/rgb>\n"
+					"                <carpeta/con/imagenes/profundidad | 0 >\n"
+					"                </dir/al/archivo_de_resultados> (sin extensión)\n"
+					"                <(1 | 0>(mostrar_detecciones)\n"
+					"                <clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
 				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
 				"\nDetectores válidos: "
 				"\n* DetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
 				"\n* Extractor"
 				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector"
+				"\n* Detector1 \n"
 					"\n\nUsando OpenCV " << CV_VERSION << endl;
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 

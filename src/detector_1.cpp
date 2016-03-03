@@ -34,7 +34,7 @@ Detector1::~Detector1()
 
 
 
-void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
+void Detector1::detectar(const Mat& i_img_color, const Mat& i_img_profundidad, vector<struct_resultados>& i_res)
 {
 	/* Pasos:
 	 * 		0. A gris
@@ -58,8 +58,10 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 	 * 		4. Devolver resultados
 	 */
 
+	if( i_img_profundidad.empty() )
+		return;
 
-	cout << "---- La imagen en detector1 es del tipo " << type2str(i_img.type()) << endl;
+	cout << "---- La imagen en detector1 es del tipo " << type2str(i_img_profundidad.type()) << endl;
 
 
 	vector<Predeteccion> predetecciones;
@@ -68,7 +70,7 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
 
 	// Convertir a gris
-	Mat gris = i_img.clone();
+	Mat gris = i_img_profundidad.clone();
 
 	// Normalización
 	Mat normalizada;
@@ -177,7 +179,7 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
     Mat copia;
     float r_aspecto = 0;
     unsigned int cant_predetecciones1 = predetecciones.size();
-    unsigned int ii = 0;
+    //unsigned int ii = 0;
     namedWindow("contornos" , 0);
 
     // Para todas las predetecciones
@@ -227,7 +229,7 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 					// No es necesario borrar, simplemente seguimos.
 					continue;
 				}
-				else if( !es_altura_creible(auxrect, i_img) )
+				else if( !es_altura_creible(auxrect, i_img_profundidad) )
 				{
 					continue;
 				}
@@ -243,18 +245,18 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 					auxp.rect = auxrect;
 
 					// Creamos la máscara
-					auxmat = Mat::zeros(i_img.size(),CV_8UC1); // Por las dudas.
+					auxmat = Mat::zeros(i_img_profundidad.size(),CV_8UC1); // Por las dudas.
 					drawContours(auxmat, contours, j, Scalar(255), CV_FILLED);
 					imshow("contornos", auxmat); waitKey(0);
 					auxp.mascara = auxmat.clone();
 
 					// Aplicamos la máscara y guardamos las imágenes.
-					i_img.copyTo(auxp.img_original,auxmat); // auxmat es la máscara
+					i_img_profundidad.copyTo(auxp.img_original,auxmat); // auxmat es la máscara
 					predetecciones.at(0).img.copyTo(auxp.img_procesada, auxmat);
 					normalizada.copyTo(auxp.img_normalizada,auxmat);
 
 					// Extraemos los rectángulos sin máscara
-					auxp.rect_original = i_img(auxp.rect);
+					auxp.rect_original = i_img_profundidad(auxp.rect);
 					auxp.rect_procesada = predetecciones.at(0).img(auxp.rect);
 					auxp.rect_normalizada = normalizada(auxp.rect);
 

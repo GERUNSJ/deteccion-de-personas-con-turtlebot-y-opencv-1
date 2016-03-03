@@ -32,9 +32,9 @@ Extractor::~Extractor()
 
 
 
-void Extractor::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
+void Extractor::detectar(const Mat& i_img_color, const Mat& i_img_profundidad, vector<struct_resultados>& i_res)
 {
-	img_orig = i_img.clone();
+	img_orig = i_img_color.clone();
 	struct_resultados aux_res;
 	// Mostrar imagen
 
@@ -73,7 +73,7 @@ void Extractor::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
 			// Completamos los datos
 			aux_res.tiempo = 0;
-			if( i_img.depth() == CV_8U || i_img.depth() == CV_8S )
+			if( i_img_color.depth() == CV_8U || i_img_color.depth() == CV_8S )
 				aux_res.prof = 8;
 			else
 				aux_res.prof = 16;

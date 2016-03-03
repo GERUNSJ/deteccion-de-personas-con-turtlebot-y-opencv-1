@@ -17,3 +17,5 @@ ostream& operator<<( ostream& os, Detector& detector )
 	}
 	return os << aux;
 }
+
+

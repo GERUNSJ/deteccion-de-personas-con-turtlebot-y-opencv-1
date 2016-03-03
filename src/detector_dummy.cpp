@@ -76,7 +76,7 @@ DetectorDummy::~DetectorDummy()
 
 
 
-void DetectorDummy::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
+void DetectorDummy::detectar(const Mat& i_img_color, const Mat& i_img_profundidad, vector<struct_resultados>& i_res)
 {
 	for( int i = 0 ; i < 3 ; i++) // Simulamos 3 detecciones.
 	{

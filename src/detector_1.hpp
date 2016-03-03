@@ -94,7 +94,7 @@ public:
 
 	~Detector1();
 
-	void detectar(const cv::Mat& i_img, std::vector<struct_resultados>& i_res) override;
+	void detectar(const cv::Mat& i_img_color, const cv::Mat& i_img_profundidad, std::vector<struct_resultados>& i_res) override;
 
 private:
 

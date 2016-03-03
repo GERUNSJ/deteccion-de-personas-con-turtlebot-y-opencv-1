@@ -117,7 +117,7 @@ DetectorHOG::~DetectorHOG()
 
 
 
-void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
+void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad, vector<struct_resultados>& i_res)
 {
 	// Más o menos lo mismo del ejemplo samples/cpp/peopledetect.cpp
 
@@ -138,7 +138,7 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 	//                                  double finalThreshold=2.0, bool useMeanshiftGrouping = false) const;
 
 	// Verificamos entrada de 8 bits
-	if( i_img.depth() != CV_8U && i_img.depth() != CV_8S )
+	if( i_img_color.depth() != CV_8U && i_img_color.depth() != CV_8S )
 	{
 		cout << "\nHOGDescriptor solo soporta 8 bits\n";
 		/// TODO: Error
@@ -147,7 +147,7 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 
 
 
-	Mat con_detecciones = i_img.clone(); // Para mostrar en caso de mostrar_detecciones = true
+	Mat con_detecciones = i_img_color.clone(); // Para mostrar en caso de mostrar_detecciones = true
 	struct_resultados aux_res;	// Acá llenamos los datos de cada detección para guardarlo en i_res
 
     vector<Rect> found, found_filtered;
@@ -159,7 +159,7 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
     // groupThreshold (set groupThreshold to 0 to turn off the grouping completely).
     // hog.detectMultiScale(img, found, 0, Size(8,8), Size(32,32), 1.05, 2);
 
-    hog.detectMultiScale(i_img, found, 0, Size(8,8), Size(), pasoEscala , umbralAgrupamiento);
+    hog.detectMultiScale(i_img_color, found, 0, Size(8,8), Size(), pasoEscala , umbralAgrupamiento);
     t = (double)getTickCount() - t;
 
     //printf("tdetection time = %gms\n", t*1000./cv::getTickFrequency());
@@ -201,7 +201,7 @@ void DetectorHOG::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
         rect_a_struct_resultados(r,aux_res);
         aux_res.tiempo = t*1000./cv::getTickFrequency(); // Tiempo en ms
 
-		if( i_img.depth() == CV_8U || i_img.depth() == CV_8S ) // Actualmente hog solo soporta 8...
+		if( i_img_color.depth() == CV_8U || i_img_color.depth() == CV_8S ) // Actualmente hog solo soporta 8...
 			aux_res.prof = 8;
 		else
 			aux_res.prof = 16;

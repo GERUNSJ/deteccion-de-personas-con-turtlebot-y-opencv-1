@@ -25,7 +25,10 @@ public:
 	std::vector<std::string> parametros_valor;
 
 	//
-	virtual void detectar(const cv::Mat& i_img, std::vector<struct_resultados>& i_res) = 0;
+	virtual void detectar(const cv::Mat& i_img_color, const cv::Mat& i_img_profundidad, std::vector<struct_resultados>& i_res) = 0;
+
+	//
+	//virtual void detectar(const cv::Mat& i_img_color, const cv::Mat& i_img_profundidad, std::vector<struct_resultados>& i_res);
 
 	// Sobrecarga de << para imprimir los resultados.
 	// Se declara como friend para que pueda acceder a los miembros privados. [DUDA] Por qué
@@ -39,6 +42,7 @@ private:
 
 
 std::ostream& operator<<( std::ostream& os, Detector& detector );
+
 
 
 #endif // DP_DETECTOR_H
