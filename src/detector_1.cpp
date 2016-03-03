@@ -83,6 +83,8 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
         //Conversión a 8 bits:
         normalizada.convertTo(normalizada,CV_8UC1,255.0/65535, -0);
     }
+    namedWindow("normalizada",0);
+    imshow("normalizada",normalizada);
 
 
 	// SEGMENTACIÓN POR HISTOGRAMA - lamentablemente en 8 bits.
@@ -95,9 +97,11 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
     histograma_suavizado = histograma.clone();
     suavizar_histograma(histograma_suavizado, 9);
     suavizar_histograma(histograma_suavizado, 5); //5
-    suavizar_histograma(histograma_suavizado, 3); //5
-    //suavizar_histograma(histograma_suavizado, 3); //3
+    suavizar_histograma(histograma_suavizado, 5); //5
+    suavizar_histograma(histograma_suavizado, 9); //3
     // TODO mostrar_histograma(histograma_suavizado, img_histograma_s,(char*)"HISTOGRAMA_SUAVIZADO");
+    Mat img_histograma_suavizado;
+    mostrar_histograma(histograma_suavizado, img_histograma_suavizado,(char*)"HISTOGRAMA_SUAVIZADO");
 
     //  Segmentación
     vector<vector<int>> pares;
@@ -146,8 +150,8 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
     	//waitKey(0);
     	// Preprocesamos predetecciones: Apertura y cierre
     	// Apertura: Erosión y dilatación
-    	erode(predetecciones.at(i).img , predetecciones.at(i).img, Mat::ones(5,5,CV_8UC1), Point(-1,-1), 1);
-    	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(5,5,CV_8UC1), Point(-1,-1), 1);
+    	erode(predetecciones.at(i).img , predetecciones.at(i).img, Mat::ones(6,6,CV_8UC1), Point(-1,-1), 1);
+    	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(6,6,CV_8UC1), Point(-1,-1), 1);
     	erode(predetecciones.at(i).img , predetecciones.at(i).img, Mat::ones(10,8,CV_8UC1), Point(-1,-1), 1);
     	dilate(predetecciones.at(i).img, predetecciones.at(i).img, Mat::ones(10,8,CV_8UC1), Point(-1,-1), 1);
 
@@ -227,10 +231,10 @@ void Detector1::detectar(const Mat& i_img,  vector<struct_resultados>& i_res)
 				{
 					continue;
 				}
-				else if( !es_gradiente_disperso(contours.at(j) , normalizada) )
-				{
-					continue;
-				}
+//				else if( !es_gradiente_disperso(contours.at(j) , normalizada) )
+//				{
+//					continue;
+//				}
 				else
 				{
 					// Lo guardamos como predetección nueva, al final del vector de predetecciones.
