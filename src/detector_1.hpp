@@ -103,14 +103,14 @@ private:
 
 
 
-float a_tamanio_real(const cv::Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto);
+//float a_tamanio_real(const cv::Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto);
 
-bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16);
+//bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16);
 
 
 
 // TODO las predetecciones podrían tener un puntero a la imagen de 16..y también su contorno.
-bool es_gradiente_disperso(std::vector<cv::Point> & contorno, const cv::Mat & i_img_profundidad);
+//bool es_gradiente_disperso(std::vector<cv::Point> & contorno, const cv::Mat & i_img_profundidad);
 
 
 #endif //DP_DETECTOR_1_H

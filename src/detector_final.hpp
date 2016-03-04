@@ -36,7 +36,9 @@ public:
 	// scaleFactor – Parameter specifying how much the image size is reduced at each image scale. > 1
 	float scaleFactor = 1.1;
 	// minNeighbors – Parameter specifying how many neighbors each candidate rectangle should have to retain it.
-	int minNeighbors = 4;
+	int minNeighbors = 5;
+	// Usar la información de profundidad para filtrar según altura estimada
+	bool usar_profundidad_altura = false;
 
 
 
@@ -49,6 +51,10 @@ public:
 private:
 
 };
+
+//bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16);
+
+//float a_tamanio_real(const cv::Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto);
 
 
 #endif //DP_DETECTOR_FINAL

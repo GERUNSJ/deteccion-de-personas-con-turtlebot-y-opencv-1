@@ -34,6 +34,139 @@ Detector1::~Detector1()
 
 
 
+
+static float a_tamanio_real(const cv::Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto)
+{
+	return (float) i_longitud_px * i_distancia_al_objeto / DISTANCIA_FOCAL;
+}
+
+
+
+
+
+
+
+static bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16)
+{
+	namedWindow("asdasd",0);
+//	imshow("asdasd", i_img_profundidad16);
+//	waitKey(0);
+	Mat auxmat = i_img_profundidad16.clone();
+	//auxmat.convertTo(auxmat,CV_16UC3);
+
+
+	int altura_px = i_rect.height;
+	int centro_x = i_rect.x + ((i_rect.width-1)/2);
+	int centro_y = i_rect.y + ((i_rect.height-1)*1/3); // 1/3 para centro de torso
+	ushort valor;
+
+
+	auxmat.at<ushort>(centro_y,centro_x) = 65535;
+	imshow("asdasd", auxmat);
+		waitKey(0);
+
+		rectangle(auxmat, i_rect, Scalar(65535));
+		imshow("asdasd", auxmat);
+		waitKey(0);
+
+
+	valor = i_img_profundidad16.at<ushort>(centro_y,centro_x);
+	//cout << "\nvalor " << valor;
+
+	float distancia_al_objeto = (float) valor / 1000; // Viene en mm, la pasamos a metros.
+
+	float altura_m = a_tamanio_real(i_img_profundidad16, altura_px, distancia_al_objeto);
+	/*cout << "\naltura_m " << altura_m << "  altura_px " << altura_px << "  dist " << distancia_al_objeto <<
+			"   val " << (float) i_img_profundidad16.at<uchar>(centro_y,centro_x) << " -centro_x" << centro_x <<
+			"  -centro_y" << centro_y;*/
+	cout << "\naltura_m " << altura_m;
+
+	if( altura_m < ALTURA_MINIMA_M || altura_m > ALTURA_MAXIMA_M )
+	{
+		//cout << "\nALTURA MALA: " << altura_m;
+
+		return false;
+	}
+	else
+		return true;
+}
+
+
+
+
+
+
+static bool es_gradiente_disperso(std::vector<cv::Point>& contorno, const cv::Mat & i_img_profundidad8)
+{
+	vector<vector<Point>> v_contorno;
+	v_contorno.push_back(contorno);
+	Mat mascara = Mat::zeros(i_img_profundidad8.size(), CV_8UC1);
+	drawContours(mascara, v_contorno, 0, Scalar(255), CV_FILLED);
+	namedWindow("gd",0);
+	imshow("gd",mascara);
+	//waitKey(0);
+
+	Rect auxrect = boundingRect(contorno);
+	//mascara = mascara(auxrect);
+//	imshow("gd",mascara);
+//	waitKey(0);
+	Mat roi;
+	i_img_profundidad8.copyTo(roi,mascara);
+//	imshow("gd",roi);
+//	waitKey(0);
+	roi = roi(auxrect);
+
+//	namedWindow("gd",0);
+//	imshow("gd",roi);
+//	waitKey(0);
+
+	// Calculamos la matriz de gradiente
+	Mat gradiente;
+	Mat kernel = (Mat_<int>(1,3) << -1, 0 , 1 );
+	filter2D(roi, gradiente, CV_32F , kernel);
+
+	Mat gradiente_positivo;
+	gradiente.copyTo(gradiente_positivo, gradiente >= 0); // compare to
+
+	Mat gradiente_negativo;
+	gradiente.copyTo(gradiente_negativo, gradiente < 0);
+
+	//cout << "\nGRADIENTE: " << gradiente << endl;
+
+//	imshow("gd",gradiente_positivo);
+//	waitKey(0);
+//	imshow("gd",gradiente_negativo);
+//	waitKey(0);
+
+	Mat roimask = mascara(auxrect);
+
+
+	// Calculamos la desviación del gradiente
+	Scalar media_pos, media_neg;
+	Scalar std_pos, std_neg;
+	meanStdDev(gradiente_positivo, media_pos, std_pos, roimask);
+	meanStdDev(gradiente_negativo, media_neg, std_neg, roimask);
+
+	cout << "\nmedia_pos " << media_pos[0] << "  std_pos " << std_pos[0];
+	cout << "\nmedia_neg " << media_neg[0] << "  std_neg " << std_neg[0];
+
+	float std_promedio = ( std_pos[0] + std_neg[0] ) / 2;
+
+	cout << "\nstd_promedio = " << std_promedio;
+	waitKey(0);
+
+	// TODO; esto debería ir como argumento
+	if( std_promedio >= UMBRAL_STD )
+		return true;
+	else
+		return false;
+}
+
+
+
+
+
+
 void Detector1::detectar(const Mat& i_img_color, const Mat& i_img_profundidad, vector<struct_resultados>& i_res)
 {
 	/* Pasos:
@@ -308,133 +441,3 @@ void Detector1::detectar(const Mat& i_img_color, const Mat& i_img_profundidad, v
 }
 
 
- 
-
-
-
-float a_tamanio_real(const cv::Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto)
-{
-	return (float) i_longitud_px * i_distancia_al_objeto / DISTANCIA_FOCAL;
-}
-
-
-
-
-
-
-
-bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16)
-{
-//	namedWindow("asdasd",0);
-//	imshow("asdasd", i_img_profundidad16);
-//	waitKey(0);
-	Mat auxmat = i_img_profundidad16.clone();
-	//auxmat.convertTo(auxmat,CV_16UC3);
-
-
-	int altura_px = i_rect.height;
-	int centro_x = i_rect.x + ((i_rect.width-1)/2);
-	int centro_y = i_rect.y + ((i_rect.height-1)*1/3); // 1/3 para centro de torso
-	ushort valor;
-
-
-//	auxmat.at<ushort>(centro_y,centro_x) = 65535;
-//	imshow("asdasd", auxmat);
-//		waitKey(0);
-//
-//		rectangle(auxmat, i_rect, Scalar(65535));
-//		imshow("asdasd", auxmat);
-//		waitKey(0);
-
-
-	valor = i_img_profundidad16.at<ushort>(centro_y,centro_x);
-	//cout << "\nvalor " << valor;
-
-	float distancia_al_objeto = (float) valor / 1000; // Viene en mm, la pasamos a metros.
-
-	float altura_m = a_tamanio_real(i_img_profundidad16, altura_px, distancia_al_objeto);
-	/*cout << "\naltura_m " << altura_m << "  altura_px " << altura_px << "  dist " << distancia_al_objeto <<
-			"   val " << (float) i_img_profundidad16.at<uchar>(centro_y,centro_x) << " -centro_x" << centro_x <<
-			"  -centro_y" << centro_y;*/
-	cout << "\naltura_m " << altura_m;
-
-	if( altura_m < ALTURA_MINIMA_M || altura_m > ALTURA_MAXIMA_M )
-	{
-		//cout << "\nALTURA MALA: " << altura_m;
-
-		return false;
-	}
-	else
-		return true;
-}
-
-
-
-
-
-
-bool es_gradiente_disperso(std::vector<cv::Point>& contorno, const cv::Mat & i_img_profundidad8)
-{
-	vector<vector<Point>> v_contorno;
-	v_contorno.push_back(contorno);
-	Mat mascara = Mat::zeros(i_img_profundidad8.size(), CV_8UC1);
-	drawContours(mascara, v_contorno, 0, Scalar(255), CV_FILLED);
-	namedWindow("gd",0);
-	imshow("gd",mascara);
-	//waitKey(0);
-
-	Rect auxrect = boundingRect(contorno);
-	//mascara = mascara(auxrect);
-//	imshow("gd",mascara);
-//	waitKey(0);
-	Mat roi;
-	i_img_profundidad8.copyTo(roi,mascara);
-//	imshow("gd",roi);
-//	waitKey(0);
-	roi = roi(auxrect);
-
-//	namedWindow("gd",0);
-//	imshow("gd",roi);
-//	waitKey(0);
-
-	// Calculamos la matriz de gradiente
-	Mat gradiente;
-	Mat kernel = (Mat_<int>(1,3) << -1, 0 , 1 );
-	filter2D(roi, gradiente, CV_32F , kernel);
-
-	Mat gradiente_positivo;
-	gradiente.copyTo(gradiente_positivo, gradiente >= 0); // compare to
-
-	Mat gradiente_negativo;
-	gradiente.copyTo(gradiente_negativo, gradiente < 0);
-
-	//cout << "\nGRADIENTE: " << gradiente << endl;
-
-//	imshow("gd",gradiente_positivo);
-//	waitKey(0);
-//	imshow("gd",gradiente_negativo);
-//	waitKey(0);
-
-	Mat roimask = mascara(auxrect);
-
-
-	// Calculamos la desviación del gradiente
-	Scalar media_pos, media_neg;
-	Scalar std_pos, std_neg;
-	meanStdDev(gradiente_positivo, media_pos, std_pos, roimask);
-	meanStdDev(gradiente_negativo, media_neg, std_neg, roimask);
-
-	cout << "\nmedia_pos " << media_pos[0] << "  std_pos " << std_pos[0];
-	cout << "\nmedia_neg " << media_neg[0] << "  std_neg " << std_neg[0];
-
-	float std_promedio = ( std_pos[0] + std_neg[0] ) / 2;
-
-	cout << "\nstd_promedio = " << std_promedio;
-	waitKey(0);
-
-	// TODO; esto debería ir como argumento
-	if( std_promedio >= UMBRAL_STD )
-		return true;
-	else
-		return false;
-}

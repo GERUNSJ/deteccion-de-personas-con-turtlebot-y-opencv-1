@@ -1,6 +1,75 @@
 #include "detector_final.hpp"
+
+
+#define DISTANCIA_FOCAL		570
+#define ALTURA_MAXIMA_M		2.5 // Está entrenado con un poco de background, entonces las personas detectadas son más altas..
+#define ALTURA_MINIMA_M		0.8
+
+
 using namespace std;
 using namespace cv;
+
+
+
+static float a_tamanio_real(const Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto)
+{
+	return (float) i_longitud_px * i_distancia_al_objeto / DISTANCIA_FOCAL;
+}
+
+
+
+
+
+static bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16)
+{
+	namedWindow("asdasd",0);
+//	imshow("asdasd", i_img_profundidad16);
+//	waitKey(0);
+	Mat auxmat = i_img_profundidad16.clone();
+	//auxmat.convertTo(auxmat,CV_16UC3);
+
+
+	int altura_px = i_rect.height;
+	int centro_x = i_rect.x + ((i_rect.width-1)/2);
+	int centro_y = i_rect.y + ((i_rect.height-1)*1/3); // 1/3 para centro de torso
+	ushort valor;
+
+
+	auxmat.at<ushort>(centro_y,centro_x) = 65535;
+	imshow("asdasd", auxmat);
+		waitKey(0);
+
+		rectangle(auxmat, i_rect, Scalar(65535));
+		imshow("asdasd", auxmat);
+		waitKey(0);
+
+
+	valor = i_img_profundidad16.at<ushort>(centro_y,centro_x);
+	//cout << "\nvalor " << valor;
+
+	float distancia_al_objeto = (float) valor / 1000; // Viene en mm, la pasamos a metros.
+
+	float altura_m = a_tamanio_real(i_img_profundidad16, altura_px, distancia_al_objeto);
+	/*cout << "\naltura_m " << altura_m << "  altura_px " << altura_px << "  dist " << distancia_al_objeto <<
+			"   val " << (float) i_img_profundidad16.at<uchar>(centro_y,centro_x) << " -centro_x" << centro_x <<
+			"  -centro_y" << centro_y;*/
+	cout << "\naltura_m " << altura_m;
+
+	if( altura_m < ALTURA_MINIMA_M || altura_m > ALTURA_MAXIMA_M )
+	{
+		//cout << "\nALTURA MALA: " << altura_m;
+
+		return false;
+	}
+	else
+		return true;
+}
+
+
+
+
+
+
 
 DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argumentos_valor)
 {
@@ -47,6 +116,14 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 		else if( argumentos_nombre.at(i) == "minNeighbors")
 		{
 			this->minNeighbors= stoi(argumentos_valor.at(i));
+		}
+
+		else if( argumentos_nombre.at(i) == "usar_profundidad_altura")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->usar_profundidad_altura = false;
+			else
+				this->usar_profundidad_altura = true;
 		}
 
 		else
@@ -122,8 +199,8 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
     cascada.detectMultiScale( smallImg,
             found,
             scaleFactor,
-            minNeighbors=3,
-            0, /*flags*/
+            minNeighbors,
+            0 /*| CASCADE_SCALE_IMAGE*/, /*flags*/
             tamanio_minimo,
             tamanio_maximo );
     t = (double)getTickCount() - t;
@@ -140,6 +217,20 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
     for( unsigned int i = 0; i < found.size(); i++ )
     {
         Rect r = found[i];
+
+        // Des-escalamos
+        r.x = floor(r.x * escala_inicial);
+        r.y = floor(r.y * escala_inicial);
+        r.height = floor(r.height * escala_inicial);
+        r.width = floor(r.width * escala_inicial);
+
+        // Filtramos según la altura real estimada
+        if( usar_profundidad_altura )
+        {
+        	if( !es_altura_creible(r, i_img_profundidad) )
+        		continue; // Termina con esta predetección y continúa el for
+        }
+
 
         // Completamos y guardamos los datos de cada detección
         rect_a_struct_resultados(r,aux_res);
@@ -175,4 +266,7 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 }
 
 
- 
+
+
+
+
