@@ -317,7 +317,9 @@ static void ayuda()
 				"\n* Extractor"
 				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector"
 				"\n* Detector1 \n"
-					"\n\nUsando OpenCV " << CV_VERSION << endl;
+				"\n* DetectorFinal direccion_a_cascada string escala_inicial float convertir_a_gris bool ecualizar_histograma bool scaleFactor float minNeighbors int usar_profundidad_altura bool"
+
+				"\n\nUsando OpenCV " << CV_VERSION << endl;
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 
 	return;

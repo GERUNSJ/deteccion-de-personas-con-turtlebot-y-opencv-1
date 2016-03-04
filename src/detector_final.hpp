@@ -29,7 +29,7 @@ public:
 	// Tamaño mínimo de las personas a buscar, en pixeles. (Columnas,filas)
 	cv::Size tamanio_minimo{10,30};
 	// Tamaño máximo de las personas a buscar, en pixeles.
-	cv::Size tamanio_maximo{600,600};
+	cv::Size tamanio_maximo{100,300};
 	// Convertir a escala de grises antes de detectar
 	bool convertir_a_gris = true;
 	// Ecualizar histograma antes de detectar, posterior a convertir_a_gris
