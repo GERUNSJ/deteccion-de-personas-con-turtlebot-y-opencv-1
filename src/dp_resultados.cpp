@@ -193,7 +193,8 @@ int main(int argc, char* argv[])
 	}
 	float miss_rate = (float)fneg/(vpos+fneg);
 	float FPPW = (float)fpos/max;
-	float cociente = 100*miss_rate/FPPW;
+	float bondad1 = 100*miss_rate*FPPW;
+	float bondad2 = 100*miss_rate*FPPW*tiempo_promedio;
 
 	// SALIDA
 	size_t pos_barra = i_reales.find_last_of("/\\"); // Encuentra la última barra
@@ -212,7 +213,8 @@ int main(int argc, char* argv[])
 	stream_resultados << endl;
 	stream_resultados << "Miss rate" << "\t" << miss_rate << endl;
 	stream_resultados << "FPPW" << "\t" << FPPW << endl;
-	stream_resultados << "100*Miss rate / FPPW" << "\t" << cociente << endl;
+	stream_resultados << "100*Miss rate * FPPW" << "\t" << bondad1 << endl;
+	stream_resultados << "100*Miss rate * FPPW * tiempo promedio" << "\t" << bondad2 << endl;
 	stream_resultados << endl;
 	stream_resultados << "Tiempo promedio de detección" << "\t" << tiempo_promedio << " ms" << endl;
 
@@ -235,7 +237,8 @@ int main(int argc, char* argv[])
 	cout << "\nFalsos negativos = " << fneg;
 	cout << "\nMiss rate = " << miss_rate;
 	cout << "\nFPPW = " << FPPW;
-	cout << "\n100*Miss rate / FPPW = " << cociente;
+	cout << "\n100*Miss rate * FPPW = " << bondad1;
+	cout << "\n100*Miss rate * FPPW * tiempo promedio = " << bondad2;
 	cout << "\nTiempo promedio de detección: " << tiempo_promedio << " ms" << endl;
 
 	// TODO: Qué hacemos con las personas incompletas? Podrían descartarse las imágenes
