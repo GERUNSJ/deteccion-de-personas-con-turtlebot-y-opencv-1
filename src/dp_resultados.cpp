@@ -195,6 +195,7 @@ int main(int argc, char* argv[])
 	float FPPW = (float)fpos/max;
 	float bondad1 = 100*miss_rate*FPPW;
 	float bondad2 = 100*miss_rate*FPPW*tiempo_promedio;
+	float bondad3 = miss_rate*tiempo_promedio; // En caso de FPPW = 0
 
 	// SALIDA
 	size_t pos_barra = i_reales.find_last_of("/\\"); // Encuentra la última barra
@@ -212,7 +213,8 @@ int main(int argc, char* argv[])
 	stream_resultados << "Falsos negativos" << "\t" << fneg << endl;
 	stream_resultados << endl;
 	stream_resultados << "Miss rate" << "\t" << miss_rate << endl;
-	stream_resultados << "FPPW" << "\t" << FPPW << endl;
+	stream_resultados << "Miss rate * tiempo promedio" << "\t" << bondad3 << endl;
+	stream_resultados << "FPPW: fneg/(vpos+fneg)" << "\t" << FPPW << endl;
 	stream_resultados << "100*Miss rate * FPPW" << "\t" << bondad1 << endl;
 	stream_resultados << "100*Miss rate * FPPW * tiempo promedio" << "\t" << bondad2 << endl;
 	stream_resultados << endl;
@@ -236,7 +238,8 @@ int main(int argc, char* argv[])
 	cout << "\nFalsos positivos = " << fpos;
 	cout << "\nFalsos negativos = " << fneg;
 	cout << "\nMiss rate = " << miss_rate;
-	cout << "\nFPPW = " << FPPW;
+	cout << "\nMiss rate * tiempo promedio = " << bondad3;
+	cout << "\nFPPW: fneg/(vpos+fneg) = " << FPPW;
 	cout << "\n100*Miss rate * FPPW = " << bondad1;
 	cout << "\n100*Miss rate * FPPW * tiempo promedio = " << bondad2;
 	cout << "\nTiempo promedio de detección: " << tiempo_promedio << " ms" << endl;
