@@ -1,0 +1,18 @@
+addpath('orig');
+
+caja = int16(imread('caja16n.png'));
+tipo = int16(imread('tipo16n.png'));
+
+h = [-1,0,1];
+gradiente = imfilter(caja,h);
+
+std_pos = std(std(double(gradiente(gradiente>=0))));
+std_neg = std(std(double(gradiente(gradiente<=0))));
+
+mean_pos = mean(mean(double(gradiente(gradiente>=0))));
+mean_neg = mean(mean(double(gradiente(gradiente<=0))));
+
+std_mean = mean([std_pos,std_neg]);
+
+
+

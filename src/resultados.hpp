@@ -3,7 +3,13 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+//#include <iostream>
 #include <opencv2/core/core.hpp>
+
+#define P_RADIO	0.5	// Proporción del ancho real a ser tolerado como máximo al comparar distancias entre centros
+#define P_ANCHO 0.2	// Crecimiento o decrecimiento relativo proporcional máximo tolerado
+#define P_ALTO	0.2	//
 
 // Estructura de resultados. Versión 1.0
 // Contiene información referida a una detección de persona en una imagen
@@ -11,6 +17,7 @@
 // entrega un rectángulo que contiene a la persona detectada.
 struct struct_resultados
 {
+public:
 	std::string set = "set_sin_nombre";		// Set al que corresponde la imagen
 	unsigned int img = 1;		// Número de imagen
 	unsigned int prof = 1;		// Profundidad [ 16 / 8 ]
@@ -24,13 +31,44 @@ struct struct_resultados
 	unsigned int aba_izq_y = 0;	//
 	unsigned int aba_der_x = 0;	// Coordenadas de la esquina inferior derecha
 	unsigned int aba_der_y = 0;	//
+
+	struct_resultados() {};
+
+	void calcular();
+
+	//friend bool operator==(const struct_resultados& a, const struct_resultados& b);
+
+	float centro_x = 0;				//
+	float centro_y = 0;
+	float ancho = 0;
+	float alto = 0;
+
+//private:
+
 };
 
-// Función de escritura
+// Escena: cada frame, con sus personas reales y estimadas.
+class Frame
+{
+public:
+	std::vector<struct_resultados> reales;
+	std::vector<struct_resultados> estimados;
+
+	unsigned int falsos_positivos;
+	unsigned int falsos_negativos;
+	unsigned int verdaderos_positivos;
+
+private:
+};
+
+// Función de escritura struct_resultados
 std::ostream& operator<<( std::ostream& os, const struct_resultados& res );
 
 
 // Función para convertir cv::Rect a struct_resultados
 void rect_a_struct_resultados(const cv::Rect, struct_resultados& res);
+
+// Comparación
+bool operator==(const struct_resultados& a, const struct_resultados& b);
 
 #endif // DP_RESULTADOS_H
