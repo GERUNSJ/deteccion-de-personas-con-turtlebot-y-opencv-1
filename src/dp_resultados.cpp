@@ -212,9 +212,9 @@ int main(int argc, char* argv[])
 	stream_resultados << "Falsos positivos" << "\t" << fpos << endl;
 	stream_resultados << "Falsos negativos" << "\t" << fneg << endl;
 	stream_resultados << endl;
-	stream_resultados << "Miss rate" << "\t" << miss_rate << endl;
+	stream_resultados << "Miss rate: fneg/(vpos+fneg)" << "\t" << miss_rate << endl;
 	stream_resultados << "Miss rate * tiempo promedio" << "\t" << bondad3 << endl;
-	stream_resultados << "FPPW: fneg/(vpos+fneg)" << "\t" << FPPW << endl;
+	stream_resultados << "FPPW" << "\t" << FPPW << endl;
 	stream_resultados << "100*Miss rate * FPPW" << "\t" << bondad1 << endl;
 	stream_resultados << "100*Miss rate * FPPW * tiempo promedio" << "\t" << bondad2 << endl;
 	stream_resultados << endl;
@@ -237,9 +237,9 @@ int main(int argc, char* argv[])
 	cout << "\nVerdaderos positivos = " << vpos;
 	cout << "\nFalsos positivos = " << fpos;
 	cout << "\nFalsos negativos = " << fneg;
-	cout << "\nMiss rate = " << miss_rate;
+	cout << "\nMiss rate: fneg/(vpos+fneg) = " << miss_rate;
 	cout << "\nMiss rate * tiempo promedio = " << bondad3;
-	cout << "\nFPPW: fneg/(vpos+fneg) = " << FPPW;
+	cout << "\nFPPW = " << FPPW;
 	cout << "\n100*Miss rate * FPPW = " << bondad1;
 	cout << "\n100*Miss rate * FPPW * tiempo promedio = " << bondad2;
 	cout << "\nTiempo promedio de detección: " << tiempo_promedio << " ms" << endl;
