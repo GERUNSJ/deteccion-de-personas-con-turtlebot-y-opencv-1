@@ -3,7 +3,7 @@
 
 #define DISTANCIA_FOCAL		570
 #define ALTURA_MAXIMA_M		2.5 // Está entrenado con un poco de background, entonces las personas detectadas son más altas..
-#define ALTURA_MINIMA_M		0.8
+#define ALTURA_MINIMA_M		1.3
 
 
 using namespace std;
@@ -176,6 +176,8 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 		/// TODO: Error
 		return;
 	}
+
+	//cout << "---- La imagen en detector1 es del tipo " << type2str(i_img_profundidad.type()) << endl;
 
 
 	Mat con_detecciones = i_img_color.clone(); // Para mostrar en caso de mostrar_detecciones = true

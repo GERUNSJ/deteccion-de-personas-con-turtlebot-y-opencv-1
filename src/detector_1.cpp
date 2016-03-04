@@ -33,8 +33,6 @@ Detector1::~Detector1()
 
 
 
-
-
 static float a_tamanio_real(const cv::Mat & i_img_profundidad16, unsigned int i_longitud_px, float i_distancia_al_objeto)
 {
 	return (float) i_longitud_px * i_distancia_al_objeto / DISTANCIA_FOCAL;

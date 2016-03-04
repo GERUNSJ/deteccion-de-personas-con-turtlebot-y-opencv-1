@@ -255,7 +255,7 @@ int main(int argc, char* argv[])
 		// Se abre la imagen
 		img_color = imread( nombres_imagenes_color.at(i) , IMREAD_UNCHANGED ); // 8bit, color or not
 		if( nombres_imagenes_profundidad.size() != 0 )
-			img_profundidad = imread( nombres_imagenes_profundidad.at(i) , IMREAD_GRAYSCALE );
+			img_profundidad = imread( nombres_imagenes_profundidad.at(i) , IMREAD_UNCHANGED ); //IMREAD_GRAYSCALE convierte a 8 bits..
 		//set = ?
 //		string_numero = nombres_imagenes_color.at(i);
 //		cout << "\nstring_numero = " << string_numero << " .\n";
