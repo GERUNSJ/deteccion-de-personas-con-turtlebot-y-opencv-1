@@ -133,7 +133,7 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 
 	}
 
-	// Cargamos la el modelo o cascada
+	// Cargamos el modelo o cascada
     if( !cascada.load( direccion_a_cascada ) )
     {
         cerr << "ERROR: Could not load classifier cascade" << endl;
@@ -142,13 +142,37 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 
 //	// Se cargan los nombres y valores (strings) de los parámetros del detector.
 //	// Estos son los que luegos se escriben en el archivo de información txt
-//	parametros_nombre.push_back("pasoEscala");
-//	parametros_valor.push_back(to_string(pasoEscala));
-//	parametros_nombre.push_back("umbralAgrupamiento");
-//	parametros_valor.push_back(to_string(umbralAgrupamiento));
-//	parametros_nombre.push_back("setSVMDetector");
-//	parametros_valor.push_back(setSVMDetector);
-//	// Podríamos guardar todos...
+	parametros_nombre.push_back("direccion_a_cascada");
+    parametros_valor.push_back(direccion_a_cascada);
+	parametros_nombre.push_back("escala_inicial");
+	parametros_valor.push_back(to_string(escala_inicial));
+	parametros_nombre.push_back("tamanio_minimo");
+	stringstream ss;
+	ss << tamanio_minimo; // Overload de << para Size, de opencv
+	parametros_valor.push_back(ss.str());
+	parametros_nombre.push_back("tamanio_maximo");
+	ss.str(""); ss.clear();
+	ss << tamanio_maximo; // Overload de << para Size, de opencv
+	parametros_valor.push_back(ss.str());
+	parametros_nombre.push_back("convertir_a_gris");
+	if( convertir_a_gris )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("ecualizar_histograma");
+	if( ecualizar_histograma )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("scaleFactor");
+	parametros_valor.push_back(to_string(scaleFactor));
+	parametros_nombre.push_back("minNeighbors");
+	parametros_valor.push_back(to_string(minNeighbors));
+	parametros_nombre.push_back("usar_profundidad_altura");
+	if( usar_profundidad_altura )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
 
 }
 
