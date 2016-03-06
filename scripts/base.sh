@@ -3,14 +3,7 @@
 PRINCIPAL=./../ejecutables/dp_opencv
 # Programa que evalúa los resultados
 RESULTADOS=./../ejecutables/dp_resultados
-# Carpeta con imagenes rgb
-CARPETA_RGB=./../../dp_databases/set1_color
-# Carpeta con imagenes de profundidad
-CARPETA_PROFUNDIDAD=./../../dp_databases/set1_depth16
-# Carpeta con los resultados
-CARPETA_RESULTADOS=./../resultados
-# Archivo con las coordenadas reales de las personas en las imágenes
-NOMBRE_REALES=reales
+
 
 #dp_opencv  <carpeta/con/imagenes/rgb>
 #                <carpeta/con/imagenes/profundidad | 0 >
