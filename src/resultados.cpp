@@ -1,5 +1,9 @@
 #include "resultados.hpp"
 
+#define P_RADIO	0.5	// Proporción del ancho real a ser tolerado como máximo al comparar distancias entre centros
+#define P_ANCHO 0.5	// Crecimiento o decrecimiento relativo proporcional máximo tolerado. Recordar que algunos detectores están entrenados con un poco de background.
+#define P_ALTO	0.5	//
+
 std::ostream& operator<<( std::ostream& os, const struct_resultados& res )
 {
 	return os << res.set << ";" << res.img << ";" << res.prof << ";" << res.comp << ";" <<

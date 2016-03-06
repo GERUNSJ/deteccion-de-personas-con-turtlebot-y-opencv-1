@@ -7,9 +7,6 @@
 //#include <iostream>
 #include <opencv2/core/core.hpp>
 
-#define P_RADIO	0.5	// Proporción del ancho real a ser tolerado como máximo al comparar distancias entre centros
-#define P_ANCHO 0.2	// Crecimiento o decrecimiento relativo proporcional máximo tolerado
-#define P_ALTO	0.2	//
 
 // Estructura de resultados. Versión 1.0
 // Contiene información referida a una detección de persona en una imagen
