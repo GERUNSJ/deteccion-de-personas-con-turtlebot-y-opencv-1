@@ -193,9 +193,9 @@ int main(int argc, char* argv[])
 	}
 	float miss_rate = (float)fneg/(vpos+fneg);
 	float FPPW = (float)fpos/max;
-	float bondad1 = 100*miss_rate*FPPW;
-	float bondad2 = 100*miss_rate*FPPW*tiempo_promedio;
-	float bondad3 = miss_rate*tiempo_promedio; // En caso de FPPW = 0
+	float metrica1 = 100*miss_rate*FPPW;
+	float metrica2 = 100*miss_rate*FPPW*tiempo_promedio;
+	float metrica3 = miss_rate*tiempo_promedio; // En caso de FPPW = 0
 
 	// SALIDA
 	size_t pos_barra = i_reales.find_last_of("/\\"); // Encuentra la última barra
@@ -203,22 +203,78 @@ int main(int argc, char* argv[])
 	pos_barra = i_estimados.find_last_of("/\\"); // Encuentra la última barra
 	string nombre_estimados = i_estimados.substr(pos_barra + 1);
 
-	stream_resultados << "Archivo estimados" << "\t" << nombre_estimados << endl;
-	stream_resultados << "Archivo reales" << "\t" << nombre_reales << endl;
-	stream_resultados << endl;
-	stream_resultados << "Imagenes analizadas" << "\t" << max << endl;
-	stream_resultados << "Total de detecciones" << "\t" << vpos + fpos << endl;
-	stream_resultados << "Verdaderos positivos" << "\t" << vpos << endl;
-	stream_resultados << "Falsos positivos" << "\t" << fpos << endl;
-	stream_resultados << "Falsos negativos" << "\t" << fneg << endl;
-	stream_resultados << endl;
-	stream_resultados << "Miss rate: fneg/(vpos+fneg)" << "\t" << miss_rate << endl;
-	stream_resultados << "Miss rate * tiempo promedio" << "\t" << bondad3 << endl;
-	stream_resultados << "FPPW" << "\t" << FPPW << endl;
-	stream_resultados << "100*Miss rate * FPPW" << "\t" << bondad1 << endl;
-	stream_resultados << "100*Miss rate * FPPW * tiempo promedio" << "\t" << bondad2 << endl;
-	stream_resultados << endl;
-	stream_resultados << "Tiempo promedio de detección" << "\t" << tiempo_promedio << " ms" << endl;
+
+	vector<string> informe_nombres;
+	vector<string> informe_valores;
+
+	// Llenado
+	informe_nombres.push_back("Archivo estimados");
+	informe_valores.push_back(nombre_estimados);
+
+	informe_nombres.push_back("Archivo reales");
+	informe_valores.push_back(nombre_reales);
+
+	informe_nombres.push_back("Imagenes analizadas");
+	informe_valores.push_back(to_string(max));
+
+	informe_nombres.push_back("Total de detecciones");
+	informe_valores.push_back(to_string( vpos + fpos ));
+
+	informe_nombres.push_back("Verdaderos positivos");
+	informe_valores.push_back(to_string(vpos));
+
+	informe_nombres.push_back("Falsos positivos");
+	informe_valores.push_back(to_string( fpos ));
+
+	informe_nombres.push_back("Falsos negativos");
+	informe_valores.push_back(to_string( fneg ));
+
+	informe_nombres.push_back("Miss rate: fneg/(vpos+fneg)");
+	informe_valores.push_back(to_string( miss_rate ));
+
+	informe_nombres.push_back("Miss rate * tiempo promedio");
+	informe_valores.push_back(to_string( metrica3 ));
+
+	informe_nombres.push_back("FFPW");
+	informe_valores.push_back(to_string( FPPW ));
+
+	informe_nombres.push_back("100*Miss rate * FPPW");
+	informe_valores.push_back(to_string( metrica1 ));
+
+	informe_nombres.push_back("100*Miss rate * FPPW * tiempo promedio");
+	informe_valores.push_back(to_string( metrica2 ));
+
+	informe_nombres.push_back("Tiempo promedio de detección");
+	informe_valores.push_back(to_string( tiempo_promedio ));
+
+//	informe_nombres.push_back("");
+//	informe_valores.push_back(to_string(  ));
+
+
+//	stream_resultados << "Archivo estimados" << "\t" << nombre_estimados << endl;
+//	stream_resultados << "Archivo reales" << "\t" << nombre_reales << endl;
+//	stream_resultados << endl;
+//	stream_resultados << "Imagenes analizadas" << "\t" << max << endl;
+//	stream_resultados << "Total de detecciones" << "\t" << vpos + fpos << endl;
+//	stream_resultados << "Verdaderos positivos" << "\t" << vpos << endl;
+//	stream_resultados << "Falsos positivos" << "\t" << fpos << endl;
+//	stream_resultados << "Falsos negativos" << "\t" << fneg << endl;
+//	stream_resultados << endl;
+//	stream_resultados << "Miss rate: fneg/(vpos+fneg)" << "\t" << miss_rate << endl;
+//	stream_resultados << "Miss rate * tiempo promedio" << "\t" << metrica3 << endl;
+//	stream_resultados << "FPPW" << "\t" << FPPW << endl;
+//	stream_resultados << "100*Miss rate * FPPW" << "\t" << metrica1 << endl;
+//	stream_resultados << "100*Miss rate * FPPW * tiempo promedio" << "\t" << metrica2 << endl;
+//	stream_resultados << endl;
+//	stream_resultados << "Tiempo promedio de detección" << "\t" << tiempo_promedio << " ms" << endl;
+
+	// Para facil lectura en txt, y para mostrar en pantalla
+	unsigned int i = 0;
+	for( i = 0 ; i < informe_nombres.size() ; i++)
+	{
+		stream_resultados << informe_nombres.at(i) << " = " << informe_valores.at(i) << endl;
+		cout << informe_nombres.at(i) << " = " << informe_valores.at(i) << endl;
+	}
 
 	stream_resultados << "\n\n--------------------\n\n";
 
@@ -229,20 +285,39 @@ int main(int argc, char* argv[])
 		stream_resultados << auxstring << "\n";
 	}
 
+	// Imprimimos estilo csv para luego importar a tabla
+	// Nombres
+	for( i = 0 ; i < informe_nombres.size()-1 ; i++)
+	{
+		stream_resultados << informe_nombres.at(i) << ";" ;
+	}
+	stream_resultados << informe_nombres.at(i); // último
+
+	stream_resultados << "\n" ;
+
+	// Valores
+	for( i = 0 ; i < informe_valores.size()-1 ; i++)
+	{
+		stream_resultados << informe_valores.at(i) << ";" ;
+	}
+	stream_resultados << informe_valores.at(i); // último
+
+
+
 	stream_resultados.close();
 
 	//stream_resultados
-	cout << "\nImagenes analizadas: " << max;
-	cout << "\nTotal de detecciones: " << vpos + fpos;
-	cout << "\nVerdaderos positivos = " << vpos;
-	cout << "\nFalsos positivos = " << fpos;
-	cout << "\nFalsos negativos = " << fneg;
-	cout << "\nMiss rate: fneg/(vpos+fneg) = " << miss_rate;
-	cout << "\nMiss rate * tiempo promedio = " << bondad3;
-	cout << "\nFPPW = " << FPPW;
-	cout << "\n100*Miss rate * FPPW = " << bondad1;
-	cout << "\n100*Miss rate * FPPW * tiempo promedio = " << bondad2;
-	cout << "\nTiempo promedio de detección: " << tiempo_promedio << " ms" << endl;
+//	cout << "\nImagenes analizadas: " << max;
+//	cout << "\nTotal de detecciones: " << vpos + fpos;
+//	cout << "\nVerdaderos positivos = " << vpos;
+//	cout << "\nFalsos positivos = " << fpos;
+//	cout << "\nFalsos negativos = " << fneg;
+//	cout << "\nMiss rate: fneg/(vpos+fneg) = " << miss_rate;
+//	cout << "\nMiss rate * tiempo promedio = " << metrica3;
+//	cout << "\nFPPW = " << FPPW;
+//	cout << "\n100*Miss rate * FPPW = " << metrica1;
+//	cout << "\n100*Miss rate * FPPW * tiempo promedio = " << metrica2;
+//	cout << "\nTiempo promedio de detección: " << tiempo_promedio << " ms" << endl;
 
 	// TODO: Qué hacemos con las personas incompletas? Podrían descartarse las imágenes
 
@@ -268,3 +343,5 @@ static void ayuda()
 
 	return;
 }
+
+
