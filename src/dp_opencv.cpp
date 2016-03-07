@@ -200,14 +200,14 @@ int main(int argc, char* argv[])
 	fstream stream_archivo_csv;
 	fstream stream_archivo_txt;
 	string aux = i_nombre_archivos_resultados + ".csv"; // Append con +
-	stream_archivo_csv.open(aux.c_str(), ios::out | ios::app); // Salida, append(añadir)
+	stream_archivo_csv.open(aux.c_str(), ios::out | ios::trunc); // Salida, trunc borra lo que había
 	if( !stream_archivo_csv.is_open() )
 	{
 		cout << "El archivo csv no se pudo abrir.\n";
 		return -1; //ver de usar exit o error. Por qué devuelvo -1?
 	}
 	aux = i_nombre_archivos_resultados + ".txt";
-	stream_archivo_txt.open(aux.c_str(), ios::out | ios::app); // Salida, append(añadir)
+	stream_archivo_txt.open(aux.c_str(), ios::out | ios::trunc); // Salida, trunc
 	if( !stream_archivo_txt.is_open() )
 	{
 		cout << "El archivo csv no se pudo abrir.\n";

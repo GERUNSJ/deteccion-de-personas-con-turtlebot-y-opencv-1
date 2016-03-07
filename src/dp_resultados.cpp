@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 	arch_estimados = fopen(auxstring.c_str(), "r");
 	auxstring = i_estimados + ".txt";
 	stream_info.open(auxstring.c_str(), ios::in);
-	stream_resultados.open(i_resultados.c_str(), ios::out);
+	stream_resultados.open(i_resultados.c_str(), ios::trunc));
 
 	// TODO: Chequear si se abrieron bien
 	if( !arch_reales || !arch_estimados || !stream_info || !stream_resultados )
