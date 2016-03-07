@@ -2,7 +2,7 @@
 
 
 #define DISTANCIA_FOCAL		570
-#define ALTURA_MAXIMA_M		2.5 // Está entrenado con un poco de background, entonces las personas detectadas son más altas..
+#define ALTURA_MAXIMA_M		2.6 // Está entrenado con un poco de background, entonces las personas detectadas son más altas..
 #define ALTURA_MINIMA_M		1.3
 
 
@@ -22,6 +22,7 @@ static float a_tamanio_real(const Mat & i_img_profundidad16, unsigned int i_long
 
 static bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16)
 {
+	if( mostrar_detecciones )
 	namedWindow("asdasd",0);
 //	imshow("asdasd", i_img_profundidad16);
 //	waitKey(0);
@@ -35,13 +36,16 @@ static bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_pro
 	ushort valor;
 
 
-	auxmat.at<ushort>(centro_y,centro_x) = 65535;
-	imshow("asdasd", auxmat);
+	if( mostrar_detecciones )
+	{
+		auxmat.at<ushort>(centro_y,centro_x) = 65535;
+		imshow("asdasd", auxmat);
 		waitKey(0);
 
 		rectangle(auxmat, i_rect, Scalar(65535));
 		imshow("asdasd", auxmat);
 		waitKey(0);
+	}
 
 
 	valor = i_img_profundidad16.at<ushort>(centro_y,centro_x);
@@ -217,8 +221,11 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
     if( ecualizar_histograma )
     	equalizeHist( smallImg, smallImg );
 
-    namedWindow("ventana1",0);
-    imshow("ventana1",smallImg);
+    if( mostrar_detecciones )
+    {
+    	namedWindow("ventana1",0);
+    	imshow("ventana1",smallImg);
+    }
 
     double t = (double)getTickCount();	// Medimos el tiempo
 
