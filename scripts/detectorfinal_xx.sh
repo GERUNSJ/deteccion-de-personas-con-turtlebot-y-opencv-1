@@ -19,6 +19,8 @@ DF_CONVERTIR_A_GRIS=false
 DF_ECUALIZAR_HISTOGRAMA=false
 
 funcion_detector_final
+funcion_csv_headers
+funcion_csv_normal
 
 
 ####################################################################################
@@ -29,6 +31,7 @@ DF_CONVERTIR_A_GRIS=false
 DF_ECUALIZAR_HISTOGRAMA=true
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -39,6 +42,7 @@ DF_CONVERTIR_A_GRIS=true
 DF_ECUALIZAR_HISTOGRAMA=false
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -49,6 +53,7 @@ DF_CONVERTIR_A_GRIS=true
 DF_ECUALIZAR_HISTOGRAMA=true
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -58,3 +63,4 @@ NOMBRE_RESULTADOS=05
 DF_USAR_PROFUNDIDAD=true
 
 funcion_detector_final
+funcion_csv_normal

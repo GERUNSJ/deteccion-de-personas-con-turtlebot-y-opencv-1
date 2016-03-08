@@ -15,3 +15,30 @@ RESULTADOS=./../ejecutables/dp_resultados
 #                   /ruta/a/datos_estimados (sin extensión)
 #                   /ruta/a/archivo_de_resultados.txt (con extensión)
 
+
+
+# 	# Evaluación
+# 	$RESULTADOS $CARPETA_RESULTADOS/$NOMBRE_REALES $CARPETA_RESULTADOS/$SUBCARPETA/$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt
+
+
+funcion_csv_headers () 
+{
+	ARCHIVO_CSV=$CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2.csv
+	
+	# Le adjuntamos los headers. Si 1 es la última línea, los headers son 2 y 5, pero hay un \n que borramos, así que 2 y 4.
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -2 | head -1)" > $ARCHIVO_CSV # > overwrite
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -4 | head -1)" >> $ARCHIVO_CSV # >> append
+	# Y nueva línea
+	printf "\n" >> $ARCHIVO_CSV
+}
+
+funcion_csv_normal ()
+{	
+	ARCHIVO_CSV=$CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2.csv
+	
+	# Adjuntamos los valores
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -1)" >> $ARCHIVO_CSV # > overwrite
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -3 | head -1)" >> $ARCHIVO_CSV # >> append
+	# Y nueva línea
+	printf "\n" >> $ARCHIVO_CSV
+}

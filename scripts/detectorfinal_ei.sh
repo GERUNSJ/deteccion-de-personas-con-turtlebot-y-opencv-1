@@ -18,6 +18,9 @@ NOMBRE_RESULTADOS=01
 DF_ESCALA_INICIAL=1
 
 funcion_detector_final
+funcion_csv_headers
+funcion_csv_normal
+
 
 
 ####################################################################################
@@ -27,6 +30,7 @@ NOMBRE_RESULTADOS=02
 DF_ESCALA_INICIAL=1.2
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -36,6 +40,7 @@ NOMBRE_RESULTADOS=03
 DF_ESCALA_INICIAL=1.3
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -45,6 +50,7 @@ NOMBRE_RESULTADOS=02
 DF_ESCALA_INICIAL=1.5
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -54,6 +60,7 @@ NOMBRE_RESULTADOS=05
 DF_ESCALA_INICIAL=2
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -63,3 +70,4 @@ NOMBRE_RESULTADOS=06
 DF_ESCALA_INICIAL=3
 
 funcion_detector_final
+funcion_csv_normal

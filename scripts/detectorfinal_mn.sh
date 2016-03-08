@@ -18,6 +18,8 @@ NOMBRE_RESULTADOS=01
 DF_MINNEIGHBORS=1
 
 funcion_detector_final
+funcion_csv_headers
+funcion_csv_normal
 
 
 ####################################################################################
@@ -27,6 +29,7 @@ NOMBRE_RESULTADOS=02
 DF_MINNEIGHBORS=2
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -36,6 +39,7 @@ NOMBRE_RESULTADOS=03
 DF_MINNEIGHBORS=3
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -45,6 +49,7 @@ NOMBRE_RESULTADOS=02
 DF_MINNEIGHBORS=4
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -54,6 +59,7 @@ NOMBRE_RESULTADOS=05
 DF_MINNEIGHBORS=5
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -63,6 +69,7 @@ NOMBRE_RESULTADOS=06
 DF_MINNEIGHBORS=6
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -72,6 +79,7 @@ NOMBRE_RESULTADOS=06
 DF_MINNEIGHBORS=7
 
 funcion_detector_final
+funcion_csv_normal
 
 
 ####################################################################################
@@ -81,3 +89,4 @@ NOMBRE_RESULTADOS=06
 DF_MINNEIGHBORS=8
 
 funcion_detector_final
+funcion_csv_normal

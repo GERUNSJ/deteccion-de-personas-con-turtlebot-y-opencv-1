@@ -21,6 +21,8 @@ NOMBRE_RESULTADOS=01
 DF_DIR_CASCADA=./../clasificadores/visionary.net_pedestrian_cascade_web_LBP.xml
 
 funcion_detector_final
+funcion_csv_headers
+funcion_csv_normal
 
 
 ####################################################################################
@@ -30,6 +32,8 @@ NOMBRE_RESULTADOS=02
 DF_DIR_CASCADA=./../clasificadores/haarcascade_fullbody.xml
 
 funcion_detector_final
+funcion_csv_normal
+
 
 
 ####################################################################################
@@ -39,6 +43,8 @@ NOMBRE_RESULTADOS=03
 DF_DIR_CASCADA=./../clasificadores/haarcascade_lowerbody.xml
 
 funcion_detector_final
+funcion_csv_normal
+
 
 
 ####################################################################################
@@ -48,6 +54,8 @@ NOMBRE_RESULTADOS=04
 DF_DIR_CASCADA=./../clasificadores/haarcascade_upperbody.xml
 
 funcion_detector_final
+funcion_csv_normal
+
 
 
 ####################################################################################
@@ -57,4 +65,6 @@ NOMBRE_RESULTADOS=05
 DF_DIR_CASCADA=./../clasificadores/haarcascade_mcs_upperbody.xml
 
 funcion_detector_final
+funcion_csv_normal
+
  
