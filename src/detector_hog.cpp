@@ -162,11 +162,12 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
     hog.detectMultiScale(i_img_color, found, 0, Size(8,8), Size(), pasoEscala , umbralAgrupamiento);
     t = (double)getTickCount() - t;
 
-    //printf("tdetection time = %gms\n", t*1000./cv::getTickFrequency());
+    printf("\ndetection time = %gms\n", t*1000./cv::getTickFrequency());
 //    for( auto i: found)
 //    	cout << "\nFound = " << i << endl;
 
     // Esta parte..qué hace? [DUDA]
+    // Borra duplicados, pero dudo que justo hayan 2 rects iguales...luego borramos nosotros
     size_t i, j;
     for( i = 0; i < found.size(); i++ )
     {
@@ -207,7 +208,15 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 			aux_res.prof = 16;
 
 
-        i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+		// Eliminamos detecciones superpuestas.
+		for( auto j: i_res)
+		{
+			if(aux_res == j)
+				continue;
+			else
+		        i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+		}
+
 
 
         // Show
@@ -217,6 +226,7 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
             rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 3);
         }
     }
+
 
 
     // Show
@@ -229,6 +239,3 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 
 	return;
 }
-
-
- 
