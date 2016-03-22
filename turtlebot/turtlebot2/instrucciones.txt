@@ -1,0 +1,3 @@
+Colocar estos archivos en la carpeta oculta ~/.ros/camera_info y se deberían cargar solos al iniciar el turtlebot.
+Pueden estar los de los 2 turtlebots juntos en la carpeta, ya que el nombre del archivo es el número de serie de la Kinect
+de cada uno.
