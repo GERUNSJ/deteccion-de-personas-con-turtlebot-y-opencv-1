@@ -22,8 +22,8 @@ static float a_tamanio_real(const Mat & i_img_profundidad16, unsigned int i_long
 
 static bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_profundidad16)
 {
-	if( mostrar_detecciones )
-	namedWindow("asdasd",0);
+//	if( mostrar_detecciones )
+//	namedWindow("asdasd",0);
 //	imshow("asdasd", i_img_profundidad16);
 //	waitKey(0);
 	Mat auxmat = i_img_profundidad16.clone();
@@ -36,16 +36,16 @@ static bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_pro
 	ushort valor;
 
 
-	if( mostrar_detecciones )
-	{
-		auxmat.at<ushort>(centro_y,centro_x) = 65535;
-		imshow("asdasd", auxmat);
-		waitKey(0);
-
-		rectangle(auxmat, i_rect, Scalar(65535));
-		imshow("asdasd", auxmat);
-		waitKey(0);
-	}
+//	if( mostrar_detecciones )
+//	{
+//		auxmat.at<ushort>(centro_y,centro_x) = 65535;
+//		imshow("asdasd", auxmat);
+//		waitKey(0);
+//
+//		rectangle(auxmat, i_rect, Scalar(65535));
+//		imshow("asdasd", auxmat);
+//		waitKey(0);
+//	}
 
 
 	valor = i_img_profundidad16.at<ushort>(centro_y,centro_x);
@@ -57,7 +57,7 @@ static bool es_altura_creible(const cv::Rect & i_rect, const cv::Mat & i_img_pro
 	/*cout << "\naltura_m " << altura_m << "  altura_px " << altura_px << "  dist " << distancia_al_objeto <<
 			"   val " << (float) i_img_profundidad16.at<uchar>(centro_y,centro_x) << " -centro_x" << centro_x <<
 			"  -centro_y" << centro_y;*/
-	cout << "\naltura_m " << altura_m;
+	//cout << "\naltura_m " << altura_m;
 
 	if( altura_m < ALTURA_MINIMA_M || altura_m > ALTURA_MAXIMA_M )
 	{
@@ -130,6 +130,19 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 				this->usar_profundidad_altura = true;
 		}
 
+		else if( argumentos_nombre.at(i) == "blurear")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->blurear = false;
+			else
+				this->blurear = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "tamanio_blur")
+		{
+			this->tamanio_blur = stoi(argumentos_valor.at(i));
+		}
+
 		else
 		{
 			cout << "\nNo se reconoció el parámetro " << argumentos_nombre.at(i) << " pasado como argumento." << endl;
@@ -177,6 +190,14 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 		parametros_valor.push_back("true");
 	else
 		parametros_valor.push_back("false");
+	parametros_nombre.push_back("blurear");
+	if( blurear )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("tamanio_blur");
+		parametros_valor.push_back(to_string(tamanio_blur));
+
 
 }
 
@@ -211,24 +232,42 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 	Mat con_detecciones = i_img_color.clone(); // Para mostrar en caso de mostrar_detecciones = true
 	struct_resultados aux_res;	// Acá llenamos los datos de cada detección para guardarlo en i_res
 
+	// Rectángulos con las personas encontradas por el detector
     vector<Rect> found;
 
+
     // Achicamos la imagen original, de acuerdo al factor escala_inicial
-    Mat gray, smallImg( cvRound (i_img_color.rows/escala_inicial), cvRound(i_img_color.cols/escala_inicial), CV_8UC1 );
+    Mat gray;
+	Mat smallImg( cvRound (i_img_color.rows/escala_inicial), cvRound(i_img_color.cols/escala_inicial), i_img_color.type() );
+
+
+    // Medimos el tiempo
+    double t = (double)getTickCount();
+
+    // Preprocesamiento con la imagen grande para no perder información
+
+    // HAAR o LBP aceptan imágenes de 8 bits, y las convierten a gris, como se ve en la línea 1550
+    // de modules/objdetect/src/haar.cpp . Es lo mismo convertir acá o luego, pero mejor acá
+    // para no ecualizar y blurear en color.
     if( convertir_a_gris )
     	cvtColor( i_img_color, gray, CV_BGR2GRAY );
-    resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
+
     if( ecualizar_histograma )
-    	equalizeHist( smallImg, smallImg );
+    	equalizeHist( gray, gray );
+
+    if( blurear )
+    	blur( gray, gray, Size(tamanio_blur,tamanio_blur) );
+
+    resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
+
 
     if( mostrar_detecciones )
     {
-    	namedWindow("ventana1",0);
-    	imshow("ventana1",smallImg);
+    	namedWindow("Preprocesada",0);
+    	imshow("Preprocesada",smallImg);
     }
 
-    double t = (double)getTickCount();	// Medimos el tiempo
-
+    // Realizamos la detección
     cascada.detectMultiScale( smallImg,
             found,
             scaleFactor,
@@ -236,14 +275,11 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
             0 /*| CASCADE_SCALE_IMAGE*/, /*flags*/
             tamanio_minimo,
             tamanio_maximo );
+
+    // Medimos el tiempo
     t = (double)getTickCount() - t;
 
     printf("\ndetection time = %gms\n", t*1000./cv::getTickFrequency());
-//    for( auto i: found)
-//    	cout << "\nFound = " << i << endl;
-
-//    for( auto i: found_filtered)
-//    	cout << "\nFound_filtered = " << i << endl;
 
 
     // Para cada detección
@@ -269,6 +305,7 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
         rect_a_struct_resultados(r,aux_res);
         aux_res.tiempo = t*1000./cv::getTickFrequency(); // Tiempo en ms
 
+				
 		if( i_img_color.depth() == CV_8U || i_img_color.depth() == CV_8S ) // La cascada sólo soporta 8..
 			aux_res.prof = 8;
 		else
@@ -281,8 +318,8 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
         // Show
         if( mostrar_detecciones )
         {
-        	// Creamos un rectángulo en una copia de la imagen original. tl es top-left, br es bottom-right
-            rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 3);
+					// Creamos un rectángulo en una copia de la imagen original. tl es top-left, br es bottom-right
+					rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 3);
         }
     }
 

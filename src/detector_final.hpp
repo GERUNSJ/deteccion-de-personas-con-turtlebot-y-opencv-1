@@ -40,6 +40,10 @@ public:
 	int minNeighbors = 5;
 	// Usar la información de profundidad para filtrar según altura estimada
 	bool usar_profundidad_altura = false;
+	// Usar suavizado
+	bool blurear = false;
+	// Tamaño del filtro de suavizado
+	unsigned int tamanio_blur = 3;
 
 
 
