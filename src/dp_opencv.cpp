@@ -315,9 +315,9 @@ static void ayuda()
 				"\nDetectores válidos: "
 				"\n* DetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
 				"\n* Extractor"
-				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector"
-				"\n* Detector1 \n"
-				"\n* DetectorFinal direccion_a_cascada string escala_inicial float convertir_a_gris bool ecualizar_histograma bool scaleFactor float minNeighbors int usar_profundidad_altura bool"
+				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int hit_threshold float setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector> convertir_a_gris bool ecualizar_histograma bool blurear bool tamanio_blur int"
+				"\n* Detector1"
+				"\n* DetectorFinal direccion_a_cascada string escala_inicial float convertir_a_gris bool ecualizar_histograma bool scaleFactor float minNeighbors int usar_profundidad_altura bool blurear bool tamanio_blur int"
 
 				"\n\nUsando OpenCV " << CV_VERSION << endl;
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";

@@ -2,6 +2,7 @@
 using namespace std;
 using namespace cv;
 
+
 DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argumentos_valor)
 {
 	this->nombre = "DetectorHOG";
@@ -23,10 +24,50 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 			this->umbralAgrupamiento = stoi(argumentos_valor.at(i),nullptr,10);
 		}
 
+		else if( argumentos_nombre.at(i) == "hit_threshold")
+		{
+			this->hit_threshold = stoi(argumentos_valor.at(i),nullptr,10);
+		}
+
 		else if( argumentos_nombre.at(i) == "setSVMDetector")
 		{
 			this->setSVMDetector = argumentos_valor.at(i);
 		}
+
+		else if( argumentos_nombre.at(i) == "escala_inicial")
+		{
+			this->escala_inicial= stof(argumentos_valor.at(i));
+		}
+
+		else if( argumentos_nombre.at(i) == "convertir_a_gris")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->convertir_a_gris = false;
+			else
+				this->convertir_a_gris = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "ecualizar_histograma")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->ecualizar_histograma = false;
+			else
+				this->ecualizar_histograma = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "blurear")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->blurear = false;
+			else
+				this->blurear = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "tamanio_blur")
+		{
+			this->tamanio_blur = stoi(argumentos_valor.at(i));
+		}
+
 		else
 		{
 			cout << "\nNo se reconoció el parámetro " << argumentos_nombre.at(i) << " pasado como argumento." << endl;
@@ -99,9 +140,29 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 	parametros_valor.push_back(to_string(pasoEscala));
 	parametros_nombre.push_back("umbralAgrupamiento");
 	parametros_valor.push_back(to_string(umbralAgrupamiento));
+	parametros_nombre.push_back("hit_threshold");
+	parametros_valor.push_back(to_string(hit_threshold));
 	parametros_nombre.push_back("setSVMDetector");
 	parametros_valor.push_back(setSVMDetector);
-	// Podríamos guardar todos...
+	parametros_nombre.push_back("escala_inicial");
+	parametros_valor.push_back(to_string(escala_inicial));
+	parametros_nombre.push_back("convertir_a_gris");
+	if( convertir_a_gris )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("ecualizar_histograma");
+	if( ecualizar_histograma )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("blurear");
+	if( blurear )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("tamanio_blur");
+		parametros_valor.push_back(to_string(tamanio_blur));
 
 }
 
@@ -151,15 +212,45 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 	struct_resultados aux_res;	// Acá llenamos los datos de cada detección para guardarlo en i_res
 
     vector<Rect> found, found_filtered;
-    double t = (double)getTickCount();	// Medimos el tiempo
+
+    // Achicamos la imagen original, de acuerdo al factor escala_inicial
+	Mat gray;
+	Mat smallImg( cvRound (i_img_color.rows/escala_inicial), cvRound(i_img_color.cols/escala_inicial), i_img_color.type() ); // Constructor, pero mat vacía
+
+
+	// Medimos el tiempo
+	double t = (double)getTickCount();
+
+	// Preprocesamiento con la imagen grande para no perder información
+	// HOG acepta 1 o 3 canales, como se ve en la línea 177 de modules/objdetect/src/hog.cpp
+	if( convertir_a_gris )
+		cvtColor( i_img_color, gray, CV_BGR2GRAY );
+	else gray = i_img_color.clone();
+
+	if( ecualizar_histograma && convertir_a_gris)
+		equalizeHist( gray, gray );
+
+	if( blurear )
+		blur( gray, gray, Size(tamanio_blur,tamanio_blur) );
+
+	// Achicamos la imagen original, de acuerdo al factor escala_inicial
+	resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
+
+
+	if( mostrar_detecciones )
+	{
+		namedWindow("Preprocesada",0);
+		imshow("Preprocesada",smallImg);
+	}
 
 
     // run the detector with default parameters. to get a higher hit-rate
     // (and more false alarms, respectively), decrease the hitThreshold and
     // groupThreshold (set groupThreshold to 0 to turn off the grouping completely).
     // hog.detectMultiScale(img, found, 0, Size(8,8), Size(32,32), 1.05, 2);
+    hog.detectMultiScale(smallImg, found, hit_threshold, Size(8,8), Size(), pasoEscala , umbralAgrupamiento);
 
-    hog.detectMultiScale(i_img_color, found, 0, Size(8,8), Size(), pasoEscala , umbralAgrupamiento);
+
     t = (double)getTickCount() - t;
 
     printf("\ndetection time = %gms\n", t*1000./cv::getTickFrequency());
@@ -189,6 +280,8 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
     {
     	// Achicamos los rectangulos detectados
         Rect r = found_filtered[i];
+
+
         // the HOG detector returns slightly larger rectangles than the real objects.
         // so we slightly shrink the rectangles to get a nicer output.
         r.x += cvRound(r.width*0.1);
@@ -196,6 +289,11 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
         r.y += cvRound(r.height*0.07);
         r.height = cvRound(r.height*0.8);
 
+        // Des-escalamos
+		r.x = floor(r.x * escala_inicial);
+		r.y = floor(r.y * escala_inicial);
+		r.height = floor(r.height * escala_inicial);
+		r.width = floor(r.width * escala_inicial);
 
 
         // Completamos y guardamos los datos de cada detección

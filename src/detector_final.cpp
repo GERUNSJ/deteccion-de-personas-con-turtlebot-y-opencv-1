@@ -248,11 +248,12 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 
     // HAAR o LBP aceptan imágenes de 8 bits, y las convierten a gris, como se ve en la línea 1550
     // de modules/objdetect/src/haar.cpp . Es lo mismo convertir acá o luego, pero mejor acá
-    // para no ecualizar y blurear en color.
+    // para no blurear en color.
     if( convertir_a_gris )
     	cvtColor( i_img_color, gray, CV_BGR2GRAY );
+    else gray = i_img_color.clone();
 
-    if( ecualizar_histograma )
+    if( ecualizar_histograma && convertir_a_gris)
     	equalizeHist( gray, gray );
 
     if( blurear )
