@@ -287,11 +287,10 @@ int main(int argc, char* argv[])
 
 	// Imprimimos estilo csv para luego importar a tabla
 	// Nombres
-	for( i = 0 ; i < informe_nombres.size()-1 ; i++)
+	for( i = 0 ; i < informe_nombres.size() ; i++)
 	{
 		stream_resultados << informe_nombres.at(i) << ";" ;
 	}
-	stream_resultados << informe_nombres.at(i); // último
 
 	stream_resultados << "\n" ;
 
