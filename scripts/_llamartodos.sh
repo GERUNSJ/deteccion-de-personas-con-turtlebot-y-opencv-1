@@ -8,4 +8,6 @@ source base.sh
 source set1.sh
 
 source detectorfinal.sh
+source detectorhog.sh
+
 #source otrodetector.sh

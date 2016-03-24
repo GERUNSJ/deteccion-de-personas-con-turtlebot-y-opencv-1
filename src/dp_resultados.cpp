@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 	arch_estimados = fopen(auxstring.c_str(), "r");
 	auxstring = i_estimados + ".txt";
 	stream_info.open(auxstring.c_str(), ios::in);
-	stream_resultados.open(i_resultados.c_str(), ios::trunc));
+	stream_resultados.open(i_resultados.c_str(), ios::out | ios::trunc); // Salida y borrar lo que ya exista
 
 	// TODO: Chequear si se abrieron bien
 	if( !arch_reales || !arch_estimados || !stream_info || !stream_resultados )
@@ -295,11 +295,11 @@ int main(int argc, char* argv[])
 	stream_resultados << "\n" ;
 
 	// Valores
-	for( i = 0 ; i < informe_valores.size()-1 ; i++)
+	for( i = 0 ; i < informe_valores.size() ; i++)
 	{
 		stream_resultados << informe_valores.at(i) << ";" ;
 	}
-	stream_resultados << informe_valores.at(i); // último
+	//stream_resultados << informe_valores.at(i); // último
 
 
 

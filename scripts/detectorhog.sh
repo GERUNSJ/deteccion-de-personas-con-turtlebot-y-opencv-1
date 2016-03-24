@@ -98,4 +98,4 @@ source detectorhog_zz.sh
 
 
 
-exit
+#exit

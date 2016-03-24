@@ -99,4 +99,4 @@ source detectorfinal_zz.sh
 
 
 
-exit
+#exit

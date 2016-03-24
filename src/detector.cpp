@@ -21,18 +21,20 @@ ostream& operator<<( ostream& os, Detector& detector )
 
 	// Imprimimos estilo csv para luego importar a tabla
 	// Nombres
-	for( i = 0; i < detector.parametros_nombre.size() -1; i++ )
+	for( i = 0; i < detector.parametros_nombre.size() ; i++ )
 	{
 		aux += detector.parametros_nombre.at(i) + ";" ;
 	}
-	aux += detector.parametros_nombre.at(i) + "\n" ; // último elemento
+	aux += "\n";
+	//aux += detector.parametros_nombre.at(i) + "\n" ; // último elemento
 
 	// Valores
-	for( i = 0; i < detector.parametros_valor.size() -1; i++ )
+	for( i = 0; i < detector.parametros_valor.size() ; i++ )
 	{
 		aux += detector.parametros_valor.at(i) + ";" ;
 	}
-	aux += detector.parametros_valor.at(i) + "\n" ; // último elemento
+	aux += "\n";
+	//aux += detector.parametros_valor.at(i) + "\n" ; // último elemento
 
 	return os << aux;
 }
