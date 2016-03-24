@@ -10,6 +10,9 @@ DF_ECUALIZAR_HISTOGRAMA=true
 DF_SCALEFACTOR=1.1
 DF_MINNEIGHBORS=4
 DF_USAR_PROFUNDIDAD=false
+DF_BLUREAR=false
+DF_TAMANIO_BLUR=3
+
 
 ####################################################################################
 #			PRUEBA 01

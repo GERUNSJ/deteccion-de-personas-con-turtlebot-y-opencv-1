@@ -6,31 +6,30 @@ source base.sh
 # Elegimos set // Mejor hacerlo en llamartodos
 
 ###########################################################################################################
-#			DETECTORFINAL
+#			DETECTORHOG
 ###########################################################################################################
 
-# DetectorFinal direccion_a_cascada string escala_inicial float convertir_a_gris bool ecualizar_histograma bool scaleFactor float minNeighbors int usar_profundidad_altura bool
+# DetectorHOG pasoEscala double umbralAgrupamiento int hit_threshold float setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector> convertir_a_gris bool ecualizar_histograma bool blurear bool tamanio_blur int
 
-SUBCARPETA=detectorfinal
+SUBCARPETA=detectorhog
 # Creamos la carpeta en caso de que no exista
 mkdir -p $CARPETA_RESULTADOS/$SUBCARPETA
 
 # Parámetros
-DF_DIR_CASCADA=./../clasificadores/visionary.net_pedestrian_cascade_web_LBP.xml
-DF_ESCALA_INICIAL=1
-DF_CONVERTIR_A_GRIS=true
-DF_ECUALIZAR_HISTOGRAMA=true
-DF_SCALEFACTOR=1.1
-DF_MINNEIGHBORS=4
-DF_USAR_PROFUNDIDAD=false
-DF_BLUREAR=true
-DF_TAMANIO_BLUR=3
+DH_PASOESCALA=1.05
+DH_UMBRALAGRUPAMIENTO=2
+DH_HIT_THRESHOLD=0
+DH_SETSVMDETECTOR=getDefaultPeopleDetector
+DH_CONVERTIR_A_GRIS=true
+DH_ECUALIZAR_HISTOGRAMA=true
+DH_BLUREAR=false
+DH_TAMANIO_BLUR=3
 
 # Función
-funcion_detector_final ()
+funcion_detector_hog ()
 {
 	# Detecciones
-	$PRINCIPAL $CARPETA_RGB $CARPETA_PROFUNDIDAD $CARPETA_RESULTADOS/$SUBCARPETA/$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS 0 DetectorFinal direccion_a_cascada $DF_DIR_CASCADA escala_inicial $DF_ESCALA_INICIAL convertir_a_gris $DF_CONVERTIR_A_GRIS ecualizar_histograma $DF_ECUALIZAR_HISTOGRAMA scaleFactor $DF_SCALEFACTOR minNeighbors $DF_MINNEIGHBORS usar_profundidad_altura $DF_USAR_PROFUNDIDAD blurear $DF_BLUREAR tamanio_blur $DF_TAMANIO_BLUR
+	$PRINCIPAL $CARPETA_RGB $CARPETA_PROFUNDIDAD $CARPETA_RESULTADOS/$SUBCARPETA/$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS 0 DetectorHOG pasoEscala $DH_PASOESCALA umbralAgrupamiento $DH_UMBRALAGRUPAMIENTO hit_threshold $DH_HIT_THRESHOLD setSVMDetector $DH_SETSVMDETECTOR convertir_a_gris $DH_CONVERTIR_A_GRIS ecualizar_histograma $DH_ECUALIZAR_HISTOGRAMA blurear $DH_BLUREAR tamanio_blur $DH_TAMANIO_BLUR
 	
 	# Evaluación
 	$RESULTADOS $CARPETA_RESULTADOS/$NOMBRE_REALES $CARPETA_RESULTADOS/$SUBCARPETA/$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt
@@ -38,64 +37,64 @@ funcion_detector_final ()
 }
 
 # Prefijo de los nombres de archivos creados
-PREFIJO1=DF
+PREFIJO1=DH
 
 
 ####################################################################################
 #			PRUEBAS
 
-# ei escala_inicial
-# sf scaleFactor
-# mn minNeighbors
-# bl blurear
-# cc direccion_a_cascada
+# pe pasoEscala
+# ua umbralAgrupamiento
+# ht hit_threshold
+# sd setSVMDetector
 # xx otros
 #  convertir_a_gris
 #  ecualizar_histograma
-#  usar_profundidad_altura
-# zz combinaciones arbitrarias 
+# bl blurear y tamanio_blur
+# zz combinaciones arbitrarias
+ 
 
 
 ####################################################################################
-#			ei - Variamos escala_inicial
-PREFIJO2=ei
-source detectorfinal_ei.sh
+#			pe - Variamos pasoEscala
+PREFIJO2=pe
+source detectorhog_pe.sh
 
 
 ####################################################################################
-#			sf - Variamos scaleFactor
-PREFIJO2=sf
-source detectorfinal_sf.sh
+#			ua - Variamos umbralAgrupamiento
+PREFIJO2=ua
+source detectorhog_ua.sh
 
 
 ####################################################################################
-#			mn - Variamos minNeighbors
-PREFIJO2=mn
-source detectorfinal_mn.sh
+#			ht - Variamos hit_threshold
+PREFIJO2=ht
+source detectorhog_ht.sh
 
 
 ####################################################################################
-#			bl - Variamos tamanio_blur
+#			sd - Variamos setSVMDetector
+PREFIJO2=sd
+source detectorhog_sd.sh
+
+
+####################################################################################
+#			bl - Variamos blurear y tamanio_blur
 PREFIJO2=bl
-source detectorfinal_bl.sh
-
-
-####################################################################################
-#			cc - Variamos la cascada
-PREFIJO2=cc
-source detectorfinal_cc.sh
+source detectorhog_bl.sh
 
 
 ####################################################################################
 #			xx - Variamos otros parámetros
 PREFIJO2=xx
-source detectorfinal_xx.sh
+source detectorhog_xx.sh
 
 
 ####################################################################################
 #			zz - combinaciones arbitrarias
 PREFIJO2=zz
-source detectorfinal_zz.sh
+source detectorhog_zz.sh
 
 
 
