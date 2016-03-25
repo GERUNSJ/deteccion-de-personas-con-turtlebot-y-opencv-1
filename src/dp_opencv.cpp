@@ -63,6 +63,8 @@ int main(int argc, char* argv[])
 	string nombre_set;
 	vector<string> nombres_imagenes_color, nombres_imagenes_profundidad;
 	vector<string> i_parametros_nombres , i_parametros_valores;
+	unsigned int i_imagen_inicio = 1;
+	unsigned int i_imagen_fin = 1;
 
 //	switch (argc)
 //	{
@@ -85,27 +87,31 @@ int main(int argc, char* argv[])
 	// 0 - programa (dp_opencv)
 	// 1 - carpeta con las imagenes rgb
 	// 2 - carpeta con las imagnes depth o un 0 en caso de que no hayan
-	// 3 - resultados
-	// 4 - bool mostrar_detecciones
-	// 5 - clase de detector
-	// 6 en adelante - pares parámetro-valor
-	if( argc < 6 || !(argc % 2) == 0 ) // programa,carpetargb,carpetaprofundidad,resultados,mostrar_detecciones,detector,[numero par de parametros]
+	// 3 - imagen de inicio, suponiendo que las imagenes empiezan en 1
+	// 4 - imagen de fin, suponiendo que las imagenes empiezan en 1
+	// 5 - resultados
+	// 6 - bool mostrar_detecciones
+	// 7 - clase de detector
+	// 8 en adelante - pares parámetro-valor
+	if( argc < 8 || !(argc % 2) == 0 ) // programa,carpetargb,carpetaprofundidad,resultados,mostrar_detecciones,detector,[numero par de parametros]
 		return -1; //Error
 
 	i_carpeta_imagenes_color = argv[1];
 	i_carpeta_imagenes_profundidad = argv[2];
-	i_nombre_archivos_resultados = argv[3];
+	i_imagen_inicio = stoi(argv[3]);
+	i_imagen_fin = stoi(argv[4]);
+	i_nombre_archivos_resultados = argv[5];
 
-	if(!strcmp(argv[4], "0") || !strcmp(argv[4], "false"))
+	if(!strcmp(argv[6], "0") || !strcmp(argv[6], "false"))
 		mostrar_detecciones = false;
 	else
 		mostrar_detecciones = true;
 	//mostrar_detecciones = (bool)(int)argv[3];
-	i_detector = argv[5];
+	i_detector = argv[7];
 
-	if(argc > 6 )
+	if(argc > 8 )
 	{
-		for( int i = 6  ; i < argc ; i++)
+		for( int i = 8  ; i < argc ; i++)
 		{
 			i_parametros_nombres.push_back(argv[i]);
 			i++;
@@ -187,6 +193,23 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
+	// Límites
+	if( i_imagen_inicio == 0 )
+		i_imagen_inicio = 1;
+	else if( i_imagen_inicio-1 >= nombres_imagenes_color.size() )
+	{
+		cout << "\nEl número de imagen de inicio es mayor a la cantidad de imágenes existentes. El programa ha terminado. \n";
+		return -1;
+	}
+	if( i_imagen_fin == 0 )
+		i_imagen_fin = nombres_imagenes_color.size(); // Se procesa hasta el final si el fin es 0;
+	else if( i_imagen_fin-1 >= nombres_imagenes_color.size() )
+	{
+		i_imagen_fin = nombres_imagenes_color.size();
+		cout << "\nEl límite de finalización es mayor al número de imágenes disponibles. Se procesará hasta el final del conjunto cargado. \n";
+	}
+
+
 	// Ordenamos. Se asigna a cada imagen el número en que se cargó y no necesariamente el número
 	// de archivo. Sin embargo deberían ser iguales.
 	sort( nombres_imagenes_color.begin() , nombres_imagenes_color.end() );
@@ -200,7 +223,8 @@ int main(int argc, char* argv[])
 	fstream stream_archivo_csv;
 	fstream stream_archivo_txt;
 	string aux = i_nombre_archivos_resultados + ".csv"; // Append con +
-	stream_archivo_csv.open(aux.c_str(), ios::out | ios::trunc); // Salida, trunc borra lo que había
+	//stream_archivo_csv.open(aux.c_str(), ios::out | ios::trunc); // Salida, trunc borra lo que había
+	stream_archivo_csv.open(aux.c_str(), ios::out | ios::app); // Salida, app añade datos. En caso de dividir el mismo set en varias partes.
 	if( !stream_archivo_csv.is_open() )
 	{
 		cout << "El archivo csv no se pudo abrir.\n";
@@ -249,19 +273,16 @@ int main(int argc, char* argv[])
 	Mat img_color, img_profundidad;
 	string string_numero; // Suponemos que se cargaron en orden numérico correcto... poco robusto.
 	//int numero;
-	for( size_t i = 0 ; i < nombres_imagenes_color.size() ; i++ )
+
+
+	for( size_t i = i_imagen_inicio-1 ; i <= i_imagen_fin-1 ; i++ )
 	{
 		res.clear();
 		// Se abre la imagen
 		img_color = imread( nombres_imagenes_color.at(i) , IMREAD_UNCHANGED ); // 8bit, color or not
 		if( nombres_imagenes_profundidad.size() != 0 )
 			img_profundidad = imread( nombres_imagenes_profundidad.at(i) , IMREAD_UNCHANGED ); //IMREAD_GRAYSCALE convierte a 8 bits..
-		//set = ?
-//		string_numero = nombres_imagenes_color.at(i);
-//		cout << "\nstring_numero = " << string_numero << " .\n";
-//		string_numero = string_numero.substr(0,2);
-//		cout << "\nstring_numero = " << string_numero << " .\n";
-//		numero = stoi(string_numero);
+
 
 		// Procesamiento
 		cout << "\nProcesando imagen " << i+1 << " de " << nombres_imagenes_color.size();
@@ -306,11 +327,13 @@ static void ayuda()
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 	cout
 			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
-					"Uso: dp_opencv  <carpeta/con/imagenes/rgb>\n"
-					"                <carpeta/con/imagenes/profundidad | 0 >\n"
-					"                </dir/al/archivo_de_resultados> (sin extensión)\n"
-					"                <(1 | 0>(mostrar_detecciones)\n"
-					"                <clase_de_detector> [parámetro_1_nombre parámetro_1_valor ...]\n"
+					"Uso: dp_opencv  < carpeta/con/imagenes/rgb >\n"
+					"                < carpeta/con/imagenes/profundidad | 0 > (0 no carga nada)\n"
+					"                < numero de imagen inicial >(suponiendo que empiezan en 1)\n"
+					"                < numero de imagen final | 0 > (0 procesa hasta el final)\n"
+					"                </dir/al/archivo_de_resultados > (sin extensión)\n"
+					"                < 1 | 0 > (mostrar_detecciones)\n"
+					"                < clase_de_detector > [parámetro_1_nombre parámetro_1_valor ...]\n"
 				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
 				"\nDetectores válidos: "
 				"\n* DetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
