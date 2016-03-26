@@ -4,6 +4,10 @@ PRINCIPAL=./../ejecutables/dp_opencv
 # Programa que evalúa los resultados
 RESULTADOS=./../ejecutables/dp_resultados
 
+# Límites: todas las imágenes. Es reemplazado por lo que se ponga en el script del set correspondiente.
+IMAGEN_INICIAL=1
+IMAGEN_FINAL=0
+
 
 #dp_opencv  <carpeta/con/imagenes/rgb>
 #                <carpeta/con/imagenes/profundidad | 0 >
