@@ -63,7 +63,10 @@ std::ostream& operator<<( std::ostream& os, const struct_resultados& res );
 
 
 // Función para convertir cv::Rect a struct_resultados
-void rect_a_struct_resultados(const cv::Rect, struct_resultados& res);
+void rect_a_struct_resultados(const cv::Rect& rect, struct_resultados& res);
+
+// Función para convertir struct_resultados a cv::Rect
+void struct_resultados_a_rect(const struct_resultados& res, cv::Rect& rect);
 
 // Comparación
 bool operator==(const struct_resultados& a, const struct_resultados& b);

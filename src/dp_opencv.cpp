@@ -58,7 +58,6 @@ int main(int argc, char* argv[])
 	ayuda();
 
 	string i_carpeta_imagenes_color, i_carpeta_imagenes_profundidad, i_nombre_archivos_resultados;
-	string archivo_imagen = "";
 	string i_detector;
 	string nombre_set;
 	vector<string> nombres_imagenes_color, nombres_imagenes_profundidad;

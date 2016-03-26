@@ -14,7 +14,7 @@ std::ostream& operator<<( std::ostream& os, const struct_resultados& res )
 
 
 
-void rect_a_struct_resultados(const cv::Rect rect, struct_resultados& res)
+void rect_a_struct_resultados(const cv::Rect& rect, struct_resultados& res)
 {
 	// OpenCV typically assumes that the top and left boundary of the rectangle are inclusive,
 	// while the right and bottom boundaries are not. (de la documentación de Rect_ en core)
@@ -31,7 +31,18 @@ void rect_a_struct_resultados(const cv::Rect rect, struct_resultados& res)
     res.arr_izq_x = rect.x;
     res.arr_izq_y = rect.y;
 }
-// TODO: Hacer una struct_resultados_a_rect
+
+
+
+void struct_resultados_a_rect(const struct_resultados& res, cv::Rect& rect)
+{
+	rect.height = res.aba_der_y - res.arr_der_y + 1;
+	rect.width = res.aba_der_x - res.aba_izq_x + 1;
+	rect.x = res.arr_izq_x;
+	rect.y = res.arr_izq_y;
+}
+
+
 
 void struct_resultados::calcular()
 {
