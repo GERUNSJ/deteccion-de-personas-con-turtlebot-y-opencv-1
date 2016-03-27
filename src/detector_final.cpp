@@ -313,7 +313,14 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 			aux_res.prof = 16;
 
 
-        i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+		// Eliminamos detecciones superpuestas, con el mismo criterio de igualdad que para la comparación entre reales y estimados.
+		for( auto j: i_res)
+		{
+			if(aux_res == j)
+				continue;
+			else
+				i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+		}
 
 
         // Show

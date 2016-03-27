@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 //				"\testimados: " << frames.at(i).estimados.size();
 //	}
 
-	// Calculamos el tiempo promedio
+	// Calculamos el tiempo promedio en ms
 	double tiempo_promedio = 0;
 	for( auto e : estimados )
 		tiempo_promedio += e.tiempo;
@@ -196,6 +196,11 @@ int main(int argc, char* argv[])
 	float metrica1 = 100*miss_rate*FPPW;
 	float metrica2 = 100*miss_rate*FPPW*tiempo_promedio;
 	float metrica3 = miss_rate*tiempo_promedio; // En caso de FPPW = 0
+	float precision = (float)vpos / (vpos + fpos); // De los que encontró, cuantos son buenos
+	float recall = (float)vpos / (vpos + fneg); // De los buenos, cuantos encontró
+	float metrica4 = precision*recall;
+	float metrica5 = 2*(precision*recall)/(precision+recall); // F1
+	float metrica6 = metrica5 * tiempo_promedio;
 
 	// SALIDA
 	size_t pos_barra = i_reales.find_last_of("/\\"); // Encuentra la última barra
@@ -246,6 +251,21 @@ int main(int argc, char* argv[])
 
 	informe_nombres.push_back("Tiempo promedio de detección");
 	informe_valores.push_back(to_string( tiempo_promedio ));
+
+	informe_nombres.push_back("precision: vpos/(vpos+fpos)");
+	informe_valores.push_back(to_string( precision ));
+
+	informe_nombres.push_back("recall: vpos/(vpos+fneg)");
+	informe_valores.push_back(to_string( recall ));
+
+	informe_nombres.push_back("precision*recall");
+	informe_valores.push_back(to_string( metrica4 ));
+
+	informe_nombres.push_back("F1: 2*(precision*recall)/(precision+recall)");
+	informe_valores.push_back(to_string( metrica5 ));
+
+	informe_nombres.push_back("F1*tiempo promedio");
+	informe_valores.push_back(to_string( metrica6 ));
 
 //	informe_nombres.push_back("");
 //	informe_valores.push_back(to_string(  ));

@@ -306,7 +306,7 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 			aux_res.prof = 16;
 
 
-		// Eliminamos detecciones superpuestas.
+		// Eliminamos detecciones superpuestas, con el mismo criterio de igualdad que para la comparación entre reales y estimados.
 		for( auto j: i_res)
 		{
 			if(aux_res == j)
