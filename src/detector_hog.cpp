@@ -357,14 +357,19 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 		else
 			aux_res.prof = 16;
 
-
-		// Eliminamos detecciones superpuestas, con el mismo criterio de igualdad que para la comparación entre reales y estimados.
-		for( auto j: i_res)
+		// Si es la primera detección en esta imagen, la guardamos.
+		if( i_res.empty() )
+			 i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+		else
 		{
-			if(aux_res == j)
-				continue;
-			else
-		        i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+			// Eliminamos detecciones superpuestas, con el mismo criterio de igualdad que para la comparación entre reales y estimados.
+			for( auto j: i_res)
+			{
+				if(aux_res == j)
+					continue;
+				else
+					i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+			}
 		}
 
 
