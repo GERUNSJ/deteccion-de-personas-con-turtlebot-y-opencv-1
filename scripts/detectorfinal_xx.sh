@@ -12,6 +12,10 @@ DF_MINNEIGHBORS=4
 DF_USAR_PROFUNDIDAD=false
 DF_BLUREAR=false
 DF_TAMANIO_BLUR=3
+DF_FILTRO_ENFOQUE=false
+DF_FILTRO_REPUJADO=false
+DF_FILTRO_ENFOQUE_Y_REPUJADO=false
+DF_FILTRO_REPUJADO_Y_ENFOQUE=false
 
 
 ####################################################################################

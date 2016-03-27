@@ -36,13 +36,37 @@ funcion_csv_headers ()
 	printf "\n" >> $ARCHIVO_CSV
 }
 
+
+funcion_csv_headers_todos () 
+{
+	ARCHIVO_CSV_TODOS=$CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_TODOS.csv
+	
+	# Le adjuntamos los headers. Si 1 es la última línea, los headers son 2 y 5, pero hay un \n que borramos, así que 2 y 4.
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -2 | head -1)" > $ARCHIVO_CSV_TODOS # > overwrite
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -4 | head -1)" >> $ARCHIVO_CSV_TODOS # >> append
+	# Y nueva línea
+	printf "\n" >> $ARCHIVO_CSV_TODOS
+}
+
+
+
 funcion_csv_normal ()
 {	
 	ARCHIVO_CSV=$CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2.csv
+	ARCHIVO_CSV_TODOS=$CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_TODOS.csv
 	
 	# Adjuntamos los valores
 	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -1)" >> $ARCHIVO_CSV # > overwrite
 	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -3 | head -1)" >> $ARCHIVO_CSV # >> append
 	# Y nueva línea
 	printf "\n" >> $ARCHIVO_CSV
+	
+	
+	# Y al archivo de todos 
+	# Adjuntamos los valores
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -1)" >> $ARCHIVO_CSV_TODOS # > overwrite
+	printf "$(cat $CARPETA_RESULTADOS/$SUBCARPETA/R\_$PREFIJO1\_$PREFIJO2\_$NOMBRE_RESULTADOS.txt | grep "." | tail -3 | head -1)" >> $ARCHIVO_CSV_TODOS # >> append
+	# Y nueva línea
+	printf "\n" >> $ARCHIVO_CSV_TODOS
+	
 }
