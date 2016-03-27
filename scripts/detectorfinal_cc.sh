@@ -7,7 +7,7 @@
 
 # Otros parámetros
 #DF_DIR_CASCADA=./../clasificadores/visionary.net_pedestrian_cascade_web_LBP.xml
-DF_ESCALA_INICIAL=1
+DF_ESCALA_INICIAL=1.3
 DF_CONVERTIR_A_GRIS=true
 DF_ECUALIZAR_HISTOGRAMA=true
 DF_SCALEFACTOR=1.1

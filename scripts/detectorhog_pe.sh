@@ -3,6 +3,7 @@
 # PRUEBAS VARIANDO EL FACTOR DE ESCALADO
 
 # Parámetros
+DH_ESCALA_INICIAL=1.3
 #DH_PASOESCALA=1.05
 DH_UMBRALAGRUPAMIENTO=2
 DH_HIT_THRESHOLD=0
@@ -13,15 +14,15 @@ DH_BLUREAR=false
 DH_TAMANIO_BLUR=3
 
 
-####################################################################################
-#			PRUEBA 01
-NOMBRE_RESULTADOS=01
-
-DH_PASOESCALA=1.01
-
-funcion_detector_hog
-funcion_csv_headers
-funcion_csv_normal
+# ####################################################################################
+# #			PRUEBA 01
+# NOMBRE_RESULTADOS=01
+# 
+# DH_PASOESCALA=1.01
+# 
+# funcion_detector_hog
+# funcion_csv_headers
+# funcion_csv_normal
 
 
 ####################################################################################
@@ -31,6 +32,7 @@ NOMBRE_RESULTADOS=02
 DH_PASOESCALA=1.05
 
 funcion_detector_hog
+funcion_csv_headers
 funcion_csv_normal
 
 
