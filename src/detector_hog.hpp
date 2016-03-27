@@ -43,6 +43,25 @@ public:
 	bool blurear = false;
 	// Tamaño del filtro de suavizado
 	unsigned int tamanio_blur = 3;
+	// Pasar filtro de repujado
+	bool filtro_repujado = false;
+	// Pasar filtro de enfoque  // Sharpen
+	bool filtro_enfoque = false;
+	// Repujado y enfoque
+	bool filtro_repujado_y_enfoque = false;
+	// Enfoque y repujado
+	bool filtro_enfoque_y_repujado = false;
+
+
+	// Kernels para filtrado
+	// Kernels
+	cv::Mat kernel_repujado =  (cv::Mat_<float>(3,3) << -2 , -1 , 0 ,
+	                                                    -1 ,  1 , 1 ,
+	                                                     0 ,  1 , 2 )/1;
+	cv::Mat kernel_enfoque = (cv::Mat_<float>(3,3) <<  0 , -1 ,  0 ,
+				                                      -1 ,  5 , -1 ,
+				                                       0 , -1 ,  0 )/1;
+
 
 
 	DetectorHOG(std::vector<std::string>argumentos_nombre, std::vector<std::string>argumentos_valor);

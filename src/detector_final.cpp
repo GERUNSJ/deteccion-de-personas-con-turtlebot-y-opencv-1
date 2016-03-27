@@ -143,6 +143,38 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 			this->tamanio_blur = stoi(argumentos_valor.at(i));
 		}
 
+		else if( argumentos_nombre.at(i) == "filtro_repujado")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_repujado = false;
+			else
+				this->filtro_repujado = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "filtro_enfoque")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_enfoque = false;
+			else
+				this->filtro_enfoque = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "filtro_enfoque_y_repujado")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_enfoque_y_repujado = false;
+			else
+				this->filtro_enfoque_y_repujado = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "filtro_repujado_y_enfoque")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_repujado_y_enfoque = false;
+			else
+				this->filtro_repujado_y_enfoque = true;
+		}
+
 		else
 		{
 			cout << "\nNo se reconoció el parámetro " << argumentos_nombre.at(i) << " pasado como argumento." << endl;
@@ -151,11 +183,13 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 	}
 
 	// Cargamos el modelo o cascada
-    if( !cascada.load( direccion_a_cascada ) )
+    if( direccion_a_cascada.empty() || !cascada.load( direccion_a_cascada ) )
     {
         cerr << "ERROR: Could not load classifier cascade" << endl;
         return;
     }
+
+
 
 //	// Se cargan los nombres y valores (strings) de los parámetros del detector.
 //	// Estos son los que luegos se escriben en el archivo de información txt
@@ -196,8 +230,27 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
 	else
 		parametros_valor.push_back("false");
 	parametros_nombre.push_back("tamanio_blur");
-		parametros_valor.push_back(to_string(tamanio_blur));
-
+	parametros_valor.push_back(to_string(tamanio_blur));
+	parametros_nombre.push_back("filtro_enfoque");
+	if( filtro_enfoque )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("filtro_repujado");
+	if( filtro_repujado )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("filtro_enfoque_y_repujado");
+	if( filtro_enfoque_y_repujado )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("filtro_repujado_y_enfoque");
+	if( filtro_repujado_y_enfoque )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
 
 }
 
@@ -258,6 +311,25 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 
     if( blurear )
     	blur( gray, gray, Size(tamanio_blur,tamanio_blur) );
+
+    if( filtro_repujado && !filtro_repujado_y_enfoque && !filtro_enfoque_y_repujado )
+    	filter2D( gray, gray, -1, kernel_repujado);
+
+    if( filtro_enfoque && !filtro_repujado_y_enfoque && !filtro_enfoque_y_repujado )
+    	filter2D( gray, gray, -1, kernel_enfoque);
+
+    if( filtro_repujado_y_enfoque )
+    {
+    	filter2D( gray, gray, -1, kernel_repujado);
+    	filter2D( gray, gray, -1, kernel_enfoque);
+    }
+
+    if( filtro_enfoque_y_repujado )
+    {
+    	filter2D( gray, gray, -1, kernel_enfoque);
+    	filter2D( gray, gray, -1, kernel_repujado);
+    }
+
 
     resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
 

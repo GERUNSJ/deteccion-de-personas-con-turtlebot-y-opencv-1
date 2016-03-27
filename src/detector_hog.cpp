@@ -68,6 +68,38 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 			this->tamanio_blur = stoi(argumentos_valor.at(i));
 		}
 
+		else if( argumentos_nombre.at(i) == "filtro_repujado")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_repujado = false;
+			else
+				this->filtro_repujado = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "filtro_enfoque")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_enfoque = false;
+			else
+				this->filtro_enfoque = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "filtro_enfoque_y_repujado")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_enfoque_y_repujado = false;
+			else
+				this->filtro_enfoque_y_repujado = true;
+		}
+
+		else if( argumentos_nombre.at(i) == "filtro_repujado_y_enfoque")
+		{
+			if( (!strcmp(argumentos_valor.at(i).c_str(), "0") || !strcmp(argumentos_valor.at(i).c_str(), "false")))
+				this->filtro_repujado_y_enfoque = false;
+			else
+				this->filtro_repujado_y_enfoque = true;
+		}
+
 		else
 		{
 			cout << "\nNo se reconoció el parámetro " << argumentos_nombre.at(i) << " pasado como argumento." << endl;
@@ -162,7 +194,27 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 	else
 		parametros_valor.push_back("false");
 	parametros_nombre.push_back("tamanio_blur");
-		parametros_valor.push_back(to_string(tamanio_blur));
+	parametros_valor.push_back(to_string(tamanio_blur));
+	parametros_nombre.push_back("filtro_enfoque");
+	if( filtro_enfoque )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("filtro_repujado");
+	if( filtro_repujado )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("filtro_enfoque_y_repujado");
+	if( filtro_enfoque_y_repujado )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
+	parametros_nombre.push_back("filtro_repujado_y_enfoque");
+	if( filtro_repujado_y_enfoque )
+		parametros_valor.push_back("true");
+	else
+		parametros_valor.push_back("false");
 
 }
 
