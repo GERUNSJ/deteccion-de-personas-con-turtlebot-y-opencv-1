@@ -10,7 +10,7 @@ DF_ECUALIZAR_HISTOGRAMA=true
 DF_SCALEFACTOR=1.1
 DF_MINNEIGHBORS=4
 DF_USAR_PROFUNDIDAD=false
-DF_BLUREAR=false
+# DF_BLUREAR=false
 # DF_TAMANIO_BLUR=3
 DF_FILTRO_ENFOQUE=false
 DF_FILTRO_REPUJADO=false
@@ -21,7 +21,8 @@ DF_FILTRO_REPUJADO_Y_ENFOQUE=false
 #			PRUEBA 01
 NOMBRE_RESULTADOS=01
 
-DF_TAMANIO_BLUR=1
+DF_BLUREAR=false
+DF_TAMANIO_BLUR=3
 
 funcion_detector_final
 funcion_csv_headers
@@ -33,7 +34,8 @@ funcion_csv_normal
 #			PRUEBA 02
 NOMBRE_RESULTADOS=02
 
-DF_TAMANIO_BLUR=2
+DF_BLUREAR=true
+DF_TAMANIO_BLUR=3
 
 funcion_detector_final
 funcion_csv_normal
@@ -43,7 +45,8 @@ funcion_csv_normal
 #			PRUEBA 03
 NOMBRE_RESULTADOS=03
 
-DF_TAMANIO_BLUR=3
+DF_BLUREAR=true
+DF_TAMANIO_BLUR=5
 
 funcion_detector_final
 funcion_csv_normal
@@ -51,9 +54,10 @@ funcion_csv_normal
 
 ####################################################################################
 #			PRUEBA 04
-NOMBRE_RESULTADOS=02
+NOMBRE_RESULTADOS=04
 
-DF_TAMANIO_BLUR=4
+DF_BLUREAR=true
+DF_TAMANIO_BLUR=7
 
 funcion_detector_final
 funcion_csv_normal
@@ -63,17 +67,9 @@ funcion_csv_normal
 #			PRUEBA 05
 NOMBRE_RESULTADOS=05
 
-DF_TAMANIO_BLUR=5
+DF_BLUREAR=true
+DF_TAMANIO_BLUR=9
 
 funcion_detector_final
 funcion_csv_normal
 
-
-####################################################################################
-#			PRUEBA 06
-NOMBRE_RESULTADOS=06
-
-DF_TAMANIO_BLUR=6
-
-funcion_detector_final
-funcion_csv_normal

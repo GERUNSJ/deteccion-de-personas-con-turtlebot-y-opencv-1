@@ -22,7 +22,7 @@ DF_FILTRO_REPUJADO_Y_ENFOQUE=false
 #			PRUEBA 01
 NOMBRE_RESULTADOS=01
 
-DF_MINNEIGHBORS=1
+DF_MINNEIGHBORS=0
 
 funcion_detector_final
 funcion_csv_headers
@@ -33,7 +33,7 @@ funcion_csv_normal
 #			PRUEBA 02
 NOMBRE_RESULTADOS=02
 
-DF_MINNEIGHBORS=2
+DF_MINNEIGHBORS=1
 
 funcion_detector_final
 funcion_csv_normal
@@ -43,7 +43,7 @@ funcion_csv_normal
 #			PRUEBA 03
 NOMBRE_RESULTADOS=03
 
-DF_MINNEIGHBORS=3
+DF_MINNEIGHBORS=2
 
 funcion_detector_final
 funcion_csv_normal
@@ -51,9 +51,9 @@ funcion_csv_normal
 
 ####################################################################################
 #			PRUEBA 04
-NOMBRE_RESULTADOS=02
+NOMBRE_RESULTADOS=04
 
-DF_MINNEIGHBORS=4
+DF_MINNEIGHBORS=3
 
 funcion_detector_final
 funcion_csv_normal
@@ -63,7 +63,7 @@ funcion_csv_normal
 #			PRUEBA 05
 NOMBRE_RESULTADOS=05
 
-DF_MINNEIGHBORS=5
+DF_MINNEIGHBORS=4
 
 funcion_detector_final
 funcion_csv_normal
@@ -73,7 +73,7 @@ funcion_csv_normal
 #			PRUEBA 06
 NOMBRE_RESULTADOS=06
 
-DF_MINNEIGHBORS=6
+DF_MINNEIGHBORS=5
 
 funcion_detector_final
 funcion_csv_normal
@@ -81,7 +81,17 @@ funcion_csv_normal
 
 ####################################################################################
 #			PRUEBA 07
-NOMBRE_RESULTADOS=06
+NOMBRE_RESULTADOS=07
+
+DF_MINNEIGHBORS=6
+
+funcion_detector_final
+funcion_csv_normal
+
+
+####################################################################################
+#			PRUEBA 08
+NOMBRE_RESULTADOS=08
 
 DF_MINNEIGHBORS=7
 
@@ -90,8 +100,8 @@ funcion_csv_normal
 
 
 ####################################################################################
-#			PRUEBA 08
-NOMBRE_RESULTADOS=06
+#			PRUEBA 09
+NOMBRE_RESULTADOS=09
 
 DF_MINNEIGHBORS=8
 

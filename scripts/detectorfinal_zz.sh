@@ -18,14 +18,14 @@ DF_FILTRO_ENFOQUE_Y_REPUJADO=false
 DF_FILTRO_REPUJADO_Y_ENFOQUE=false
 
 
-####################################################################################
-#			PRUEBA 01
-NOMBRE_RESULTADOS=01
-
-DF_ESCALA_INICIAL=1
-DF_SCALEFACTOR=1.1
-DF_MINNEIGHBORS=4
-
-funcion_detector_final
-funcion_csv_headers
-funcion_csv_normal
+# ####################################################################################
+# #			PRUEBA 01
+# NOMBRE_RESULTADOS=01
+# 
+# DF_ESCALA_INICIAL=1
+# DF_SCALEFACTOR=1.1
+# DF_MINNEIGHBORS=4
+# 
+# funcion_detector_final
+# funcion_csv_headers
+# funcion_csv_normal

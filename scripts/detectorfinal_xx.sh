@@ -34,8 +34,8 @@ funcion_csv_normal
 #			PRUEBA 02
 NOMBRE_RESULTADOS=02
 
-DF_CONVERTIR_A_GRIS=false
-DF_ECUALIZAR_HISTOGRAMA=true
+DF_CONVERTIR_A_GRIS=true
+DF_ECUALIZAR_HISTOGRAMA=false
 
 funcion_detector_final
 funcion_csv_normal
@@ -46,7 +46,7 @@ funcion_csv_normal
 NOMBRE_RESULTADOS=03
 
 DF_CONVERTIR_A_GRIS=true
-DF_ECUALIZAR_HISTOGRAMA=false
+DF_ECUALIZAR_HISTOGRAMA=true
 
 funcion_detector_final
 funcion_csv_normal
@@ -58,15 +58,6 @@ NOMBRE_RESULTADOS=04
 
 DF_CONVERTIR_A_GRIS=true
 DF_ECUALIZAR_HISTOGRAMA=true
-
-funcion_detector_final
-funcion_csv_normal
-
-
-####################################################################################
-#			PRUEBA 05
-NOMBRE_RESULTADOS=05
-
 DF_USAR_PROFUNDIDAD=true
 
 funcion_detector_final

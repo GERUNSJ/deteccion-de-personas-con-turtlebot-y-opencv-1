@@ -22,8 +22,10 @@ DF_TAMANIO_BLUR=3
 #			PRUEBA 01
 NOMBRE_RESULTADOS=01
 
-DF_FILTRO_ENFOQUE=true
+DF_FILTRO_ENFOQUE=false
 DF_FILTRO_REPUJADO=false
+DF_FILTRO_ENFOQUE_Y_REPUJADO=false
+DF_FILTRO_REPUJADO_Y_ENFOQUE=false
 
 funcion_detector_final
 funcion_csv_headers
@@ -34,8 +36,10 @@ funcion_csv_normal
 #			PRUEBA 02
 NOMBRE_RESULTADOS=02
 
-DF_FILTRO_ENFOQUE=false
-DF_FILTRO_REPUJADO=true
+DF_FILTRO_ENFOQUE=true
+DF_FILTRO_REPUJADO=false
+DF_FILTRO_ENFOQUE_Y_REPUJADO=false
+DF_FILTRO_REPUJADO_Y_ENFOQUE=false
 
 funcion_detector_final
 funcion_csv_normal
@@ -45,7 +49,9 @@ funcion_csv_normal
 #			PRUEBA 03
 NOMBRE_RESULTADOS=03
 
-DF_FILTRO_ENFOQUE_Y_REPUJADO=true
+DF_FILTRO_ENFOQUE=false
+DF_FILTRO_REPUJADO=true
+DF_FILTRO_ENFOQUE_Y_REPUJADO=false
 DF_FILTRO_REPUJADO_Y_ENFOQUE=false
 
 funcion_detector_final
@@ -56,6 +62,21 @@ funcion_csv_normal
 #			PRUEBA 04
 NOMBRE_RESULTADOS=04
 
+DF_FILTRO_ENFOQUE=false
+DF_FILTRO_REPUJADO=false
+DF_FILTRO_ENFOQUE_Y_REPUJADO=true
+DF_FILTRO_REPUJADO_Y_ENFOQUE=false
+
+funcion_detector_final
+funcion_csv_normal
+
+
+####################################################################################
+#			PRUEBA 05
+NOMBRE_RESULTADOS=05
+
+DF_FILTRO_ENFOQUE=false
+DF_FILTRO_REPUJADO=false
 DF_FILTRO_ENFOQUE_Y_REPUJADO=false
 DF_FILTRO_REPUJADO_Y_ENFOQUE=true
 

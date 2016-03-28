@@ -23,8 +23,8 @@ DH_FILTRO_REPUJADO_Y_ENFOQUE=false
 #			PRUEBA 01
 NOMBRE_RESULTADOS=01
 
-DH_CONVERTIR_A_GRIS=true
-DH_ECUALIZAR_HISTOGRAMA=true
+DH_CONVERTIR_A_GRIS=false
+DH_ECUALIZAR_HISTOGRAMA=false
 
 funcion_detector_hog
 funcion_csv_headers
@@ -46,8 +46,8 @@ funcion_csv_normal
 #			PRUEBA 03
 NOMBRE_RESULTADOS=03
 
-DH_CONVERTIR_A_GRIS=false
-DH_ECUALIZAR_HISTOGRAMA=false
+DH_CONVERTIR_A_GRIS=true
+DH_ECUALIZAR_HISTOGRAMA=true
 
 funcion_detector_hog
 funcion_csv_normal

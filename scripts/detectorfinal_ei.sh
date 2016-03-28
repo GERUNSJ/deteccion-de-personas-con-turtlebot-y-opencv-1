@@ -53,7 +53,7 @@ funcion_csv_normal
 
 ####################################################################################
 #			PRUEBA 04
-NOMBRE_RESULTADOS=02
+NOMBRE_RESULTADOS=04
 
 DF_ESCALA_INICIAL=1.5
 

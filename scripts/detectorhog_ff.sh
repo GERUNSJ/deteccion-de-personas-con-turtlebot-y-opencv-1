@@ -23,8 +23,11 @@ DH_TAMANIO_BLUR=3
 #			PRUEBA 01
 NOMBRE_RESULTADOS=01
 
-DH_FILTRO_ENFOQUE=true
+DH_FILTRO_ENFOQUE=false
 DH_FILTRO_REPUJADO=false
+DH_FILTRO_ENFOQUE_Y_REPUJADO=false
+DH_FILTRO_REPUJADO_Y_ENFOQUE=false
+
 
 funcion_detector_hog
 funcion_csv_headers
@@ -35,8 +38,11 @@ funcion_csv_normal
 #			PRUEBA 02
 NOMBRE_RESULTADOS=02
 
-DH_FILTRO_ENFOQUE=false
-DH_FILTRO_REPUJADO=true
+DH_FILTRO_ENFOQUE=true
+DH_FILTRO_REPUJADO=false
+DH_FILTRO_ENFOQUE_Y_REPUJADO=false
+DH_FILTRO_REPUJADO_Y_ENFOQUE=false
+
 
 funcion_detector_hog
 funcion_csv_normal
@@ -46,8 +52,11 @@ funcion_csv_normal
 #			PRUEBA 03
 NOMBRE_RESULTADOS=03
 
-DH_FILTRO_ENFOQUE_Y_REPUJADO=true
+DH_FILTRO_ENFOQUE=false
+DH_FILTRO_REPUJADO=true
+DH_FILTRO_ENFOQUE_Y_REPUJADO=false
 DH_FILTRO_REPUJADO_Y_ENFOQUE=false
+
 
 funcion_detector_hog
 funcion_csv_normal
@@ -57,8 +66,25 @@ funcion_csv_normal
 #			PRUEBA 04
 NOMBRE_RESULTADOS=04
 
+DH_FILTRO_ENFOQUE=false
+DH_FILTRO_REPUJADO=false
+DH_FILTRO_ENFOQUE_Y_REPUJADO=true
+DH_FILTRO_REPUJADO_Y_ENFOQUE=false
+
+
+funcion_detector_hog
+funcion_csv_normal
+
+
+####################################################################################
+#			PRUEBA 05
+NOMBRE_RESULTADOS=05
+
+DH_FILTRO_ENFOQUE=false
+DH_FILTRO_REPUJADO=false
 DH_FILTRO_ENFOQUE_Y_REPUJADO=false
 DH_FILTRO_REPUJADO_Y_ENFOQUE=true
+
 
 funcion_detector_hog
 funcion_csv_normal

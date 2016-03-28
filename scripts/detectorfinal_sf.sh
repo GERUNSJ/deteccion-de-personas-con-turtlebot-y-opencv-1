@@ -29,19 +29,9 @@ funcion_csv_headers
 funcion_csv_normal
 
 
-# ####################################################################################
-# #			PRUEBA 02
-# NOMBRE_RESULTADOS=02
-# 
-# DF_SCALEFACTOR=1.05
-# 
-# funcion_detector_final
-# funcion_csv_normal
-
-
 ####################################################################################
-#			PRUEBA 03
-NOMBRE_RESULTADOS=03
+#			PRUEBA 02
+NOMBRE_RESULTADOS=02
 
 DF_SCALEFACTOR=1.1
 
@@ -50,10 +40,20 @@ funcion_csv_normal
 
 
 ####################################################################################
-#			PRUEBA 04
-NOMBRE_RESULTADOS=02
+#			PRUEBA 03
+NOMBRE_RESULTADOS=03
 
 DF_SCALEFACTOR=1.15
+
+funcion_detector_final
+funcion_csv_normal
+
+
+####################################################################################
+#			PRUEBA 04
+NOMBRE_RESULTADOS=04
+
+DF_SCALEFACTOR=1.2
 
 funcion_detector_final
 funcion_csv_normal
@@ -63,7 +63,7 @@ funcion_csv_normal
 #			PRUEBA 05
 NOMBRE_RESULTADOS=05
 
-DF_SCALEFACTOR=1.2
+DF_SCALEFACTOR=1.4
 
 funcion_detector_final
 funcion_csv_normal
@@ -73,7 +73,7 @@ funcion_csv_normal
 #			PRUEBA 06
 NOMBRE_RESULTADOS=06
 
-DF_SCALEFACTOR=1.4
+DF_SCALEFACTOR=2
 
 funcion_detector_final
 funcion_csv_normal
@@ -82,17 +82,6 @@ funcion_csv_normal
 ####################################################################################
 #			PRUEBA 07
 NOMBRE_RESULTADOS=07
-
-DF_SCALEFACTOR=2
-
-funcion_detector_final
-funcion_csv_normal
-
-
-
-####################################################################################
-#			PRUEBA 08
-NOMBRE_RESULTADOS=08
 
 DF_SCALEFACTOR=4
 

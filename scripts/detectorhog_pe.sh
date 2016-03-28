@@ -18,20 +18,10 @@ DH_FILTRO_ENFOQUE_Y_REPUJADO=false
 DH_FILTRO_REPUJADO_Y_ENFOQUE=false
 
 
-# ####################################################################################
-# #			PRUEBA 01
-# NOMBRE_RESULTADOS=01
-# 
-# DH_PASOESCALA=1.01
-# 
-# funcion_detector_hog
-# funcion_csv_headers
-# funcion_csv_normal
-
 
 ####################################################################################
-#			PRUEBA 02
-NOMBRE_RESULTADOS=02
+#			PRUEBA 01
+NOMBRE_RESULTADOS=01
 
 DH_PASOESCALA=1.05
 
@@ -42,10 +32,20 @@ funcion_csv_normal
 
 
 ####################################################################################
+#			PRUEBA 02
+NOMBRE_RESULTADOS=02
+
+DH_PASOESCALA=1.1
+
+funcion_detector_hog
+funcion_csv_normal
+
+
+####################################################################################
 #			PRUEBA 03
 NOMBRE_RESULTADOS=03
 
-DH_PASOESCALA=1.1
+DH_PASOESCALA=1.15
 
 funcion_detector_hog
 funcion_csv_normal
@@ -55,7 +55,7 @@ funcion_csv_normal
 #			PRUEBA 04
 NOMBRE_RESULTADOS=04
 
-DH_PASOESCALA=1.15
+DH_PASOESCALA=1.2
 
 funcion_detector_hog
 funcion_csv_normal
@@ -65,7 +65,7 @@ funcion_csv_normal
 #			PRUEBA 05
 NOMBRE_RESULTADOS=05
 
-DH_PASOESCALA=1.2
+DH_PASOESCALA=1.4
 
 funcion_detector_hog
 funcion_csv_normal
@@ -75,7 +75,7 @@ funcion_csv_normal
 #			PRUEBA 06
 NOMBRE_RESULTADOS=06
 
-DH_PASOESCALA=1.4
+DH_PASOESCALA=2
 
 funcion_detector_hog
 funcion_csv_normal
@@ -84,16 +84,6 @@ funcion_csv_normal
 ####################################################################################
 #			PRUEBA 07
 NOMBRE_RESULTADOS=07
-
-DH_PASOESCALA=2
-
-funcion_detector_hog
-funcion_csv_normal
-
-
-####################################################################################
-#			PRUEBA 08
-NOMBRE_RESULTADOS=08
 
 DH_PASOESCALA=4
 

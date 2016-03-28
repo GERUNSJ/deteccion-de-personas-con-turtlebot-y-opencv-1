@@ -17,14 +17,14 @@ DH_FILTRO_ENFOQUE_Y_REPUJADO=false
 DH_FILTRO_REPUJADO_Y_ENFOQUE=false
 
 
-####################################################################################
-#			PRUEBA 01
-NOMBRE_RESULTADOS=01
-
-DH_UMBRALAGRUPAMIENTO=0
-
-funcion_detector_hog
-funcion_csv_headers
-funcion_csv_normal
+# ####################################################################################
+# #			PRUEBA 01
+# NOMBRE_RESULTADOS=01
+# 
+# DH_UMBRALAGRUPAMIENTO=0
+# 
+# funcion_detector_hog
+# funcion_csv_headers
+# funcion_csv_normal
 
 
