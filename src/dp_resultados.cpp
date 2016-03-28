@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
 	bool coincidencia = false;
 	// Suponemos que todas las imagenes son del mismo set..
 	// Evaluación: en cada frame comparamos:
-	for( auto it_frames = frames.begin() ; it_frames != frames.end() ; )
+	for( auto it_frames = frames.begin() ; it_frames != frames.end() ; it_frames++)
 	{
 		// Si hay personas reales marcadas,
 		if( (*it_frames).reales.size() > 0 )
