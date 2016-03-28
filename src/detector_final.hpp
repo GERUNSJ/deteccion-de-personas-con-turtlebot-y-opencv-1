@@ -27,9 +27,9 @@ public:
 	// Número por el que se dividirá la imagen inicialmente. Puede servir si es grande.
 	float escala_inicial = 1;
 	// Tamaño mínimo de las personas a buscar, en pixeles. (Columnas,filas)
-	cv::Size tamanio_minimo{10,30};
+	cv::Size tamanio_minimo{50,100}; // Referidos a la cámara de la Kinect 360 con 640*480. Se escalan según escala_inicial.
 	// Tamaño máximo de las personas a buscar, en pixeles.
-	cv::Size tamanio_maximo{100,300};
+	cv::Size tamanio_maximo{180,360}; // Referidos a la cámara de la Kinect 360 con 640*480. Se escalan según escala_inicial.
 	// Convertir a escala de grises antes de detectar
 	bool convertir_a_gris = true;
 	// Ecualizar histograma antes de detectar, posterior a convertir_a_gris

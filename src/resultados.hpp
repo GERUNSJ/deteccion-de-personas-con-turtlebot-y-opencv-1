@@ -31,10 +31,12 @@ public:
 
 	struct_resultados() {};
 
+	// Calcula centros y medidas del elemento
 	void calcular();
 
 	//friend bool operator==(const struct_resultados& a, const struct_resultados& b);
 
+	// Se calculan con el método calcular
 	float centro_x = 0;				//
 	float centro_y = 0;
 	float ancho = 0;

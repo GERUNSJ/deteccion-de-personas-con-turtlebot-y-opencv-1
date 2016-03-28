@@ -190,6 +190,9 @@ DetectorFinal::DetectorFinal(vector<string>argumentos_nombre, vector<string>argu
     }
 
 
+    // Escalado de tamaños mínimos y máximos
+    tamanio_minimo = Size( round((float)tamanio_minimo.width/escala_inicial) , round((float)tamanio_minimo.height/escala_inicial) );
+    tamanio_maximo = Size( round((float)tamanio_maximo.width/escala_inicial) , round((float)tamanio_maximo.height/escala_inicial) );
 
 //	// Se cargan los nombres y valores (strings) de los parámetros del detector.
 //	// Estos son los que luegos se escriben en el archivo de información txt
@@ -384,6 +387,12 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 		else
 			aux_res.prof = 16;
 
+		/* TODO: Hacer una mejor función de agrupamiento, que compare todos con todos
+		 * y deje rects promedios. La de OpenCV (groupRectangles) no está funcionando como debería
+		 * en 2.4.8.*/
+
+		// Calculamos centros y medidas, para las comparaciones.
+		aux_res.calcular();
 
 		// Si es la primera detección en esta imagen, la guardamos.
 		if( i_res.empty() )
@@ -391,29 +400,42 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 		else
 		{
 			// Eliminamos detecciones superpuestas, con el mismo criterio de igualdad que para la comparación entre reales y estimados.
+			bool distinto = true;
 			for( auto j: i_res)
 			{
-				if(aux_res == j)
-					continue;
-				else
-					i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+				if(aux_res == j) // aux_res es la referencia de tamaño
+				{
+					//cout << "\nSon iguales";
+					distinto = false;
+					break;
+				}
+			}
+			if( distinto )
+			{
+				i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
 			}
 		}
 
 
 
         // Show
-        if( mostrar_detecciones )
-        {
-					// Creamos un rectángulo en una copia de la imagen original. tl es top-left, br es bottom-right
-					rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 3);
-        }
+		if( mostrar_detecciones )
+		{
+			// Creamos un rectángulo en una copia de la imagen original. tl es top-left, br es bottom-right
+			rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 2);
+		}
     }
 
 
     // Show
     if( mostrar_detecciones )
     {
+    	for( auto r : i_res )
+    	{
+    		Rect auxrect;
+    		struct_resultados_a_rect(r, auxrect);
+    		rectangle(con_detecciones, auxrect.tl(), auxrect.br(), cv::Scalar(0,0,255), 1);
+    	}
     	namedWindow("Detecciones", CV_WINDOW_KEEPRATIO | CV_WINDOW_NORMAL);
     	imshow("Detecciones", con_detecciones);
     	waitKey(0);

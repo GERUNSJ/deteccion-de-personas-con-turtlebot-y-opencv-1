@@ -213,21 +213,9 @@ int main(int argc, char* argv[])
 		cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 		cout
 		<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
-		"Uso: dp_opencv  < carpeta/con/imagenes/rgb >\n"
-		"                < carpeta/con/imagenes/profundidad | 0 > (0 no carga nada)\n"
-		"                < numero de imagen inicial >(suponiendo que empiezan en 1)\n"
-		"                < numero de imagen final | 0 > (0 procesa hasta el final)\n"
-		"                </dir/al/archivo_de_resultados > (sin extensión)\n"
-		"                < 1 | 0 > (mostrar_detecciones)\n"
-		"                < clase_de_detector > [parámetro_1_nombre parámetro_1_valor ...]\n"
-		"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
-		"\nDetectores válidos: "
-		"\n* DetectorDummy parametro1 int parametro2 int parametro3 char parametro4 string"
-		"\n* Extractor"
-		"\n* DetectorHOG pasoEscala double umbralAgrupamiento int hit_threshold float setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector> convertir_a_gris bool ecualizar_histograma bool blurear bool tamanio_blur int"
-		"\n* Detector1"
-		"\n* DetectorFinal direccion_a_cascada string escala_inicial float convertir_a_gris bool ecualizar_histograma bool scaleFactor float minNeighbors int usar_profundidad_altura bool blurear bool tamanio_blur int"
-
+		"Uso: dp_cuadros < /dir/al/archivo_de_resultados > (sin extensión)\n"
+		"                < carpeta/con/imagenes/a/marcar >"
+		"\n\n Muestra las imágenes con sus detecciones."
 		"\n\nUsando OpenCV " << CV_VERSION << endl;
 		cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 

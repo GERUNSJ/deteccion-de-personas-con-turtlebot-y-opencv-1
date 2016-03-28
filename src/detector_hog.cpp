@@ -311,20 +311,35 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 
     // Esta parte..qué hace? [DUDA]
     // Borra duplicados, pero dudo que justo hayan 2 rects iguales...luego borramos nosotros
+    /* Edit: Funciona y filtra. Al parecer si hay rects iguales.
+     * template<typename _Tp> static inline bool operator == (const Rect_<_Tp>& a, const Rect_<_Tp>& b)
+     * 	{
+     * 	return a.x == b.x && a.y == b.y && a.width == b.width && a.height == b.height;
+     * 	}
+     * 	*/
+
     size_t i, j;
     for( i = 0; i < found.size(); i++ )
     {
         Rect r = found[i];
-        for( j = 0; j < found.size(); j++ )
-            if( j != i && (r & found[j]) == r)
+        for( j = 0; j < found.size(); j++ ) // Para todos los rects encontrados
+            if( j != i && (r & found[j]) == r) // si hay dos iguales
                 break;
-        if( j == found.size() )
+        if( j == found.size() ) // Si no hubieron dos iguales, lo guarda
             found_filtered.push_back(r);
     }
 
 //    for( auto i: found_filtered)
 //    	cout << "\nFound_filtered = " << i << endl;
 
+
+    // Invertimos el orden, para ordenarlos de menor a mayor. Así, preservamos los rectángulos más chicos
+    // al comparar coincidencias a continuación.
+    // La comparacion entre struct_resultados toma como referencia de tamaño al primer elemento.
+   // reverse( found_filtered.begin() , found_filtered.end() );
+    /* TODO: Ordenarl los rects encontrados según su área, de menor a mayor, por la razón de arriba.
+     * El detector los devuelve en un orden aleatorio a primera vista.
+     */
 
 
     // Para cada detección
@@ -357,18 +372,37 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 		else
 			aux_res.prof = 16;
 
+
+		// Calculamos centros y medidas, para las comparaciones.
+		aux_res.calcular();
+
+
+		//cout << "\nr["<<i<<"] = " << r;
+
+		/* TODO: Hacer una mejor función de agrupamiento, que compare todos con todos
+		 * y deje rects promedios. La de OpenCV (groupRectangles) no está funcionando como debería
+		 * en 2.4.8.*/
+
+
 		// Si es la primera detección en esta imagen, la guardamos.
 		if( i_res.empty() )
 			 i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
 		else
 		{
 			// Eliminamos detecciones superpuestas, con el mismo criterio de igualdad que para la comparación entre reales y estimados.
+			bool distinto = true;
 			for( auto j: i_res)
 			{
-				if(aux_res == j)
-					continue;
-				else
-					i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
+				if(aux_res == j) // aux_res es la referencia de tamaño
+				{
+					//cout << "\nSon iguales";
+					distinto = false;
+					break;
+				}
+			}
+			if( distinto )
+			{
+				i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
 			}
 		}
 
@@ -378,7 +412,7 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
         if( mostrar_detecciones )
         {
         	// Creamos un rectángulo en una copia de la imagen original. tl es top-left, br es bottom-right
-            rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 3);
+            rectangle(con_detecciones, r.tl(), r.br(), cv::Scalar(0,255,0), 2);
         }
     }
 
@@ -387,6 +421,12 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
     // Show
     if( mostrar_detecciones )
     {
+    	for( auto r : i_res )
+    	{
+    		Rect auxrect;
+    		struct_resultados_a_rect(r, auxrect);
+    		rectangle(con_detecciones, auxrect.tl(), auxrect.br(), cv::Scalar(0,0,255), 1);
+    	}
     	namedWindow("Detecciones", CV_WINDOW_KEEPRATIO | CV_WINDOW_NORMAL);
     	imshow("Detecciones", con_detecciones);
     	waitKey(0);

@@ -144,7 +144,51 @@ int main(int argc, char* argv[])
 	bool coincidencia = false;
 	// Suponemos que todas las imagenes son del mismo set..
 	// Evaluación: en cada frame comparamos:
-	for( auto& f : frames )	// Range-based for. Atento al & para pasar por referencia.
+	for( auto it_frames = frames.begin() ; it_frames != frames.end() ; )
+	{
+		// Si hay personas reales marcadas,
+		if( (*it_frames).reales.size() > 0 )
+		{
+			// a cada persona real
+			for( auto it_reales = (*it_frames).reales.begin() ; it_reales != (*it_frames).reales.end() ; it_reales++)
+			{
+				coincidencia = false;
+
+				// la comparamos con todas las detecciones (que no han coincidido todavía con una persona real),
+				for( auto it_estimados = (*it_frames).estimados.begin() ; it_estimados != (*it_frames).estimados.end() ; )
+				{
+					// y si hay coincidencia con alguna
+					/*(se permiten múltiples detecciones, pero serán asignadas sólo una vez. Si hay una persona
+					 * superpuesta a otra, las detecciones serán asignadas sólo a una de ellas.)*/
+					if( (*it_reales) == (*it_estimados) )
+					{
+						coincidencia = true;
+						// contamos la detección como un verdadero positivo
+						(*it_frames).verdaderos_positivos ++;
+						// y la borramos del vector, pues ya fue contada.
+						(*it_frames).estimados.pop_back();
+					}
+					else // Sólo avanza cuando no borró. En caso contrario, estaría saltando un elemento.
+						it_estimados ++;
+				}
+
+				// Si no hubo coincidencia, se cuenta un falso negativo
+				if( coincidencia == false )
+				{
+					(*it_frames).falsos_negativos ++;
+				}
+			}
+		}
+
+		// Las detecciones que no coincidieron con ninguna persona real marcada se cuentan como falsos positivos.
+		(*it_frames).falsos_positivos = (*it_frames).estimados.size();
+	}
+
+	/* Lo siguiente es lo mismo de arriba, pero implementado con range-based for. Lo dejo para futura referencia. Nótese
+	 * su simplicidad. El for más interno (for( auto& e: f.estimados )) elimina elementos adentro, EL PROBLEMA ES QUE EL RANGE-BASED-FOR NO
+	 * ESTÁ PREPARADO PARA ESTO. POR TANTO, SALTEA ELEMENTOS.
+	 */
+	/*for( auto& f : frames )	// Range-based for. Atento al & para pasar por referencia.
 	{
 		if( f.reales.size() > 0 )
 		{
@@ -178,6 +222,7 @@ int main(int argc, char* argv[])
 //		cout << "\nFalsos positivos = " << f.falsos_positivos;
 //		cout << "\nFalsos negativos = " << f.falsos_negativos;
 	}
+	*/
 
 	cout << "\n-----------\n";
 
@@ -185,7 +230,7 @@ int main(int argc, char* argv[])
 	unsigned int fpos = 0;
 	unsigned int fneg = 0;
 
-	for( auto f: frames )
+	for( auto& f: frames )
 	{
 		vpos += f.verdaderos_positivos;
 		fpos += f.falsos_positivos;
@@ -200,7 +245,7 @@ int main(int argc, char* argv[])
 	float recall = (float)vpos / (vpos + fneg); // De los buenos, cuantos encontró
 	float metrica4 = precision*recall;
 	float metrica5 = 2*(precision*recall)/(precision+recall); // F1
-	float metrica6 = metrica5 * tiempo_promedio;
+	float metrica6 = metrica5 / tiempo_promedio;
 
 	// SALIDA
 	size_t pos_barra = i_reales.find_last_of("/\\"); // Encuentra la última barra
@@ -264,7 +309,7 @@ int main(int argc, char* argv[])
 	informe_nombres.push_back("F1: 2*(precision*recall)/(precision+recall)");
 	informe_valores.push_back(to_string( metrica5 ));
 
-	informe_nombres.push_back("F1*tiempo promedio");
+	informe_nombres.push_back("F1/tiempo promedio");
 	informe_valores.push_back(to_string( metrica6 ));
 
 //	informe_nombres.push_back("");
