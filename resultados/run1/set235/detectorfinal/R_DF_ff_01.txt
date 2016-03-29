@@ -1,0 +1,44 @@
+Archivo estimados = DF_ff_01
+Archivo reales = set235_reales
+Imagenes analizadas = 900
+Total de detecciones = 613
+Verdaderos positivos = 508
+Falsos positivos = 105
+Falsos negativos = 450
+Miss rate: fneg/(vpos+fneg) = 0.469729
+Miss rate * tiempo promedio = 19.391119
+FFPW = 0.116667
+100*Miss rate * FPPW = 5.480167
+100*Miss rate * FPPW * tiempo promedio = 226.229721
+Tiempo promedio de detección = 41.281537
+precision: vpos/(vpos+fpos) = 0.828711
+recall: vpos/(vpos+fneg) = 0.530271
+precision*recall = 0.439442
+F1: 2*(precision*recall)/(precision+recall) = 0.646722
+F1/tiempo promedio = 0.015666
+
+
+--------------------
+
+El detector usado fue DetectorFinal
+direccion_a_cascada	./../clasificadores/visionary.net_pedestrian_cascade_web_LBP.xml
+escala_inicial	1.300000
+tamanio_minimo	[38 x 77]
+tamanio_maximo	[138 x 277]
+convertir_a_gris	true
+ecualizar_histograma	true
+scaleFactor	1.100000
+minNeighbors	4
+usar_profundidad_altura	false
+blurear	false
+tamanio_blur	3
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	false
+
+direccion_a_cascada;escala_inicial;tamanio_minimo;tamanio_maximo;convertir_a_gris;ecualizar_histograma;scaleFactor;minNeighbors;usar_profundidad_altura;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;
+./../clasificadores/visionary.net_pedestrian_cascade_web_LBP.xml;1.300000;[38 x 77];[138 x 277];true;true;1.100000;4;false;false;3;false;false;false;false;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);F1/tiempo promedio;
+DF_ff_01;set235_reales;900;613;508;105;450;0.469729;19.391119;0.116667;5.480167;226.229721;41.281537;0.828711;0.530271;0.439442;0.646722;0.015666;

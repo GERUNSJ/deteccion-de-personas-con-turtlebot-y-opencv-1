@@ -1,0 +1,43 @@
+Archivo estimados = DH_ff_05
+Archivo reales = set235_reales
+Imagenes analizadas = 900
+Total de detecciones = 754
+Verdaderos positivos = 664
+Falsos positivos = 90
+Falsos negativos = 251
+Miss rate: fneg/(vpos+fneg) = 0.274317
+Miss rate * tiempo promedio = 16.849228
+FFPW = 0.100000
+100*Miss rate * FPPW = 2.743170
+100*Miss rate * FPPW * tiempo promedio = 168.492294
+Tiempo promedio de detección = 61.422485
+precision: vpos/(vpos+fpos) = 0.880637
+recall: vpos/(vpos+fneg) = 0.725683
+precision*recall = 0.639063
+F1: 2*(precision*recall)/(precision+recall) = 0.795686
+100*F1/tiempo promedio = 1.295431
+F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.844569
+
+
+--------------------
+
+El detector usado fue DetectorHOG
+pasoEscala	1.050000
+umbralAgrupamiento	2
+hit_threshold	0.000000
+setSVMDetector	getDefaultPeopleDetector
+escala_inicial	1.300000
+convertir_a_gris	true
+ecualizar_histograma	true
+blurear	false
+tamanio_blur	3
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	true
+
+pasoEscala;umbralAgrupamiento;hit_threshold;setSVMDetector;escala_inicial;convertir_a_gris;ecualizar_histograma;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;
+1.050000;2;0.000000;getDefaultPeopleDetector;1.300000;true;true;false;3;false;false;false;true;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);100*F1/tiempo promedio;F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall);
+DH_ff_05;set235_reales;900;754;664;90;251;0.274317;16.849228;0.100000;2.743170;168.492294;61.422485;0.880637;0.725683;0.639063;0.795686;1.295431;0.844569;

@@ -1,0 +1,44 @@
+Archivo estimados = DF_cc_03
+Archivo reales = set235_reales
+Imagenes analizadas = 900
+Total de detecciones = 81
+Verdaderos positivos = 1
+Falsos positivos = 80
+Falsos negativos = 913
+Miss rate: fneg/(vpos+fneg) = 0.998906
+Miss rate * tiempo promedio = 16.050644
+FFPW = 0.088889
+100*Miss rate * FPPW = 8.879164
+100*Miss rate * FPPW * tiempo promedio = 142.672394
+Tiempo promedio de detección = 16.068223
+precision: vpos/(vpos+fpos) = 0.012346
+recall: vpos/(vpos+fneg) = 0.001094
+precision*recall = 0.000014
+F1: 2*(precision*recall)/(precision+recall) = 0.002010
+F1/tiempo promedio = 0.000125
+
+
+--------------------
+
+El detector usado fue DetectorFinal
+direccion_a_cascada	./../clasificadores/haarcascade_lowerbody.xml
+escala_inicial	1.300000
+tamanio_minimo	[38 x 77]
+tamanio_maximo	[138 x 277]
+convertir_a_gris	true
+ecualizar_histograma	true
+scaleFactor	1.100000
+minNeighbors	4
+usar_profundidad_altura	false
+blurear	false
+tamanio_blur	3
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	false
+
+direccion_a_cascada;escala_inicial;tamanio_minimo;tamanio_maximo;convertir_a_gris;ecualizar_histograma;scaleFactor;minNeighbors;usar_profundidad_altura;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;
+./../clasificadores/haarcascade_lowerbody.xml;1.300000;[38 x 77];[138 x 277];true;true;1.100000;4;false;false;3;false;false;false;false;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);F1/tiempo promedio;
+DF_cc_03;set235_reales;900;81;1;80;913;0.998906;16.050644;0.088889;8.879164;142.672394;16.068223;0.012346;0.001094;0.000014;0.002010;0.000125;

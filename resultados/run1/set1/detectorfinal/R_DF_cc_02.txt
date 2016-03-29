@@ -1,0 +1,44 @@
+Archivo estimados = DF_cc_02
+Archivo reales = set1_reales
+Imagenes analizadas = 24
+Total de detecciones = 22
+Verdaderos positivos = 2
+Falsos positivos = 20
+Falsos negativos = 14
+Miss rate: fneg/(vpos+fneg) = 0.875000
+Miss rate * tiempo promedio = 27.150753
+FFPW = 0.833333
+100*Miss rate * FPPW = 72.916664
+100*Miss rate * FPPW * tiempo promedio = 2262.562744
+Tiempo promedio de detección = 31.029432
+precision: vpos/(vpos+fpos) = 0.090909
+recall: vpos/(vpos+fneg) = 0.125000
+precision*recall = 0.011364
+F1: 2*(precision*recall)/(precision+recall) = 0.105263
+F1/tiempo promedio = 0.003392
+
+
+--------------------
+
+El detector usado fue DetectorFinal
+direccion_a_cascada	./../clasificadores/haarcascade_fullbody.xml
+escala_inicial	1.300000
+tamanio_minimo	[38 x 77]
+tamanio_maximo	[138 x 277]
+convertir_a_gris	true
+ecualizar_histograma	true
+scaleFactor	1.100000
+minNeighbors	4
+usar_profundidad_altura	false
+blurear	false
+tamanio_blur	3
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	false
+
+direccion_a_cascada;escala_inicial;tamanio_minimo;tamanio_maximo;convertir_a_gris;ecualizar_histograma;scaleFactor;minNeighbors;usar_profundidad_altura;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;
+./../clasificadores/haarcascade_fullbody.xml;1.300000;[38 x 77];[138 x 277];true;true;1.100000;4;false;false;3;false;false;false;false;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);F1/tiempo promedio;
+DF_cc_02;set1_reales;24;22;2;20;14;0.875000;27.150753;0.833333;72.916664;2262.562744;31.029432;0.090909;0.125000;0.011364;0.105263;0.003392;
