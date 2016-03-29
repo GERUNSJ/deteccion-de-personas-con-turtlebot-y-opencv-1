@@ -7,24 +7,40 @@
 #include <cstdio>
 #include "resultados.hpp"
 
-static void ayuda();
+// Para readDirectory
+#if defined(WIN32) || defined(_WIN32)
+#include <io.h>
+#else
+#include <dirent.h>
+#endif
 
 using namespace std;
 
+
+static void ayuda();
+
+static void readDirectory(const string& directoryName,
+		vector<string>& filenames, bool addDirectoryName = true);
+
+
+
 int main(int argc, char* argv[])
 {
+	string i_carpeta_imagenes_color;
 	string i_reales;	// Ruta y nombre del archivo de los datos reales, sin extensión
 	string i_estimados;	// Ruta y nombre del archivo de los datos estimados, sin extensión
 	string i_resultados;// Ruta y nombre del archivo de los resultados generados, con extensión
+	vector<string> nombres_imagenes_color;
 
 	ayuda( );
 
-	if( argc != 4 )
+	if( argc != 5 )
 		// TODO error
 		return -1;
-	i_reales = argv[1];
-	i_estimados = argv[2];
-	i_resultados = argv[3];
+	i_carpeta_imagenes_color = argv[1];
+	i_reales = argv[2];
+	i_estimados = argv[3];
+	i_resultados = argv[4];
 
 //	cout << i_reales << endl;
 //	cout << i_estimados << endl;
@@ -55,12 +71,47 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
+
+
+
+
+
+
+	// Eliminamos la última barra de la carpeta de imágenes, si se ingresó así
+	 // if( *(i_nombre_archivos_resultados.end()) == "\\" || *(i_nombre_archivos_resultados.end()) == "/" )
+	char ultimochar = i_carpeta_imagenes_color[i_carpeta_imagenes_color.size()-1];
+	if( ultimochar == '\\' || ultimochar == '/' )	//
+		i_carpeta_imagenes_color.pop_back();	// Elimina la última barra
+
+
+	//----------------------------------------------------------------------------------------------
+	// LECTURA DE NOMBRES
+	// Se lee la carpeta con las imagenes
+	readDirectory(i_carpeta_imagenes_color,nombres_imagenes_color);
+
+	// Sólo ruta a imágenes. Borramos el resto.
+	for( auto n : nombres_imagenes_color )
+	{
+		string ext = n.substr( n.find_last_of(".") + 1 );	// Extensión del archivo
+		if( ext == "png" || ext == "bmp" || ext == "jpg" || ext == "jpeg"  || ext == "tiff" )
+			continue;
+
+		// Eliminamos si no es imagen
+		//cout << "\n" << n;
+		nombres_imagenes_color.pop_back();
+	}
+
+
+
+	unsigned int max = nombres_imagenes_color.size();
+
+
+
 	//-----
 	vector<struct_resultados> reales;
 	vector<struct_resultados> estimados;
 	vector<Frame> frames;
 
-	unsigned int max = 0;
 
 // TODO detecciones multiples...quien las elimina? resultados o detector?
 
@@ -83,8 +134,7 @@ int main(int argc, char* argv[])
 		aux.calcular(); // Calculamos centro, ancho, alto
 		reales.push_back(aux);
 
-		if( aux.img > max )
-			max = aux.img;
+
 	}
 	fclose(arch_reales);
 
@@ -114,6 +164,7 @@ int main(int argc, char* argv[])
 	frames.resize(max);	// Reservamos espacio
 	for( unsigned int i = 0 ; i < frames.size() ; i++ )
 	{
+		frames.at(i).id = i+1;
 		for( auto r : reales)
 		{
 			if( r.img == (i+1))
@@ -166,7 +217,7 @@ int main(int argc, char* argv[])
 						// contamos la detección como un verdadero positivo
 						(*it_frames).verdaderos_positivos ++;
 						// y la borramos del vector, pues ya fue contada.
-						(*it_frames).estimados.pop_back();
+						it_estimados = (*it_frames).estimados.erase(it_estimados);
 					}
 					else // Sólo avanza cuando no borró. En caso contrario, estaría saltando un elemento.
 						it_estimados ++;
@@ -245,7 +296,8 @@ int main(int argc, char* argv[])
 	float recall = (float)vpos / (vpos + fneg); // De los buenos, cuantos encontró
 	float metrica4 = precision*recall;
 	float metrica5 = 2*(precision*recall)/(precision+recall); // F1
-	float metrica6 = metrica5 / tiempo_promedio;
+	float metrica6 = 100.0* metrica5 / tiempo_promedio;
+	float metrica7 = (1+0.25)*precision*recall/((0.25*precision)+recall); // F0.5
 
 	// SALIDA
 	size_t pos_barra = i_reales.find_last_of("/\\"); // Encuentra la última barra
@@ -309,8 +361,12 @@ int main(int argc, char* argv[])
 	informe_nombres.push_back("F1: 2*(precision*recall)/(precision+recall)");
 	informe_valores.push_back(to_string( metrica5 ));
 
-	informe_nombres.push_back("F1/tiempo promedio");
+	informe_nombres.push_back("100*F1/tiempo promedio");
 	informe_valores.push_back(to_string( metrica6 ));
+
+	informe_nombres.push_back("F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall)");
+	informe_valores.push_back(to_string( metrica7 ));
+
 
 //	informe_nombres.push_back("");
 //	informe_valores.push_back(to_string(  ));
@@ -400,7 +456,8 @@ static void ayuda()
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 	cout
 			<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado - 2016\n"
-					"Uso: dp_resultados /ruta/a/datos_reales (sin extensión)\n"
+					"Uso: dp_resultados /ruta/a/set/de/imagenes\n"
+					"                   /ruta/a/datos_reales (sin extensión)\n"
 					"                   /ruta/a/datos_estimados (sin extensión)\n"
 					"                   /ruta/a/archivo_de_resultados.txt (con extensión)\n";
 	cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
@@ -408,4 +465,55 @@ static void ayuda()
 	return;
 }
 
+
+
+
+
+
+// Lectura de archivos (tomada del ejemplo de svm y añadido el filtro de . y ..)
+static void readDirectory(const string& directoryName,
+		vector<string>& filenames, bool addDirectoryName)
+{
+	filenames.clear();
+
+#if defined(WIN32) | defined(_WIN32)
+	struct _finddata_t s_file;
+	string str = directoryName + "\\*.*";
+
+	intptr_t h_file = _findfirst( str.c_str(), &s_file );
+	if( h_file != static_cast<intptr_t>(-1.0) )
+	{
+		do
+		{
+			if( addDirectoryName )
+			filenames.push_back(directoryName + "\\" + s_file.name);
+			else
+			filenames.push_back((string)s_file.name);
+		}
+		while( _findnext( h_file, &s_file ) == 0 );
+	}
+	_findclose( h_file );
+#else
+	DIR* dir = opendir(directoryName.c_str());
+	if (dir != NULL)
+	{
+		struct dirent* dent;
+		while ((dent = readdir(dir)) != NULL)
+		{
+			string sss = string(dent->d_name);
+			if ( sss[0] != '.' )	// Eliminamos el . y el ..
+			{
+				if (addDirectoryName)
+						filenames.push_back(directoryName + "/" + sss);
+					else
+						filenames.push_back(sss);
+			}
+		}
+
+		closedir(dir);
+	}
+#endif
+
+	sort(filenames.begin(), filenames.end());
+}
 

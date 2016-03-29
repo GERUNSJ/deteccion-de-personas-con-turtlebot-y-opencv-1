@@ -50,6 +50,8 @@ public:
 class Frame
 {
 public:
+	unsigned int id = 0;
+
 	std::vector<struct_resultados> reales;
 	std::vector<struct_resultados> estimados;
 
