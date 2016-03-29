@@ -3,9 +3,9 @@
 using namespace std;
 
 
-#define P_RADIO	0.7	// Proporción del ancho real a ser tolerado como máximo al comparar distancias entre centros
+#define P_RADIO	0.5	// Proporción del ancho real a ser tolerado como máximo al comparar distancias entre centros
 #define P_ANCHO 1	// Crecimiento o decrecimiento relativo proporcional máximo tolerado. Recordar que algunos detectores están entrenados con un poco de background.
-#define P_ALTO	0.5	//
+#define P_ALTO	0.4	//
 
 std::ostream& operator<<( std::ostream& os, const struct_resultados& res )
 {

@@ -398,7 +398,7 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 		if( i_res.empty() )
 			 i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
 		else
-		{
+		/*{
 			// Eliminamos detecciones superpuestas, con el mismo criterio de igualdad que para la comparación entre reales y estimados.
 			bool distinto = true;
 			for( auto j: i_res)
@@ -414,7 +414,8 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
 			{
 				i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
 			}
-		}
+		}*/
+			i_res.push_back(aux_res); // Guardamos en el vector de detecciones para esta imagen
 
 
 
