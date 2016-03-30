@@ -358,6 +358,8 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
     printf("\ndetection time = %gms\n", t*1000./cv::getTickFrequency());
 
 
+    groupRectangles(found, 1, 1);
+
     // Para cada detección
     for( unsigned int i = 0; i < found.size(); i++ )
     {

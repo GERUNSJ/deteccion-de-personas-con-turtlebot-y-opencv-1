@@ -26,7 +26,7 @@ DetectorHOG::DetectorHOG(vector<string>argumentos_nombre, vector<string>argument
 
 		else if( argumentos_nombre.at(i) == "hit_threshold")
 		{
-			this->hit_threshold = stoi(argumentos_valor.at(i),nullptr,10);
+			this->hit_threshold = stof(argumentos_valor.at(i));
 		}
 
 		else if( argumentos_nombre.at(i) == "setSVMDetector")

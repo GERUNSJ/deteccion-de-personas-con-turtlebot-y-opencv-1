@@ -61,6 +61,7 @@ PREFIJO1=DH
 #  filtro_enfoque_y_repujado
 #  filtro_repujado_y_enfoque
 # bl blurear y tamanio_blur
+# ei escala_inicial
 # zz combinaciones arbitrarias
  
 
@@ -105,6 +106,12 @@ source detectorhog_xx.sh
 #			ff - Opciones de filtrado
 PREFIJO2=ff
 source detectorhog_ff.sh
+
+
+####################################################################################
+#			ei - Variamos la escala inicial
+PREFIJO2=ei
+source detectorhog_ei.sh
 
 
 ####################################################################################
