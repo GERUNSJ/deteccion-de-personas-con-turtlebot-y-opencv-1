@@ -1,0 +1,43 @@
+Archivo estimados = DH_pe_03
+Archivo reales = set235nuevo_reales
+Imagenes analizadas = 900
+Total de detecciones = 466
+Verdaderos positivos = 455
+Falsos positivos = 11
+Falsos negativos = 670
+Miss rate: fneg/(vpos+fneg) = 0.595556
+Miss rate * tiempo promedio = 14.843733
+FFPW = 0.012222
+100*Miss rate * FPPW = 0.727901
+100*Miss rate * FPPW * tiempo promedio = 18.142340
+Tiempo promedio de detección = 24.924179
+precision: vpos/(vpos+fpos) = 0.976395
+recall: vpos/(vpos+fneg) = 0.404444
+precision*recall = 0.394897
+F1: 2*(precision*recall)/(precision+recall) = 0.571967
+100*F1/tiempo promedio = 2.294829
+F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.761124
+
+
+--------------------
+
+El detector usado fue DetectorHOG
+pasoEscala	1.150000
+umbralAgrupamiento	2
+hit_threshold	0.000000
+setSVMDetector	getDefaultPeopleDetector
+escala_inicial	1.300000
+convertir_a_gris	true
+ecualizar_histograma	true
+blurear	false
+tamanio_blur	3
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	false
+
+pasoEscala;umbralAgrupamiento;hit_threshold;setSVMDetector;escala_inicial;convertir_a_gris;ecualizar_histograma;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;
+1.150000;2;0.000000;getDefaultPeopleDetector;1.300000;true;true;false;3;false;false;false;false;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);100*F1/tiempo promedio;F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall);
+DH_pe_03;set235nuevo_reales;900;466;455;11;670;0.595556;14.843733;0.012222;0.727901;18.142340;24.924179;0.976395;0.404444;0.394897;0.571967;2.294829;0.761124;

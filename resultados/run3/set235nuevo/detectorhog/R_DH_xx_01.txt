@@ -1,0 +1,43 @@
+Archivo estimados = DH_xx_01
+Archivo reales = set235nuevo_reales
+Imagenes analizadas = 900
+Total de detecciones = 719
+Verdaderos positivos = 695
+Falsos positivos = 24
+Falsos negativos = 430
+Miss rate: fneg/(vpos+fneg) = 0.382222
+Miss rate * tiempo promedio = 28.545130
+FFPW = 0.026667
+100*Miss rate * FPPW = 1.019259
+100*Miss rate * FPPW * tiempo promedio = 76.120346
+Tiempo promedio de detección = 74.682022
+precision: vpos/(vpos+fpos) = 0.966620
+recall: vpos/(vpos+fneg) = 0.617778
+precision*recall = 0.597157
+F1: 2*(precision*recall)/(precision+recall) = 0.753796
+100*F1/tiempo promedio = 1.009341
+F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.868533
+
+
+--------------------
+
+El detector usado fue DetectorHOG
+pasoEscala	1.050000
+umbralAgrupamiento	2
+hit_threshold	0.000000
+setSVMDetector	getDefaultPeopleDetector
+escala_inicial	1.300000
+convertir_a_gris	false
+ecualizar_histograma	false
+blurear	false
+tamanio_blur	3
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	false
+
+pasoEscala;umbralAgrupamiento;hit_threshold;setSVMDetector;escala_inicial;convertir_a_gris;ecualizar_histograma;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;
+1.050000;2;0.000000;getDefaultPeopleDetector;1.300000;false;false;false;3;false;false;false;false;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);100*F1/tiempo promedio;F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall);
+DH_xx_01;set235nuevo_reales;900;719;695;24;430;0.382222;28.545130;0.026667;1.019259;76.120346;74.682022;0.966620;0.617778;0.597157;0.753796;1.009341;0.868533;

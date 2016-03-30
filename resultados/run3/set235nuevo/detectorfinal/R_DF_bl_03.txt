@@ -1,0 +1,45 @@
+Archivo estimados = DF_bl_03
+Archivo reales = set235nuevo_reales
+Imagenes analizadas = 900
+Total de detecciones = 863
+Verdaderos positivos = 692
+Falsos positivos = 171
+Falsos negativos = 443
+Miss rate: fneg/(vpos+fneg) = 0.390308
+Miss rate * tiempo promedio = 18.480671
+FFPW = 0.190000
+100*Miss rate * FPPW = 7.415859
+100*Miss rate * FPPW * tiempo promedio = 351.132751
+Tiempo promedio de detección = 47.348896
+precision: vpos/(vpos+fpos) = 0.801854
+recall: vpos/(vpos+fneg) = 0.609692
+precision*recall = 0.488884
+F1: 2*(precision*recall)/(precision+recall) = 0.692693
+100*F1/tiempo promedio = 1.462954
+F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.754306
+
+
+--------------------
+
+El detector usado fue DetectorFinal
+direccion_a_cascada	./../clasificadores/visionary.net_pedestrian_cascade_web_LBP.xml
+escala_inicial	1.300000
+tamanio_minimo	[38 x 77]
+tamanio_maximo	[138 x 277]
+convertir_a_gris	true
+ecualizar_histograma	true
+scaleFactor	1.100000
+minNeighbors	4
+usar_profundidad_altura	false
+blurear	true
+tamanio_blur	5
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	false
+
+direccion_a_cascada;escala_inicial;tamanio_minimo;tamanio_maximo;convertir_a_gris;ecualizar_histograma;scaleFactor;minNeighbors;usar_profundidad_altura;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;
+./../clasificadores/visionary.net_pedestrian_cascade_web_LBP.xml;1.300000;[38 x 77];[138 x 277];true;true;1.100000;4;false;true;5;false;false;false;false;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);100*F1/tiempo promedio;F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall);
+DF_bl_03;set235nuevo_reales;900;863;692;171;443;0.390308;18.480671;0.190000;7.415859;351.132751;47.348896;0.801854;0.609692;0.488884;0.692693;1.462954;0.754306;
