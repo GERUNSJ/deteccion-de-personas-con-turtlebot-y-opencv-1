@@ -285,6 +285,27 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
 	if( blurear )
 		blur( gray, gray, Size(tamanio_blur,tamanio_blur) );
 
+
+    if( filtro_repujado && !filtro_repujado_y_enfoque && !filtro_enfoque_y_repujado )
+    	filter2D( gray, gray, -1, kernel_repujado);
+
+    if( filtro_enfoque && !filtro_repujado_y_enfoque && !filtro_enfoque_y_repujado )
+    	filter2D( gray, gray, -1, kernel_enfoque);
+
+    if( filtro_repujado_y_enfoque )
+    {
+    	filter2D( gray, gray, -1, kernel_repujado);
+    	filter2D( gray, gray, -1, kernel_enfoque);
+    }
+
+    if( filtro_enfoque_y_repujado )
+    {
+    	filter2D( gray, gray, -1, kernel_enfoque);
+    	filter2D( gray, gray, -1, kernel_repujado);
+    }
+
+
+
 	// Achicamos la imagen original, de acuerdo al factor escala_inicial
 	resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
 
