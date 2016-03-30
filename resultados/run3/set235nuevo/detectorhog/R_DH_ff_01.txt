@@ -6,16 +6,16 @@ Verdaderos positivos = 745
 Falsos positivos = 30
 Falsos negativos = 383
 Miss rate: fneg/(vpos+fneg) = 0.339539
-Miss rate * tiempo promedio = 19.808359
+Miss rate * tiempo promedio = 20.264929
 FFPW = 0.033333
 100*Miss rate * FPPW = 1.131797
-100*Miss rate * FPPW * tiempo promedio = 66.027870
-Tiempo promedio de detección = 58.338978
+100*Miss rate * FPPW * tiempo promedio = 67.549767
+Tiempo promedio de detección = 59.683653
 precision: vpos/(vpos+fpos) = 0.961290
 recall: vpos/(vpos+fneg) = 0.660461
 precision*recall = 0.634895
 F1: 2*(precision*recall)/(precision+recall) = 0.782974
-100*F1/tiempo promedio = 1.342112
+100*F1/tiempo promedio = 1.311874
 F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.881031
 
 
@@ -40,4 +40,4 @@ pasoEscala;umbralAgrupamiento;hit_threshold;setSVMDetector;escala_inicial;conver
 1.050000;2;0.000000;getDefaultPeopleDetector;1.300000;true;true;false;3;false;false;false;false;
 
 Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);100*F1/tiempo promedio;F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall);
-DH_ff_01;set235nuevo_reales;900;775;745;30;383;0.339539;19.808359;0.033333;1.131797;66.027870;58.338978;0.961290;0.660461;0.634895;0.782974;1.342112;0.881031;
+DH_ff_01;set235nuevo_reales;900;775;745;30;383;0.339539;20.264929;0.033333;1.131797;67.549767;59.683653;0.961290;0.660461;0.634895;0.782974;1.311874;0.881031;

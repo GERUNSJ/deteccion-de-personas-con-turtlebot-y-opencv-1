@@ -1,22 +1,22 @@
 Archivo estimados = DH_ff_05
 Archivo reales = set235nuevo_reales
 Imagenes analizadas = 900
-Total de detecciones = 775
-Verdaderos positivos = 745
-Falsos positivos = 30
-Falsos negativos = 383
-Miss rate: fneg/(vpos+fneg) = 0.339539
-Miss rate * tiempo promedio = 19.544111
-FFPW = 0.033333
-100*Miss rate * FPPW = 1.131797
-100*Miss rate * FPPW * tiempo promedio = 65.147041
-Tiempo promedio de detección = 57.560721
-precision: vpos/(vpos+fpos) = 0.961290
-recall: vpos/(vpos+fneg) = 0.660461
-precision*recall = 0.634895
-F1: 2*(precision*recall)/(precision+recall) = 0.782974
-100*F1/tiempo promedio = 1.360258
-F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.881031
+Total de detecciones = 276
+Verdaderos positivos = 241
+Falsos positivos = 35
+Falsos negativos = 884
+Miss rate: fneg/(vpos+fneg) = 0.785778
+Miss rate * tiempo promedio = 46.223061
+FFPW = 0.038889
+100*Miss rate * FPPW = 3.055803
+100*Miss rate * FPPW * tiempo promedio = 179.756363
+Tiempo promedio de detección = 58.824593
+precision: vpos/(vpos+fpos) = 0.873188
+recall: vpos/(vpos+fneg) = 0.214222
+precision*recall = 0.187056
+F1: 2*(precision*recall)/(precision+recall) = 0.344040
+100*F1/tiempo promedio = 0.584857
+F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.540601
 
 
 --------------------
@@ -40,4 +40,4 @@ pasoEscala;umbralAgrupamiento;hit_threshold;setSVMDetector;escala_inicial;conver
 1.050000;2;0.000000;getDefaultPeopleDetector;1.300000;true;true;false;3;false;false;false;true;
 
 Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);100*F1/tiempo promedio;F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall);
-DH_ff_05;set235nuevo_reales;900;775;745;30;383;0.339539;19.544111;0.033333;1.131797;65.147041;57.560721;0.961290;0.660461;0.634895;0.782974;1.360258;0.881031;
+DH_ff_05;set235nuevo_reales;900;276;241;35;884;0.785778;46.223061;0.038889;3.055803;179.756363;58.824593;0.873188;0.214222;0.187056;0.344040;0.584857;0.540601;

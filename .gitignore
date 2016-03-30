@@ -9,6 +9,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
+.directory
 
 # Eclipse Core
 .project
@@ -51,38 +52,9 @@ nbactions.xml
 Debug/
 Release/
 /Debug
+C_DEBUG/
+C_RELEASE/
+R_DEBUG/
+R_RELEASE/
 
 .gitignore
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/Release
-/Release
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/Release
-/Release
-/Release
-/Release
-/Release
-/Release
-/Release
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/R_RELEASE
-/Release
-/Release
-/Release
