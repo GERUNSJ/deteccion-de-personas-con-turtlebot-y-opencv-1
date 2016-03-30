@@ -321,13 +321,13 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
     if( filtro_enfoque && !filtro_repujado_y_enfoque && !filtro_enfoque_y_repujado )
     	filter2D( gray, gray, -1, kernel_enfoque);
 
-    if( filtro_repujado_y_enfoque )
+    if( filtro_repujado_y_enfoque && !filtro_enfoque_y_repujado )
     {
     	filter2D( gray, gray, -1, kernel_repujado);
     	filter2D( gray, gray, -1, kernel_enfoque);
     }
 
-    if( filtro_enfoque_y_repujado )
+    if( filtro_enfoque_y_repujado && !filtro_repujado_y_enfoque )
     {
     	filter2D( gray, gray, -1, kernel_enfoque);
     	filter2D( gray, gray, -1, kernel_repujado);
@@ -358,7 +358,6 @@ void DetectorFinal::detectar(const Mat& i_img_color, const Mat& i_img_profundida
     printf("\ndetection time = %gms\n", t*1000./cv::getTickFrequency());
 
 
-    groupRectangles(found, 1, 1);
 
     // Para cada detección
     for( unsigned int i = 0; i < found.size(); i++ )

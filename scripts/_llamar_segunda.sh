@@ -11,9 +11,9 @@ source base.sh
 source set1.sh
 
 TIEMPOINICIO=$SECONDS
-source detectorfinal.sh
+source detectorfinal_segunda.sh
 TIEMPODF=$(($SECONDS-$TIEMPOINICIO))
-source detectorhog.sh
+source detectorhog_segunda.sh
 TIEMPOHOG=$(($SECONDS-$TIEMPODF))
 
 echo "SET1" >> run.txt
@@ -29,9 +29,9 @@ echo " TIEMPOHOG = $TIEMPOHOG" >> run.txt
 source set235nuevo.sh
 
 TIEMPOINICIO=$SECONDS
-source detectorfinal.sh
+source detectorfinal_segunda.sh
 TIEMPODF=$(($SECONDS-$TIEMPOINICIO))
-source detectorhog.sh
+source detectorhog_segunda.sh
 TIEMPOHOG=$(($SECONDS-$TIEMPODF))
 
 echo "SET235nuevo" >> run.txt

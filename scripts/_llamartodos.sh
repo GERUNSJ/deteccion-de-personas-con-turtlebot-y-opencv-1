@@ -23,7 +23,7 @@ echo " TIEMPOHOG = $TIEMPOHOG" >> run.txt
 
 ####################################################################################
 #			SET 235
-source set235.sh
+source set235nuevo.sh
 
 TIEMPOINICIO=$SECONDS
 source detectorfinal.sh
