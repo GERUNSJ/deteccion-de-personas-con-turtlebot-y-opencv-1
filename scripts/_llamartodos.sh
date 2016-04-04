@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo `date` >> run.txt
+
+
 # Importamos el script base
 source base.sh
 
