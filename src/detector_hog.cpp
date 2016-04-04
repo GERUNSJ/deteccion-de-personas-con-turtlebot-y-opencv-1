@@ -379,7 +379,7 @@ void DetectorHOG::detectar(const Mat& i_img_color, const Mat& i_img_profundidad,
     	filter2D( gray, gray, -1, kernel_enfoque);
     }
 
-    if( filtro_enfoque_y_repujado && !filtro_enfoque_y_repujado )
+    if( filtro_enfoque_y_repujado && !filtro_repujado_y_enfoque )
     {
     	filter2D( gray, gray, -1, kernel_enfoque);
     	filter2D( gray, gray, -1, kernel_repujado);

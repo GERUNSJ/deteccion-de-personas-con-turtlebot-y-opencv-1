@@ -1,0 +1,44 @@
+Archivo estimados = DH_pe_05
+Archivo reales = set235nuevo_reales
+Imagenes analizadas = 900
+Total de detecciones = 42
+Verdaderos positivos = 41
+Falsos positivos = 1
+Falsos negativos = 1084
+Miss rate: fneg/(vpos+fneg) = 0.963556
+Miss rate * tiempo promedio = 17.857332
+FFPW = 0.001111
+100*Miss rate * FPPW = 0.107062
+100*Miss rate * FPPW * tiempo promedio = 1.984148
+Tiempo promedio de detección = 18.532748
+precision: vpos/(vpos+fpos) = 0.976190
+recall: vpos/(vpos+fneg) = 0.036444
+precision*recall = 0.035577
+F1: 2*(precision*recall)/(precision+recall) = 0.070266
+100*F1/tiempo promedio = 0.379143
+F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall) = 0.158546
+
+
+--------------------
+
+El detector usado fue DetectorHOG
+pasoEscala	1.400000
+umbralAgrupamiento	2
+hit_threshold	0.000000
+setSVMDetector	getDefaultPeopleDetector
+escala_inicial	1.300000
+convertir_a_gris	true
+ecualizar_histograma	true
+blurear	false
+tamanio_blur	3
+filtro_enfoque	false
+filtro_repujado	false
+filtro_enfoque_y_repujado	false
+filtro_repujado_y_enfoque	false
+usar_profundidad_altura	false
+
+pasoEscala;umbralAgrupamiento;hit_threshold;setSVMDetector;escala_inicial;convertir_a_gris;ecualizar_histograma;blurear;tamanio_blur;filtro_enfoque;filtro_repujado;filtro_enfoque_y_repujado;filtro_repujado_y_enfoque;usar_profundidad_altura;
+1.400000;2;0.000000;getDefaultPeopleDetector;1.300000;true;true;false;3;false;false;false;false;false;
+
+Archivo estimados;Archivo reales;Imagenes analizadas;Total de detecciones;Verdaderos positivos;Falsos positivos;Falsos negativos;Miss rate: fneg/(vpos+fneg);Miss rate * tiempo promedio;FFPW;100*Miss rate * FPPW;100*Miss rate * FPPW * tiempo promedio;Tiempo promedio de detección;precision: vpos/(vpos+fpos);recall: vpos/(vpos+fneg);precision*recall;F1: 2*(precision*recall)/(precision+recall);100*F1/tiempo promedio;F0.5: (1+0.25)*precision*recall/((0.25*precision)+recall);
+DH_pe_05;set235nuevo_reales;900;42;41;1;1084;0.963556;17.857332;0.001111;0.107062;1.984148;18.532748;0.976190;0.036444;0.035577;0.070266;0.379143;0.158546;
