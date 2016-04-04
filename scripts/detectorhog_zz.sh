@@ -15,6 +15,7 @@ DH_FILTRO_ENFOQUE=false
 DH_FILTRO_REPUJADO=false
 DH_FILTRO_ENFOQUE_Y_REPUJADO=false
 DH_FILTRO_REPUJADO_Y_ENFOQUE=false
+DH_USAR_PROFUNDIDAD=false
 
 
 # ####################################################################################

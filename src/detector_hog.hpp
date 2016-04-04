@@ -51,7 +51,8 @@ public:
 	bool filtro_repujado_y_enfoque = false;
 	// Enfoque y repujado
 	bool filtro_enfoque_y_repujado = false;
-
+	// Usar la información de profundidad para filtrar según altura estimada
+	bool usar_profundidad_altura = false;
 
 	// Kernels para filtrado
 	// Kernels

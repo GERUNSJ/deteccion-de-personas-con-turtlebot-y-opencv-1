@@ -16,6 +16,7 @@ DH_FILTRO_ENFOQUE=false
 DH_FILTRO_REPUJADO=false
 DH_FILTRO_ENFOQUE_Y_REPUJADO=false
 DH_FILTRO_REPUJADO_Y_ENFOQUE=false
+DH_USAR_PROFUNDIDAD=false
 
 
 
@@ -52,3 +53,14 @@ DH_ECUALIZAR_HISTOGRAMA=true
 funcion_detector_hog
 funcion_csv_normal
 
+
+####################################################################################
+#			PRUEBA 04
+NOMBRE_RESULTADOS=04
+
+DH_CONVERTIR_A_GRIS=true
+DH_ECUALIZAR_HISTOGRAMA=true
+DH_USAR_PROFUNDIDAD=true
+
+funcion_detector_hog
+funcion_csv_normal
