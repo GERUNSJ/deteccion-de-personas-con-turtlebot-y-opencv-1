@@ -62,6 +62,7 @@ DH_FILTRO_ENFOQUE_Y_REPUJADO=false
 DH_FILTRO_REPUJADO_Y_ENFOQUE=false
 DH_USAR_PROFUNDIDAD=true
 
+
 funcion_detector_hog
 funcion_csv_normal
 

@@ -297,7 +297,8 @@ int main(int argc, char* argv[])
 		cout	<< "\n------------------------------------------------------------------------------------------------------------------\n";
 		cout
 		<< "\nDetección de personas en opencv para Turtlebot - Fabricio Emder, Pablo Aguado\n"
-		"Uso: dp_cuadros < /dir/al/archivo_de_resultados > (sin extensión)\n"
+		"Uso: dp_cuadros < /dir/al/archivo_de_resultados_reales > (sin extensión)\n"
+		"                < /dir/al/archivo_de_resultados_estimados > (sin extensión)\n"
 		"                < carpeta/con/imagenes/a/marcar >"
 		"\n\n Muestra las imágenes con sus detecciones."
 		"\n\nUsando OpenCV " << CV_VERSION << endl;

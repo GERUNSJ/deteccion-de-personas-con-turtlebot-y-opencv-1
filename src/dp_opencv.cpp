@@ -336,7 +336,7 @@ static void ayuda()
 				"\nCrea un archivo csv con los resultados y un txt con información sobre el detector usado.\n"
 				"\nDetectores válidos: "
 				"\n* Extractor"
-				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int hit_threshold float setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector> convertir_a_gris bool ecualizar_histograma bool blurear bool tamanio_blur int filtro_enfoque bool filtro_repujado bool filtro_enfoque_y_repujado bool filtro_repujado_y_enfoque bool usar_profundidad_altura bool"
+				"\n* DetectorHOG pasoEscala double umbralAgrupamiento int hit_threshold float setSVMDetector <getDefaultPeopleDetector | getDaimlerPeopleDetector> convertir_a_gris bool ecualizar_histograma bool blurear bool tamanio_blur int filtro_enfoque bool filtro_repujado bool filtro_enfoque_y_repujado bool filtro_repujado_y_enfoque bool usar_profundidad_altura bool escala_inicial float"
 				"\n* DetectorFinal direccion_a_cascada string escala_inicial float convertir_a_gris bool ecualizar_histograma bool scaleFactor float minNeighbors int usar_profundidad_altura bool blurear bool tamanio_blur int filtro_enfoque bool filtro_repujado bool filtro_enfoque_y_repujado bool filtro_repujado_y_enfoque bool"
 
 				"\n\nUsando OpenCV " << CV_VERSION << endl;
