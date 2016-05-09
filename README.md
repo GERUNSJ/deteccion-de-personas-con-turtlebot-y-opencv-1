@@ -42,6 +42,8 @@ Para recibir imágenes desde el TurtleBot, ver 7.2. Para transmitir imágenes de
 
 ---
 
+---
+
 >>*Pablo Aguado - ELO 23724*
 
 >>*Fabricio Emder - ELO 23764*
