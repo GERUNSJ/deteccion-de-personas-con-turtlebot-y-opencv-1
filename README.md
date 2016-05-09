@@ -1,5 +1,3 @@
-# dp_opencv
-
 Comenzamos nuevamente lo iniciado en https://github.com/GERUNSJ/detecciondepersonas_opencv , esta vez para terminarlo.
 
 ---------
