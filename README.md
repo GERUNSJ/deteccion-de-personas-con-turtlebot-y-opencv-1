@@ -3,7 +3,7 @@ Comenzamos nuevamente lo iniciado en https://github.com/GERUNSJ/detecciondeperso
 ---------
 
 # Detección de personas para un robot TurtleBot usando OpenCV  #
-Este es el informe (y los archivos relacionados) del trabajo integrador final de la materia Temas Específicos de Control I: Visión Artificial, dictada en la carrera Ingeniería Electrónica de la Universidad Nacional de San Juan. La consigna es llevar a cabo un proyecto que en el se apliquen todos los conocimientos adquiridos en la materia, asimilándolos con práctica y complementándolos con más conceptos.
+Este es el informe (y los archivos relacionados) del trabajo integrador final de la materia [Temas Específicos de Control I: Visión Artificial](http://dea.unsj.edu.ar/vision/), dictada en la carrera Ingeniería Electrónica de la [Universidad Nacional de San Juan](http://www.unsj.edu.ar/). La consigna es llevar a cabo un proyecto que en el se apliquen todos los conocimientos adquiridos en la materia, asimilándolos con práctica y complementándolos con más conceptos.
 
 Se planteó como objetivo principal del proyecto realizar la detección de personas desde un robot móvil con un grado aceptable de aciertos. Para ello se probaron la eficiencia y eficacia de distintos algoritmos que fueron implementados en OpenCV sobre un robot TurtleBot, equipado con una cámara RGB+D Microsoft Kinect y trabajando bajo el sistema ROS (Robot Operative System). El programa desarrollado fue luego adaptado para poder utilizarse en otras cámaras sin información de profundidad, como una webcam de una PC o una mini-computadora Raspberry Pi 2 con cámara.
 
