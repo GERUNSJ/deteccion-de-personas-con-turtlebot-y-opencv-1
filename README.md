@@ -25,7 +25,9 @@ El informe se extiende sobre algunas alternativas de trabajo, conceptos de los d
 
 ## Nodos ##
 
-El workspace de ROS contiene el nodo de detección y un nodo publicador de video para la webcam. Para poder ejecutarlos, primero hay que compilarlos. **DEPENDENCIAS: ROS INDIGO**
+El workspace de ROS contiene el nodo de detección y un nodo publicador de video para la webcam. Para poder ejecutarlos, primero hay que compilarlos. **DEPENDENCIAS: ROS INDIGO**.
+
+
 Los pasos a seguir:
 
 1. Modificar el código (``src/detpeople/src/ImageConverter.cpp``, líneas 48 y 51) para que se suscriba a los mensajes de la Kinect o de la webcam o de la cámara de la Raspberry Pi. Por defecto está suscripto a los mensajes bajo el topic ``/camera/image`` , que son los de la webcam o de la cámara de la Raspberry.
