@@ -44,9 +44,9 @@ Para recibir imágenes desde el TurtleBot, ver 7.2. Para transmitir imágenes de
 
 ---
 
->>*Pablo Aguado - ELO 23724*
+*[Pablo Aguado](https://github.com/aguadopd) - ELO 23724*
 
->>*Fabricio Emder - ELO 23764*
+*[Fabricio Emder](https://github.com/elector102) - ELO 23764*
 
 **Ingeniería Electrónica - Universidad Nacional de San Juan**
 
